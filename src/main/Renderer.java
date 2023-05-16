@@ -22,8 +22,13 @@ public class Renderer {
 	
 	public void renderImage(BufferedImage image, int x, int y, int w, int h) {
 		assert(this.m_g2 != null);
-		int posX = x - this.m_camera.m_x + (this.m_gp.SCREEN_WIDTH/2);
-		int posY = y - this.m_camera.m_y + (this.m_gp.SCREEN_HEIGHT/2);
-		m_g2.drawImage(image, posX, posY, w, h, null);
+		
+		float scale = this.m_camera.getScale();
+		
+		int posX = (int) (Math.floor((x - this.m_camera.getX())*scale) + (this.m_gp.SCREEN_WIDTH/2));
+		int posY = (int) (Math.floor((y - this.m_camera.getY())*scale) + (this.m_gp.SCREEN_HEIGHT/2));
+		int scaleW = (int) Math.ceil(w*scale);
+		int scaleH = (int) Math.ceil(h * scale);
+		m_g2.drawImage(image, posX, posY, scaleW, scaleH, null);
 	}
 }
