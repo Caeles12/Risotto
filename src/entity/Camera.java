@@ -1,9 +1,11 @@
 package entity;
 
 import main.GamePanel;
+import main.Renderer;
+
 
 public class Camera{
-	
+  
 	private float m_x;
 	private float m_y;
 	private float m_scale;
