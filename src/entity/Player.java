@@ -87,23 +87,23 @@ public class Player extends Entity{
 			m_direction[0] += 0;
 			m_direction[1] += 1;
 		}
+		
 		double norme = Math.sqrt(m_direction[0] * m_direction[0] + m_direction[1] * m_direction[1]);
-		System.out.println(norme);
 		m_x += (int) (m_speed * m_direction[0] / norme);
 		m_y += (int) (m_speed * m_direction[1] / norme);
 		m_direction[0] = 0;
 		m_direction[1] = 0;
+		
 		if (m_keyH.isPressed(70)) { // FireBall f
 			if (m_ralentisseur <= 0) {
 			m_magie -= 10;
-			System.out.println("MAGIE");
 			m_ralentisseur = 10;
 			} else {
 				m_ralentisseur -= 1;
 			}
 		}
 		
-		if(m_keyH.isPressed(69)) {
+		if (m_keyH.isPressed(69)) {
 			Iterator<Entity> iter = m_gp.m_list_entity.iterator();
 			while(iter.hasNext()) {
 				Entity tmp = iter.next();
