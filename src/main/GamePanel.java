@@ -125,6 +125,15 @@ public class GamePanel extends JPanel implements Runnable{
 		m_camera.move(m_player.m_x, m_player.m_y);
 		m_camera.zoom(1);
 		m_frog.update();
+		int i = 0;
+		while(i<m_list_entity.size()) {
+			m_list_entity.get(i).update();
+			if(m_list_entity.get(i).m_status == Entity.Status.DESTROY) {
+				m_list_entity.remove(i);
+			}else {
+				i++;
+			}
+		}
 	}
 	
 	/**
@@ -138,19 +147,19 @@ public class GamePanel extends JPanel implements Runnable{
 		m_tileM.draw(m_renderer);
 		m_frog.draw(m_renderer);
 		Iterator<Entity> iter = m_list_entity.iterator();
+		
 		while(iter.hasNext()) iter.next().draw(m_renderer);
+		
 		m_player.draw(m_renderer);
 		
 		
-		m_renderer.renderText("Je suis un coffre", m_list_entity.get(0).m_x, m_list_entity.get(0).m_y);
-		m_renderer.renderText("Croa", m_frog.m_x, m_frog.m_y, 1, 4, 15, 2);
 		g2.dispose();
 		m_renderer.update();
 	}
 	
 	public void testCollision() {
-		int x = m_player.getXCoordonates() / TILE_SIZE;
-		int y = m_player.getYCoordonates() / TILE_SIZE;
+		int x =(int) m_player.getXCoordonates() / TILE_SIZE;
+		int y =(int) m_player.getYCoordonates() / TILE_SIZE;
 		int[][] mapTileNum = m_tileM.getMapTileNum();
 		Tile[] tiles = m_tileM.getTile();
 		

@@ -60,7 +60,7 @@ abstract public class Hostile extends Entity{
 		// r�cup�re l'image du joueur
 		BufferedImage l_image = m_idleImage.get(0);
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
-		a_g2.renderImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		a_g2.renderImage(l_image, (int) m_x, (int) m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
 	}
 	
 }
