@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Color;
 import javax.swing.JPanel;
 
+import entity.Camera;
 import entity.Player;
 import tile.TileManager;
 
@@ -16,23 +17,25 @@ import java.awt.Graphics2D;
  */
 public class GamePanel extends JPanel implements Runnable{
 	
-	//Paramètres de l'écran
+	//Paramï¿½tres de l'ï¿½cran
 	final int ORIGINAL_TILE_SIZE = 16; 							// une tuile de taille 16x16
-	final int SCALE = 3; 										// échelle utilisée pour agrandir l'affichage
+	final int SCALE = 3; 										// ï¿½chelle utilisï¿½e pour agrandir l'affichage
 	public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; 	// 48x48
 	public final int MAX_SCREEN_COL = 16;
-	public final int MAX_SCREE_ROW = 12; 					 	// ces valeurs donnent une résolution 4:3
+	public final int MAX_SCREE_ROW = 12; 					 	// ces valeurs donnent une rï¿½solution 4:3
 	public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
 	public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREE_ROW;	// 576 pixels
 
 	// FPS : taux de rafraichissement
 	int m_FPS;
 	
-	// Création des différentes instances (Player, KeyHandler, TileManager, GameThread ...)
+	// Crï¿½ation des diffï¿½rentes instances (Player, KeyHandler, TileManager, GameThread ...)
 	KeyHandler m_keyH;
 	Thread m_gameThread;
 	Player m_player;
 	TileManager m_tileM;
+	Camera m_camera;
+	Renderer m_renderer;
 		
 	/**
 	 * Constructeur
@@ -42,6 +45,8 @@ public class GamePanel extends JPanel implements Runnable{
 		m_keyH = new KeyHandler();
 		m_player = new Player(this, m_keyH);
 		m_tileM = new TileManager(this);
+		m_camera = new Camera(this, 100, 100);
+		m_renderer = new Renderer(this, m_camera);
 		
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.black);
@@ -65,10 +70,10 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		while(m_gameThread != null) { //Tant que le thread du jeu est actif
 			
-			//Permet de mettre à jour les différentes variables du jeu
+			//Permet de mettre ï¿½ jour les diffï¿½rentes variables du jeu
 			this.update();
 			
-			//Dessine sur l'écran le personnage et la map avec les nouvelles informations. la méthode "paintComponent" doit obligatoirement être appelée avec "repaint()"
+			//Dessine sur l'ï¿½cran le personnage et la map avec les nouvelles informations. la mï¿½thode "paintComponent" doit obligatoirement ï¿½tre appelï¿½e avec "repaint()"
 			this.repaint();
 			
 			//Calcule le temps de pause du thread
@@ -92,19 +97,20 @@ public class GamePanel extends JPanel implements Runnable{
 	
 
 	/**
-	 * Mise à jour des données des entités
+	 * Mise ï¿½ jour des donnï¿½es des entitï¿½s
 	 */
 	public void update() {
 		m_player.update();
 	}
 	
 	/**
-	 * Affichage des éléments
+	 * Affichage des ï¿½lï¿½ments
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		m_tileM.draw(g2);
+		m_renderer.setGraphics(g2);
+		m_tileM.draw(m_renderer);
 		m_player.draw(g2);
 		g2.dispose();
 	}
