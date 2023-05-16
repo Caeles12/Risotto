@@ -38,6 +38,7 @@ public class Player extends Entity{
 	int m_ralentisseur;
 	
 	Collider m_collider;
+	int interact_cooldown;
 	
 	/**
 	 * Constructeur de Player
@@ -53,10 +54,12 @@ public class Player extends Entity{
 		this.m_collision = new float[2];
 		this.m_pos = new Vector2D(100, 100);
 		
-		this.m_collider = new Collider(new Rectangle(m_pos, a_gp.TILE_SIZE, a_gp.TILE_SIZE), a_gp);
+		this.m_collider = new Collider(new Rectangle(m_pos, new Vector2D(a_gp.TILE_SIZE/4, a_gp.TILE_SIZE/4),a_gp.TILE_SIZE/2, a_gp.TILE_SIZE/2), a_gp);
 		
 		this.setDefaultValues();
 		this.getPlayerImageBase();
+		
+		this.interact_cooldown = 0;
 	}
 	
 	/**
@@ -80,6 +83,7 @@ public class Player extends Entity{
 		try {
 			m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch.png")));
 			m_idleImage.add(ImageIO.read(getClass().getResource("/player/spellwitch.png")));
+			m_idleImage.add(ImageIO.read(getClass().getResource("/player/potitbalais.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -89,6 +93,7 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
+		this.m_collider.m_shape.setOrigin(m_pos);
 		
 		if (m_keyH.isPressed(37)) { // GAUCHE
 			m_direction[0] += -1;
@@ -114,6 +119,7 @@ public class Player extends Entity{
 			float vy = (m_direction[1] / norme);
 			
 			this.m_pos.x += vx*m_speed;
+			System.out.println(this.m_collider.m_shape.getOrigin().x);
 			if(this.m_collider.collidingTileMap(this.m_gp.m_tileM)) {
 				this.m_pos.x -= vx*m_speed;
 			}
@@ -131,14 +137,17 @@ public class Player extends Entity{
 				m_magie -= 10;
 				m_spell = true;
 				m_ralentisseur = 10;
+				Fireball f = new Fireball(m_gp, m_keyH, (int) this.m_pos.x + 1, (int) this.m_pos.y);
+				f.setDirection(m_direction[0], m_direction[1]);
 				c = 0;
 			} else {
 				m_ralentisseur -= 1;
 			}
 		}
-		
-		if (m_keyH.isPressed(69)) {
-			Iterator<Entity> iter = m_gp.m_list_entity[m_gp.dim].iterator();
+		interact_cooldown++;
+		if (m_keyH.isPressed(69) && interact_cooldown >10) {
+			interact_cooldown = 0;
+			Iterator<Entity> iter = m_gp.m_tab_Map[m_gp.dim].m_list_entity.iterator();
 			while(iter.hasNext()) {
 				Entity tmp = iter.next();
 				if(tmp instanceof Entity_interactive) {
@@ -149,7 +158,7 @@ public class Player extends Entity{
 				
 			}
 		}
-		if (c > 10) {
+		if (c > 6) {
 			m_spell = false;
 		}
 		c += 1;

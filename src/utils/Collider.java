@@ -5,7 +5,7 @@ import tile.Tile;
 import tile.TileManager;
 
 public class Collider {
-	Shape m_shape;
+	public Shape m_shape;
 	GamePanel m_gp;
 	
 	public Collider(Shape shape, GamePanel a_gp) {
@@ -47,8 +47,8 @@ public class Collider {
 	}
 	
 	public boolean collidingTileMap(TileManager tm) {
-		int x = (int) (this.m_shape.m_origin.x + m_gp.TILE_SIZE/2) / m_gp.TILE_SIZE;
-		int y = (int) (this.m_shape.m_origin.y + m_gp.TILE_SIZE/2) / m_gp.TILE_SIZE;
+		int x = (int) (this.m_shape.getPos().x + m_gp.TILE_SIZE/2) / m_gp.TILE_SIZE;
+		int y = (int) (this.m_shape.getPos().y + m_gp.TILE_SIZE/2) / m_gp.TILE_SIZE;
 		int[][] mapTileNum = tm.getMapTileNum();
 		Tile[] tiles = tm.getTile();
 		int maxW = tm.getNbCol();
@@ -71,20 +71,20 @@ public class Collider {
 	}
 	
 	private static boolean circleCircleCollision(Circle c1, Circle c2) {
-		return c1.m_origin.distanceTo(c2.m_origin) < c1.m_radius + c2.m_radius;
+		return c1.getPos().distanceTo(c2.getPos()) < c1.m_radius + c2.m_radius;
 	}
 	
 	private static boolean circleRectCollision(Circle c, Rectangle r) {
-		float testX = c.m_origin.x;
-		float testY = c.m_origin.y;
+		float testX = c.getPos().x;
+		float testY = c.getPos().y;
 		
-		if(c.m_origin.x < r.m_origin.x)	testX = r.m_origin.x;
-		else if(c.m_origin.x > r.m_origin.x + r.m_width) testX = r.m_origin.x + r.m_width;
-		if(c.m_origin.y < r.m_origin.y)	testY = r.m_origin.y;
-		else if(c.m_origin.y > r.m_origin.y + r.m_height) testY = r.m_origin.y + r.m_height;
+		if(c.getPos().x < r.getPos().x)	testX = r.getPos().x;
+		else if(c.getPos().x > r.getPos().x + r.m_width) testX = r.getPos().x + r.m_width;
+		if(c.getPos().y < r.getPos().y)	testY = r.getPos().y;
+		else if(c.getPos().y > r.getPos().y + r.m_height) testY = r.getPos().y + r.m_height;
 		
-		float distX = Math.abs(c.m_origin.x - testX);
-		float distY = Math.abs(c.m_origin.y - testY);
+		float distX = Math.abs(c.getPos().x - testX);
+		float distY = Math.abs(c.getPos().y - testY);
 		
 		float distance = (float) Math.sqrt( (distX*distX) + (distY*distY) );
 		
@@ -92,9 +92,9 @@ public class Collider {
 	}
 	
 	private static boolean rectRectCollision(Rectangle r1, Rectangle r2) {
-		return 	r1.m_origin.x + r1.m_width >= r2.m_origin.x &&
-				r1.m_origin.x <= r2.m_origin.x + r2.m_width &&
-				r1.m_origin.y + r1.m_height >= r2.m_origin.y &&
-				r1.m_origin.y  <= r2.m_origin.y + r2.m_height;
+		return 	r1.getPos().x + r1.m_width >= r2.getPos().x &&
+				r1.getPos().x <= r2.getPos().x + r2.m_width &&
+				r1.getPos().y + r1.m_height >= r2.getPos().y &&
+				r1.getPos().y  <= r2.getPos().y + r2.m_height;
 	}
 }
