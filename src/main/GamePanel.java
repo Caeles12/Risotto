@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JPanel;
 
@@ -130,6 +131,8 @@ public class GamePanel extends JPanel implements Runnable{
 		m_player.draw(m_renderer);
 		Iterator<Entity> iter = m_list_entity.iterator();
 		while(iter.hasNext()) iter.next().draw(m_renderer);
+		m_renderer.renderText("Je suis un coffre", m_list_entity.get(0).m_x, m_list_entity.get(0).m_y);
+
 		g2.dispose();
 	}
 	
