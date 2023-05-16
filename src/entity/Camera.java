@@ -42,6 +42,4 @@ public class Camera{
 	public float getScale() {
 		return m_scale;
 	}
-
-	public void draw(Renderer a_g2) { }
 }
