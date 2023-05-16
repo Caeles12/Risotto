@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable{
 		m_keyH = new KeyHandler();
 		m_player = new Player(this, m_keyH);
 		m_tileM = new TileManager(this);
-		m_camera = new Camera(this, 100, 100);
+		m_camera = new Camera(this, m_player.m_x, m_player.m_y);
 		m_renderer = new Renderer(this, m_camera);
 		
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -101,6 +101,7 @@ public class GamePanel extends JPanel implements Runnable{
 	 */
 	public void update() {
 		m_player.update();
+		m_camera.move(m_player.m_x, m_player.m_y);
 	}
 	
 	/**
@@ -110,8 +111,8 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		m_renderer.setGraphics(g2);
-		m_tileM.draw(g2);
-		m_player.draw(g2);
+		m_tileM.draw(m_renderer);
+		m_player.draw(m_renderer);
 		g2.dispose();
 	}
 	
