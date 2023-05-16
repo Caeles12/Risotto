@@ -26,6 +26,7 @@ public class Player extends Entity{
 	int m_magie;
 	int m_ralentisseur;
 	int[] m_direction;
+	boolean[] m_tape;
 	
 	/**
 	 * Constructeur de Player
@@ -37,6 +38,7 @@ public class Player extends Entity{
 		this.m_keyH = a_keyH;
 		this.m_inventaire = new int[10];
 		this.m_direction = new int[2];
+		this.m_tape = new boolean[4];
 		this.setDefaultValues();
 		this.getPlayerImage();
 	}
@@ -51,8 +53,9 @@ public class Player extends Entity{
 		m_life = 100;
 		m_magie = 80;
 		m_ralentisseur = 0;
-		m_direction[0] = 0;
-		m_direction[1] = 0;
+		for (int i = 0; i < 4; i++) {
+			m_tape[i] = false;
+		}
 	}
 	
 	/**
@@ -71,19 +74,19 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
-		if (m_keyH.isPressed(37)) { // GAUCHE
+		if (m_keyH.isPressed(37) && m_tape[0] == false) { // GAUCHE
 			m_direction[0] += -1;
 			m_direction[1] += 0;
 		}
-		if (m_keyH.isPressed(38)) { // HAUT
+		if (m_keyH.isPressed(38) && m_tape[1] == false) { // HAUT
 			m_direction[0] += 0;
 			m_direction[1] += -1;
 		} 
-		if (m_keyH.isPressed(39)) { // DROITE
+		if (m_keyH.isPressed(39) && m_tape[2] == false) { // DROITE
 			m_direction[0] += 1;
 			m_direction[1] += 0;
 		}
-		if (m_keyH.isPressed(40)) { // BAS
+		if (m_keyH.isPressed(40) && m_tape[3] == false) { // BAS
 			m_direction[0] += 0;
 			m_direction[1] += 1;
 		}
@@ -130,5 +133,16 @@ public class Player extends Entity{
 
 	}
 	
+	public int getXCoordonates() {
+		return m_x;
+	}
+	
+	public int getYCoordonates() {
+		return m_y;
+	}
+	
+	public void setTape(int pos, boolean b) {
+		m_tape[pos] = b;
+	}
 	
 }
