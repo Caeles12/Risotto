@@ -19,7 +19,7 @@ public class Fireball extends Entity {
 		this.m_y = y;
 		this.m_dureevie = 300;
 		this.m_speed = 10;
-		m_gp.m_list_entity.add(this);
+		m_gp.m_list_entity[m_gp.dim].add(this);
 		this.getFireBallImage();
 	}
 
