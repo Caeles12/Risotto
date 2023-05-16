@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements Runnable{
 	Camera m_camera;
 	Renderer m_renderer;
 	
-	List<Entity> m_list_entity;
+	public List<Entity> m_list_entity;
 		
 	/**
 	 * Constructeur
