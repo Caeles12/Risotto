@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -20,6 +21,7 @@ public class Renderer {
 	private GamePanel m_gp;
 	private Font m_font_base;
 	private Font m_font;
+	private int frame;
 	
 	public Renderer(GamePanel a_gp, Camera camera) {
 		this.m_gp = a_gp;
@@ -32,6 +34,11 @@ public class Renderer {
 			e.printStackTrace();
 		}
 		this.m_font = m_font_base.deriveFont(Font.PLAIN, 24);
+		this.frame = 0;
+	}
+	
+	public void update() {
+		frame ++;
 	}
 	
 	public void setGraphics(Graphics2D g2) {
@@ -52,23 +59,58 @@ public class Renderer {
 	}
 	
 	public void renderText(String text, int x, int y) {
-		
+		renderText(text, x, y, 1, 0, 0, 0);
+	}
+	
+	public void renderText(String text, int x, int y, float opacity) {
+		renderText(text, x, y, opacity, 0, 0, 0);
+	}
+	
+	public void renderText(String text, int x, int y, float opacity,  float wobbleAmplitude, float wobbleSpeed, float wobbleFrequency) {
 		float scale = this.m_camera.getScale();
 		
 		int posX = (int) (Math.floor((x - this.m_camera.getX())*scale) + (this.m_gp.SCREEN_WIDTH/2));
 		int posY = (int) (Math.floor((y - this.m_camera.getY())*scale) + (this.m_gp.SCREEN_HEIGHT/2));
 		
-		this.renderTextToScreen(text, posX, posY);
+		this.renderTextToScreen(text, posX, posY, opacity, wobbleAmplitude, wobbleSpeed, wobbleFrequency);
 	}
 	
 	public void renderTextToScreen(String text, int x, int y) {
-		TextLayout tl = new TextLayout(text, m_font, m_g2.getFontRenderContext());
-		Shape shape = tl.getOutline(null);
-		m_g2.translate(x, y);
-		m_g2.setColor(Color.black);
-		m_g2.draw(shape);
-		m_g2.setColor(Color.white);
-		m_g2.fill(shape);
-		m_g2.translate(-x, -y);
+		renderTextToScreen(text, x, y, 1, 0, 0, 0);
+	}
+	
+	public void renderTextToScreen(String text, int x, int y, float opacity) {
+		renderTextToScreen(text, x, y, opacity, 0, 0, 0);
+	}
+	
+	public void renderTextToScreen(String text, int x, int y, float opacity, float wobbleAmplitude, float wobbleSpeed, float wobbleFrequency ) {
+		float amplitude = wobbleAmplitude;
+		float speed = wobbleSpeed;
+		float frequency = wobbleFrequency;
+		
+		if(speed<=0) {
+			speed = 1;
+		}
+		if(frequency==0) {
+			frequency = 1;
+		}
+		
+		int char_x = x;
+		m_g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+		for(int i=0; i<text.length(); i++) {
+			int char_y = y;
+			char_y += Math.sin((i+frame/speed)*Math.PI/frequency)*amplitude;
+			TextLayout tl = new TextLayout(text.charAt(i)+"", m_font, m_g2.getFontRenderContext());
+			Shape shape = tl.getOutline(null);
+			m_g2.translate(char_x, char_y);
+			m_g2.setStroke(new BasicStroke(5f));
+			m_g2.setColor(Color.black);
+			m_g2.draw(shape);
+			m_g2.setColor(Color.white);
+			m_g2.fill(shape);
+			m_g2.translate(-char_x, -char_y);
+			char_x += (int) m_font.getStringBounds(text.charAt(i)+"", m_g2.getFontRenderContext()).getWidth();
+		}
+		m_g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 	}
 }
