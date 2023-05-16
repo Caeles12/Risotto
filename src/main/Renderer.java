@@ -62,16 +62,13 @@ public class Renderer {
 	}
 	
 	public void renderTextToScreen(String text, int x, int y) {
-		AffineTransform transform = m_g2.getTransform();
-		transform.translate(x, y);
-		m_g2.transform(transform);
-		m_g2.setColor(Color.BLACK);
-		FontRenderContext frc = m_g2.getFontRenderContext();
-		TextLayout tl = new TextLayout(text, m_g2.getFont().deriveFont(24f), frc);
+		TextLayout tl = new TextLayout(text, m_font, m_g2.getFontRenderContext());
 		Shape shape = tl.getOutline(null);
-		m_g2.setStroke(new BasicStroke(5f));
+		m_g2.translate(x, y);
+		m_g2.setColor(Color.black);
 		m_g2.draw(shape);
 		m_g2.setColor(Color.white);
 		m_g2.fill(shape);
+		m_g2.translate(-x, -y);
 	}
 }
