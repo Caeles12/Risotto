@@ -16,8 +16,7 @@ public class Coffre extends Entity_interactive{
 	
 	public Coffre(int x, int y, GamePanel m_gp, List<Integer> inventaire) {
 		this.m_gp = m_gp;
-		this.m_x = x;
-		this.m_y = y;
+		setPositionTiles(x, y);
 		this.objet_interne = inventaire;
 		this.getCoffreImage();
 		
@@ -29,6 +28,7 @@ public class Coffre extends Entity_interactive{
 		if(!looted) {
 			looted = true;
 			animate = true;
+			tmpAnim = 0;
 			return this.objet_interne;
 		}
 		if(looted) ptr_list_image = 0;

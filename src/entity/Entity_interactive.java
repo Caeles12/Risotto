@@ -15,6 +15,12 @@ public abstract class Entity_interactive extends Entity{
 	protected int ptr_list_image = 0;
 	public abstract List<Integer> interaction();
 	
+	//convertie la position d'une tiles en position réelle
+	public void setPositionTiles(int x, int y) {
+		this.m_x = x*m_gp.TILE_SIZE;
+		this.m_y = y*m_gp.TILE_SIZE;
+	}
+	
 	public void draw(Renderer a_g2) {
 		this.tmpAnim++;
 		if(animate && tmpAnim >10) {
