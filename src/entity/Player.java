@@ -62,11 +62,14 @@ public class Player extends Entity{
 
 		if (m_keyH.get_lastPressed() == 37) { // GAUCHE
 			m_x -= m_speed;
-		} else if (m_keyH.get_lastPressed() == 38) { // HAUT
+		}
+		if (m_keyH.get_lastPressed() == 38) { // HAUT
 			m_y -= m_speed;
-		} else if (m_keyH.get_lastPressed() == 39) { // DROITE
+		} 
+		if (m_keyH.get_lastPressed() == 39) { // DROITE
 			m_x += m_speed;
-		} else if (m_keyH.get_lastPressed() == 40) { // BAS
+		}
+		if (m_keyH.get_lastPressed() == 40) { // BAS
 			m_y += m_speed;
 		}
 	}
