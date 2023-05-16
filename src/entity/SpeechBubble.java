@@ -30,6 +30,6 @@ public class SpeechBubble extends Entity{
 
 	@Override
 	public void draw(Renderer r) {
-		r.renderText(m_text, m_x, m_y, m_opacity, 4, 15, 2);
+		r.renderText(m_text,(int) m_x,(int) m_y, m_opacity, 4, 15, 2);
 	}
 }

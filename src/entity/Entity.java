@@ -16,7 +16,7 @@ public abstract class Entity {
 		  RUNNING, DESTROY
 	};
 	
-	public int m_x, m_y;				//position sur la map
+	public float m_x, m_y;				//position sur la map
 	public int m_speed;					//D�placement de l'entit�
 	public List<BufferedImage> m_idleImage = new ArrayList<>();	//Une image de l'entit�
 	public Status m_status = Status.RUNNING;

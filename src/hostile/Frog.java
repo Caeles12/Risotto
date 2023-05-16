@@ -64,7 +64,7 @@ public class Frog extends Hostile {
 		}
 		
 		if (m_timer > 150) {
-			new SpeechBubble(m_gp, "Croa", m_x, m_y);
+			new SpeechBubble(m_gp, "Croa",(int) m_x,(int) m_y);
 			m_dir = r.nextInt(5);
 			m_timer = 0;
 		}

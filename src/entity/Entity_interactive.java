@@ -15,7 +15,7 @@ public abstract class Entity_interactive extends Entity{
 	protected int ptr_list_image = 0;
 	public abstract List<Integer> interaction();
 	
-	//convertie la position d'une tiles en position réelle
+	//convertie la position d'une tiles en position rï¿½elle
 	public void setPositionTiles(int x, int y) {
 		this.m_x = x*m_gp.TILE_SIZE;
 		this.m_y = y*m_gp.TILE_SIZE;
@@ -29,7 +29,7 @@ public abstract class Entity_interactive extends Entity{
 			if(ptr_list_image > m_idleImage.size()-1) ptr_list_image = 0;
 		}
 		BufferedImage l_image = m_idleImage.get(ptr_list_image);
-		// affiche le personnage avec l'image "image", avec les coordonnées x et y, et de taille tileSize (16x16) sans échelle, et 48x48 avec échelle)
-		a_g2.renderImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		// affiche le personnage avec l'image "image", avec les coordonnï¿½es x et y, et de taille tileSize (16x16) sans ï¿½chelle, et 48x48 avec ï¿½chelle)
+		a_g2.renderImage(l_image, (int) m_x,(int) m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
 	}
 }

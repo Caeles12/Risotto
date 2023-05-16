@@ -153,14 +153,13 @@ public class GamePanel extends JPanel implements Runnable{
 		m_player.draw(m_renderer);
 		
 		
-		m_renderer.renderText("Je suis un coffre", m_list_entity.get(0).m_x, m_list_entity.get(0).m_y);
 		g2.dispose();
 		m_renderer.update();
 	}
 	
 	public void testCollision() {
-		int x = m_player.getXCoordonates() / TILE_SIZE;
-		int y = m_player.getYCoordonates() / TILE_SIZE;
+		int x =(int) m_player.getXCoordonates() / TILE_SIZE;
+		int y =(int) m_player.getYCoordonates() / TILE_SIZE;
 		int[][] mapTileNum = m_tileM.getMapTileNum();
 		Tile[] tiles = m_tileM.getTile();
 		

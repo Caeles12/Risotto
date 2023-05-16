@@ -10,16 +10,16 @@ public class Camera{
 	private float m_scale;
 	private float m_lerp;
 	
-	public Camera(GamePanel a_gp, int pos_x, int pos_y, float scale, float lerp) {
+	public Camera(GamePanel a_gp, float pos_x, float pos_y, float scale, float lerp) {
 		this.m_x = pos_x;
 		this.m_y = pos_y;
 		this.m_scale = scale;
 		this.m_lerp = lerp;
 	}
 	
-	public void move(int x, int y) {
-		int targetX = x;
-		int targetY = y;
+	public void move(float x, float y) {
+		float targetX = x;
+		float targetY = y;
 		float currentX = m_x;
 		float currentY = m_y;
 		
