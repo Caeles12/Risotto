@@ -36,15 +36,5 @@ public class Coffre extends Entity_interactive{
 		}
 	}
 	
-	public void draw(Renderer a_g2) {
-		this.tmpAnim++;
-		if(animate && tmpAnim >10) {
-			tmpAnim = 0;
-			ptr_list_image++;
-			if(ptr_list_image > m_idleImage.size()-1) ptr_list_image = 0;
-		}
-		BufferedImage l_image = m_idleImage.get(ptr_list_image);
-		// affiche le personnage avec l'image "image", avec les coordonnées x et y, et de taille tileSize (16x16) sans échelle, et 48x48 avec échelle)
-		a_g2.renderImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
-	}
+	
 }
