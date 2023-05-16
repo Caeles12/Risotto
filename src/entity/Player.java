@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.Math;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -21,7 +22,7 @@ public class Player extends Entity{
 
 	GamePanel m_gp;
 	KeyHandler m_keyH;
-	int[] m_inventaire;
+	ArrayList<Item> m_inventaire;
 	int m_life;
 	int m_magie;
 	int[] m_direction;
@@ -38,7 +39,7 @@ public class Player extends Entity{
 	public Player(GamePanel a_gp, KeyHandler a_keyH) {
 		this.m_gp = a_gp;
 		this.m_keyH = a_keyH;
-		this.m_inventaire = new int[10];
+		this.m_inventaire = new ArrayList<Item>();
 		this.m_direction = new int[2];
 		this.m_tape = new boolean[4];
 		this.setDefaultValues();
@@ -107,11 +108,11 @@ public class Player extends Entity{
 		m_direction[0] = 0;
 		m_direction[1] = 0;
 		
-		if (m_keyH.isPressed(70)) { // FireBall f
+		if (m_keyH.isPressed(70) && m_magie >= 10) { // FireBall f
 			if (m_ralentisseur <= 0) {
 				m_magie -= 10;
 				m_spell = true;
-				m_ralentisseur = 10;
+				m_ralentisseur = 16;
 				Fireball f = new Fireball(m_gp, m_keyH, (int) m_x + 1, (int) m_y);
 				f.setDirection(m_direction[0], m_direction[1]);
 				c = 0;
@@ -132,7 +133,7 @@ public class Player extends Entity{
 				
 			}
 		}
-		if (c > 6) {
+		if (c > 17) {
 			m_spell = false;
 		}
 		c += 1;
@@ -169,6 +170,18 @@ public class Player extends Entity{
 	
 	public void setTape(int pos, boolean b) {
 		m_tape[pos] = b;
+	}
+	
+	public boolean fullInventory() {
+		return m_inventaire.size() == 10;
+	}
+
+	public void addToInventory(Item i) {
+		if (!fullInventory()) {
+			m_inventaire.add(i);
+		} else {
+			new SpeechBubble(m_gp, "Poches pleines !", (int) m_x, (int) m_y - 10);
+		}
 	}
 	
 }
