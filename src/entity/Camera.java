@@ -2,29 +2,25 @@ package entity;
 
 import main.GamePanel;
 import main.Renderer;
+import utils.Vector2D;
 
 
 public class Camera{
-	private float m_x;
-	private float m_y;
+	Vector2D m_pos;
 	private float m_scale;
 	private float m_lerp;
 	
-	public Camera(GamePanel a_gp, float pos_x, float pos_y, float scale, float lerp) {
-		this.m_x = pos_x;
-		this.m_y = pos_y;
+	public Camera(GamePanel a_gp, Vector2D pos, float scale, float lerp) {
+		this.m_pos = pos.copy();
 		this.m_scale = scale;
 		this.m_lerp = lerp;
 	}
 	
-	public void move(float x, float y) {
-		float targetX = x;
-		float targetY = y;
-		float currentX = m_x;
-		float currentY = m_y;
+	public void move(Vector2D target) {
 		
-		this.m_x = currentX + (targetX - currentX) * m_lerp;
-		this.m_y = currentY + (targetY - currentY) * m_lerp;
+		
+		this.m_pos.x = this.m_pos.x + (target.x - this.m_pos.x) * m_lerp;
+		this.m_pos.y = this.m_pos.y + (target.y - this.m_pos.y) * m_lerp;
 	}
 	
 	public void zoom(float scale) {		
@@ -32,11 +28,11 @@ public class Camera{
 	}
 	
 	public float getX() {
-		return m_x;
+		return this.m_pos.x;
 	}
 	
 	public float getY() {
-		return m_y;
+		return this.m_pos.y;
 	}
 	
 	public float getScale() {

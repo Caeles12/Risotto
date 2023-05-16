@@ -13,6 +13,7 @@ import entity.Hostile;
 import interactive.*;
 import tile.Tile;
 import tile.TileManager;
+import utils.MathUtils;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -31,9 +32,9 @@ public class GamePanel extends JPanel implements Runnable{
 	final int SCALE = 3; 										// �chelle utilis�e pour agrandir l'affichage
 	public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; 	// 48x48
 	public int MAX_SCREEN_COL = 16;
-	public int MAX_SCREE_ROW = 16; 					 	// ces valeurs donnent une r�solution 4:3
+	public int MAX_SCREEN_ROW = 16; 					 	// ces valeurs donnent une r�solution 4:3
 	public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
-	public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREE_ROW;	// 576 pixels
+	public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;	// 576 pixels
 
 	// FPS : taux de rafraichissement
 	int m_FPS;
@@ -57,7 +58,7 @@ public class GamePanel extends JPanel implements Runnable{
 		m_keyH = new KeyHandler();
 		m_player = new Player(this, m_keyH);
 		m_tileM = new TileManager(this);
-		m_camera = new Camera(this, m_player.m_x, m_player.m_y, 0.5f, 0.1f);
+		m_camera = new Camera(this, m_player.m_pos, 0.5f, 0.1f);
 		m_renderer = new Renderer(this, m_camera);
 		m_frog = new Frog(this, 200, 100);
 		
@@ -120,9 +121,8 @@ public class GamePanel extends JPanel implements Runnable{
 	 * Mise � jour des donn�es des entit�s
 	 */
 	public void update() {
-		testCollision();
 		m_player.update();
-		m_camera.move(m_player.m_x, m_player.m_y);
+		m_camera.move(m_player.m_pos);
 		m_camera.zoom(1);
 		m_frog.update();
 		int i = 0;
@@ -152,37 +152,8 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		m_player.draw(m_renderer);
 		
-		
 		g2.dispose();
 		m_renderer.update();
-	}
-	
-	public void testCollision() {
-		int x =(int) m_player.getXCoordonates() / TILE_SIZE;
-		int y =(int) m_player.getYCoordonates() / TILE_SIZE;
-		int[][] mapTileNum = m_tileM.getMapTileNum();
-		Tile[] tiles = m_tileM.getTile();
-		
-		if (tiles[mapTileNum[x][y]].m_collision) {
-			m_player.setTape(0, true);
-		} else {
-			m_player.setTape(0, false);
-		}
-		if (tiles[mapTileNum[x][y]].m_collision) {
-			m_player.setTape(1, true);
-		} else {
-			m_player.setTape(1, false);
-		}
-		if (tiles[mapTileNum[x+1][y]].m_collision) {
-			m_player.setTape(2, true);
-		} else {
-			m_player.setTape(2, false);
-		}
-		if (tiles[mapTileNum[x][y+1]].m_collision) {
-			m_player.setTape(3, true);
-		} else {
-			m_player.setTape(3, false);
-		}
 	}
 	
 }

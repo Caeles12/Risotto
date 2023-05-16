@@ -58,6 +58,32 @@ public class Renderer {
 		m_g2.drawImage(image, posX, posY, scaleW, scaleH, null);
 	}
 	
+	public void renderCircle(int x, int y, int r) {
+		
+		float scale = this.m_camera.getScale();
+		
+		int posX = (int) (Math.floor((x - this.m_camera.getX())*scale) + (this.m_gp.SCREEN_WIDTH/2));
+		int posY = (int) (Math.floor((y - this.m_camera.getY())*scale) + (this.m_gp.SCREEN_HEIGHT/2));
+		int radius = (int) Math.ceil(r*scale);
+		m_g2.setColor(Color.RED);
+		m_g2.setStroke(new BasicStroke(5f));
+		m_g2.drawOval(posX-radius, posY-radius, radius*2, radius*2);
+	}
+	
+	public void renderRect(int x, int y, int w, int h) {
+		assert(this.m_g2 != null);
+		
+		float scale = this.m_camera.getScale();
+		
+		int posX = (int) (Math.floor((x - this.m_camera.getX())*scale) + (this.m_gp.SCREEN_WIDTH/2));
+		int posY = (int) (Math.floor((y - this.m_camera.getY())*scale) + (this.m_gp.SCREEN_HEIGHT/2));
+		int scaleW = (int) Math.ceil(w*scale);
+		int scaleH = (int) Math.ceil(h * scale);
+		m_g2.setColor(Color.GREEN);
+		m_g2.setStroke(new BasicStroke(5f));
+		m_g2.drawRect(posX, posY, scaleW, scaleH);
+	}
+	
 	public void renderText(String text, int x, int y) {
 		renderText(text, x, y, 1, 0, 0, 0);
 	}
