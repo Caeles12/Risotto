@@ -2,28 +2,36 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
 
 /**
- * Gestionnaire d'évènements (touche clavier)
+ * Gestionnaire d'ï¿½vï¿½nements (touche clavier)
  *
  */
 public class KeyHandler implements KeyListener{
+	
+	HashSet<Integer> m_lastPressed = new HashSet<Integer>();
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// récupère le code du boutton appuyé
+		// rï¿½cupï¿½re le code du boutton appuyï¿½
 		int code = e.getKeyCode();
 		System.out.println(code);
+		m_lastPressed.add(code);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+		int code = e.getKeyCode();
+		m_lastPressed.remove(code);
 	}
-
+	
+	public boolean isPressed(int elt) {
+		return m_lastPressed.contains(elt);
+	}
+	
 }

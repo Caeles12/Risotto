@@ -9,15 +9,19 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.Renderer;
 
 /**
- * Défintition du comportement d'un joueur
+ * Dï¿½fintition du comportement d'un joueur
  *
  */
 public class Player extends Entity{
 
 	GamePanel m_gp;
 	KeyHandler m_keyH;
+	int[] m_inventaire;
+	int m_life;
+	int m_magie;
 	
 	/**
 	 * Constructeur de Player
@@ -27,49 +31,63 @@ public class Player extends Entity{
 	public Player(GamePanel a_gp, KeyHandler a_keyH) {
 		this.m_gp = a_gp;
 		this.m_keyH = a_keyH;
+		this.m_inventaire = new int[10];
 		this.setDefaultValues();
 		this.getPlayerImage();
 	}
 	
 	/**
-	 * Initialisation des données membres avec des valeurs par défaut
+	 * Initialisation des donnï¿½es membres avec des valeurs par dï¿½faut
 	 */
 	protected void setDefaultValues() {
 		m_x = 100;
 		m_y = 100;
 		m_speed = 4;
+		m_life = 100;
+		m_magie = 80;
 	}
 	
 	/**
-	 * Récupération de l'image du personnage
+	 * Rï¿½cupï¿½ration de l'image du personnage
 	 */
 	public void getPlayerImage() {
 		//gestion des expections 
 		try {
-			m_idleImage = ImageIO.read(getClass().getResource("/Player/superhero.png"));
+			m_idleImage.add(ImageIO.read(getClass().getResource("/player/superhero.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * Mise à jour des données du joueur
+	 * Mise ï¿½ jour des donnï¿½es du joueur
 	 */
 	public void update() {
-		
-		
-		
+		if (m_keyH.isPressed(37)) { // GAUCHE
+			m_x -= m_speed;
+		}
+		if (m_keyH.isPressed(38)) { // HAUT
+			m_y -= m_speed;
+		} 
+		if (m_keyH.isPressed(39)) { // DROITE
+			m_x += m_speed;
+		}
+		if (m_keyH.isPressed(40)) { // BAS
+			m_y += m_speed;
+		}
 	}
 	
-	/**
-	 * Affichage du l'image du joueur dans la fenêtre du jeu
+	/**get_lastPressed
+	 * Affichage du l'image du joueur dans la fenï¿½tre du jeu
 	 * @param a_g2 Graphics2D 
 	 */
-	public void draw(Graphics2D a_g2) {
-		// récupère l'image du joueur
-		BufferedImage l_image = m_idleImage;
-		// affiche le personnage avec l'image "image", avec les coordonnées x et y, et de taille tileSize (16x16) sans échelle, et 48x48 avec échelle)
-		a_g2.drawImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE, null);
+	public void draw(Renderer r) {
+
+		// rï¿½cupï¿½re l'image du joueur
+		BufferedImage l_image = m_idleImage.get(0);
+		// affiche le personnage avec l'image "image", avec les coordonnï¿½es x et y, et de taille tileSize (16x16) sans ï¿½chelle, et 48x48 avec ï¿½chelle)
+		r.renderImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+
 	}
 	
 	
