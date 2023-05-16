@@ -19,6 +19,8 @@ public class Coffre extends Entity_interactive{
 		this.m_y = y;
 		this.objet_interne = inventaire;
 		this.getCoffreImage();
+		
+		//this.animate = false;
 	}
 	
 	public List<Integer> interaction() {
@@ -28,15 +30,20 @@ public class Coffre extends Entity_interactive{
 	public void getCoffreImage() {
 		//gestion des expections 
 		try {
-			m_idleImage = ImageIO.read(getClass().getResource("/Player/superhero.png"));
+			for(int i = 1 ; i < 4 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/object/chest_"+i+".png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void draw(Renderer a_g2) {
-		// récupère l'image du joueur
-		BufferedImage l_image = m_idleImage;
+		this.tmpAnim++;
+		if(animate && tmpAnim >10) {
+			tmpAnim = 0;
+			ptr_list_image++;
+			if(ptr_list_image > m_idleImage.size()-1) ptr_list_image = 0;
+		}
+		BufferedImage l_image = m_idleImage.get(ptr_list_image);
 		// affiche le personnage avec l'image "image", avec les coordonnées x et y, et de taille tileSize (16x16) sans échelle, et 48x48 avec échelle)
 		a_g2.renderImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
 	}

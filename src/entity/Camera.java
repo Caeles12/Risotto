@@ -1,9 +1,11 @@
 package entity;
 
 import main.GamePanel;
+import main.Renderer;
+
 
 public class Camera{
-	
+  
 	private float m_x;
 	private float m_y;
 	private float m_scale;
@@ -40,5 +42,11 @@ public class Camera{
 	
 	public float getScale() {
 		return m_scale;
+	}
+
+	@Override
+	public void draw(Renderer a_g2) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -6,10 +6,15 @@ import javax.swing.JPanel;
 
 import entity.Camera;
 import entity.Player;
+import entity.Entity;
+import interactive.*;
 import tile.TileManager;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Panel principal du jeu contenant la map principale
@@ -36,6 +41,8 @@ public class GamePanel extends JPanel implements Runnable{
 	TileManager m_tileM;
 	Camera m_camera;
 	Renderer m_renderer;
+	
+	List<Entity> m_list_entity;
 		
 	/**
 	 * Constructeur
@@ -48,11 +55,18 @@ public class GamePanel extends JPanel implements Runnable{
 		m_camera = new Camera(this, m_player.m_x, m_player.m_y, 0.5f, 0.1f);
 		m_renderer = new Renderer(this, m_camera);
 		
+		m_list_entity = new ArrayList<>();
+		init_demo_map(this);
+		
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
 		this.addKeyListener(m_keyH);
 		this.setFocusable(true);
+	}
+	
+	public void init_demo_map(GamePanel gp) {
+		m_list_entity.add(new Coffre(150, 150, gp, null));
 	}
 	
 	/**
@@ -114,6 +128,8 @@ public class GamePanel extends JPanel implements Runnable{
 		m_renderer.setGraphics(g2);
 		m_tileM.draw(m_renderer);
 		m_player.draw(m_renderer);
+		Iterator<Entity> iter = m_list_entity.iterator();
+		while(iter.hasNext()) iter.next().draw(m_renderer);
 		g2.dispose();
 	}
 	
