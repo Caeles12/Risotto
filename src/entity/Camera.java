@@ -43,10 +43,4 @@ public class Camera{
 	public float getScale() {
 		return m_scale;
 	}
-
-	@Override
-	public void draw(Renderer a_g2) {
-		// TODO Auto-generated method stub
-		
-	}
 }

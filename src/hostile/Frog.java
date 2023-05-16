@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 
 import entity.Hostile;
 import main.GamePanel;
+import main.Renderer;
 
 public class Frog extends Hostile {
 
@@ -29,7 +30,7 @@ public class Frog extends Hostile {
 	public void getHostileImage() {
 		//gestion des expections 
 		try {
-			m_idleImage = ImageIO.read(getClass().getResource("/Player/superhero.png"));
+			m_idleImage.add(ImageIO.read(getClass().getResource("/player/superhero.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -47,6 +48,12 @@ public class Frog extends Hostile {
 			m_timer = 0;
 		}
 
+		
+	}
+
+	@Override
+	public void draw(Renderer a_g2) {
+		// TODO Auto-generated method stub
 		
 	}
 }
