@@ -25,6 +25,9 @@ public class Frog extends Hostile {
 		m_life = 100;
 		m_damage = 10;
 		m_speed = 8;
+		m_timer = 0;
+		ptr_list_image = 0;
+		m_timerAnimation = 0;
 		
 	}
 
@@ -32,7 +35,7 @@ public class Frog extends Hostile {
 	public void getHostileImage() {
 		//gestion des expections 
 		try {
-			for(int i = 1 ; i < 2 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/hostile/grenouille_"+i+".png")));
+			for(int i = 1 ; i < 6 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/hostile/grenouille_"+i+".png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -40,9 +43,15 @@ public class Frog extends Hostile {
 	}
 
 	protected void move() {
+		
+		if(m_timerAnimation >= 15) {
+			ptr_list_image++;
+			m_timerAnimation = 0;
+		}
+		
 		if (m_timer > 120) {
 			
-
+			
 			
 			
 			switch(m_dir) {
@@ -75,8 +84,8 @@ public class Frog extends Hostile {
 	
 	/*
 	 * Fonction qui verifie si le monstre finit dans le mur apres le prochain movement
-	 * @param x coordonners en x du monstre
-	 * @param y coordonners en x du monstre
+	 * @param x coordonnees en x du monstre
+	 * @param y coordonnees en x du monstre
 	 */
 	boolean collideWallNext(float x, float y) {
 
