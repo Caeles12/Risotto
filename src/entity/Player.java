@@ -72,6 +72,7 @@ public class Player extends Entity{
 		try {
 			m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch.png")));
 			m_idleImage.add(ImageIO.read(getClass().getResource("/player/spellwitch.png")));
+			m_idleImage.add(ImageIO.read(getClass().getResource("/player/potitbalais.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -103,7 +104,6 @@ public class Player extends Entity{
 			float vx = (m_speed * m_direction[0]) / norme;
 			float vy = (m_speed * m_direction[1]) / norme;
 			
-			System.out.println(Math.sqrt(vx*vx + vy*vy));
 			m_x += vx;
 			m_y += vy;
 		}
@@ -116,6 +116,8 @@ public class Player extends Entity{
 				m_magie -= 10;
 				m_spell = true;
 				m_ralentisseur = 10;
+				Fireball f = new Fireball(m_gp, m_keyH, (int) m_x + 1, (int) m_y);
+				f.setDirection(m_direction[0], m_direction[1]);
 				c = 0;
 			} else {
 				m_ralentisseur -= 1;
@@ -135,7 +137,7 @@ public class Player extends Entity{
 				
 			}
 		}
-		if (c > 10) {
+		if (c > 6) {
 			m_spell = false;
 		}
 		c += 1;

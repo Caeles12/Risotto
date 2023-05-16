@@ -57,7 +57,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public Map[] m_tab_Map;
 	public int dim;
-		
+	
 	/**
 	 * Constructeur
 	 */
