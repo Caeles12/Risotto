@@ -8,10 +8,11 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
+import main.Renderer;
 
 abstract public class Hostile extends Entity{
 
-	GamePanel m_gp;
+	protected GamePanel m_gp;
 	protected int m_damage;
 	protected int m_life;
 	protected int m_timer;
@@ -55,11 +56,11 @@ abstract public class Hostile extends Entity{
 	 * Affichage du l'image du monstre dans la fen�tre du jeu
 	 * @param a_g2 Graphics2D 
 	 */
-	public void draw(Graphics2D a_g2) {
+	public void draw(Renderer a_g2) {
 		// r�cup�re l'image du joueur
 		BufferedImage l_image = m_idleImage.get(0);
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
-		a_g2.drawImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE, null);
+		a_g2.renderImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
 	}
 	
 }

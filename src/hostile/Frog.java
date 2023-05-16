@@ -10,19 +10,19 @@ import main.Renderer;
 
 public class Frog extends Hostile {
 
-	double m_dir =2*3.14;
+	int m_dir =0;
 	
-	public Frog(GamePanel a_gp){
+	public Frog(GamePanel a_gp,int x,int y){
 		super( a_gp);
+		this.m_x = x;
+		this.m_y = y;
 	}
 
 	@Override
 	protected void setDefaultValues() {
-		m_x = 200;
-		m_y = 100;
 		m_life = 100;
 		m_damage = 10;
-		m_speed = 2;
+		m_speed = 4;
 		
 	}
 
@@ -30,7 +30,7 @@ public class Frog extends Hostile {
 	public void getHostileImage() {
 		//gestion des expections 
 		try {
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/superhero.png")));
+			for(int i = 1 ; i < 2 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/hostile/grenouille_"+i+".png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -40,20 +40,32 @@ public class Frog extends Hostile {
 	protected void move() {
 		
 		if (m_timer > 120) {
-			m_x += m_speed;
+			
+			switch(m_dir) {
+			case 1 : 
+				m_x += m_speed;
+				break;
+			case 2 :
+				m_x -= m_speed;
+				break;
+			case 3 :
+				m_y += m_speed;
+				break;
+			case 4 :
+				m_y -= m_speed;
+				break;
+			default :
+				break;
+			}
 		}
 		
-		if (m_timer > 180) {
-			m_dir = r.nextFloat()*2*3.14;
+		if (m_timer > 150) {
+			m_dir = r.nextInt(5);
 			m_timer = 0;
 		}
 
 		
 	}
 
-	@Override
-	public void draw(Renderer a_g2) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }
