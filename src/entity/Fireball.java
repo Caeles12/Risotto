@@ -40,20 +40,26 @@ public class Fireball extends Entity {
 			m_direction[0] += -1;
 			m_direction[1] += 0;
 		}
-		else if (m_keyH.isPressed(38)) { // HAUT
+		if (m_keyH.isPressed(38)) { // HAUT
 			m_direction[0] += 0;
 			m_direction[1] += -1;
 		} 
-		else if (m_keyH.isPressed(39)) { // DROITE
+		if (m_keyH.isPressed(39)) { // DROITE
 			m_direction[0] += 1;
 			m_direction[1] += 0;
 		}
-		else if (m_keyH.isPressed(40)) { // BAS
+		if (m_keyH.isPressed(40)) { // BAS
 			m_direction[0] += 0;
 			m_direction[1] += 1;
 		}
+		
+		if (m_direction[0] == 0 && m_direction[1] == 0) {
+			m_direction[0] += 1;
+			m_direction[1] += 0;
+		}
 		this.m_pos.x += m_speed * m_direction[0];
 		this.m_pos.y += m_speed * m_direction[1];
+
 		m_dureevie -= 1;
 		if (m_dureevie <= 0) {
 			m_status = Status.DESTROY;
