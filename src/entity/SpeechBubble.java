@@ -35,7 +35,7 @@ public class SpeechBubble extends Entity{
 		this.m_wobbleSpeed = wobbleSpeed;
 		this.m_wobbleFrequency = wobbleFrequency;
 		
-		m_gp.m_list_entity[m_gp.dim].add(this);
+		m_gp.m_tab_Map[m_gp.dim].m_list_entity.add(this);
 	}
 	
 	@Override
