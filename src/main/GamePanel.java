@@ -126,6 +126,7 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		m_renderer.setGraphics(g2);
+
 		m_tileM.draw(m_renderer);
 		m_player.draw(m_renderer);
 		Iterator<Entity> iter = m_list_entity.iterator();

@@ -23,6 +23,8 @@ public class Player extends Entity{
 	int m_life;
 	int m_magie;
 	
+	int m_ralentisseur;
+	
 	/**
 	 * Constructeur de Player
 	 * @param a_gp GamePanel, pannel principal du jeu
@@ -45,6 +47,7 @@ public class Player extends Entity{
 		m_speed = 4;
 		m_life = 100;
 		m_magie = 80;
+		m_ralentisseur = 0;
 	}
 	
 	/**
@@ -75,6 +78,16 @@ public class Player extends Entity{
 		if (m_keyH.isPressed(40)) { // BAS
 			m_y += m_speed;
 		}
+		if (m_keyH.isPressed(70)) { // FireBall f
+			if (m_ralentisseur <= 0) {
+			m_magie -= 10;
+			System.out.println("MAGIE");
+			m_ralentisseur = 10;
+			} else {
+				m_ralentisseur -= 1;
+			}
+		}
+	
 	}
 	
 	/**get_lastPressed
