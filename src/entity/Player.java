@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.Renderer;
 
 /**
  * D�fintition du comportement d'un joueur
@@ -52,7 +53,7 @@ public class Player extends Entity{
 	public void getPlayerImage() {
 		//gestion des expections 
 		try {
-			m_idleImage = ImageIO.read(getClass().getResource("/Player/superhero.png"));
+			m_idleImage = ImageIO.read(getClass().getResource("/player/superhero.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -76,15 +77,15 @@ public class Player extends Entity{
 		}
 	}
 	
-	/**
+	/**get_lastPressed
 	 * Affichage du l'image du joueur dans la fen�tre du jeu
 	 * @param a_g2 Graphics2D 
 	 */
-	public void draw(Graphics2D a_g2) {
+	public void draw(Renderer r) {
 		// r�cup�re l'image du joueur
 		BufferedImage l_image = m_idleImage;
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
-		a_g2.drawImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE, null);
+		r.renderImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
 	}
 	
 	
