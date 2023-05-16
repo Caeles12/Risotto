@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandler;
 import main.Renderer;
+import utils.Vector2D;
 
 public class Fireball extends Entity {
 	
@@ -18,12 +19,11 @@ public class Fireball extends Entity {
 	
 	public Fireball(GamePanel a_gp, KeyHandler keyH, int x, int y) {
 		this.m_gp = a_gp;
-		this.m_x = x;
-		this.m_y = y;
+		this.m_pos = new Vector2D(x, y);
 		this.m_dureevie = 300;
 		this.m_speed = 5;
 		this.m_keyH = keyH;
-		m_gp.m_list_entity[m_gp.dim].add(this);
+		m_gp.m_tab_Map[m_gp.dim].m_list_entity.add(this);
 		this.m_direction = new int[2];
 		this.getFireBallImage();
 	}
@@ -31,7 +31,7 @@ public class Fireball extends Entity {
 	@Override
 	public void draw(Renderer r) {
 		BufferedImage l_image = m_idleImage.get(0);
-		r.renderImage(l_image, (int) m_x, (int) m_y + 25, 15, 15);
+		r.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y + 25, 15, 15);
 	}
 
 	@Override
@@ -52,8 +52,8 @@ public class Fireball extends Entity {
 			m_direction[0] += 0;
 			m_direction[1] += 1;
 		}
-		m_x += m_speed * m_direction[0];
-		m_y += m_speed * m_direction[1];
+		this.m_pos.x += m_speed * m_direction[0];
+		this.m_pos.y += m_speed * m_direction[1];
 		m_dureevie -= 1;
 		if (m_dureevie <= 0) {
 			m_status = Status.DESTROY;

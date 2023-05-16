@@ -10,12 +10,14 @@ import javax.imageio.ImageIO;
 import entity.Entity_interactive;
 import main.GamePanel;
 import main.Renderer;
+import utils.Vector2D;
 
 public class Coffre extends Entity_interactive{
 	boolean looted;
 	
 	public Coffre(int x, int y, GamePanel m_gp, List<Integer> inventaire) {
 		this.m_gp = m_gp;
+		this.m_pos = new Vector2D(x, y);
 		setPositionTiles(x, y);
 		this.objet_interne = inventaire;
 		this.getCoffreImage();

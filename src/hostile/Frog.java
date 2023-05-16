@@ -8,6 +8,7 @@ import entity.Hostile;
 import entity.SpeechBubble;
 import main.GamePanel;
 import main.Renderer;
+import utils.Vector2D;
 import tile.Tile;
 
 public class Frog extends Hostile {
@@ -16,8 +17,7 @@ public class Frog extends Hostile {
 	
 	public Frog(GamePanel a_gp,int x,int y){
 		super( a_gp);
-		this.m_x = x;
-		this.m_y = y;
+		this.m_pos = new Vector2D(x, y);
 	}
 
 	@Override
@@ -56,16 +56,16 @@ public class Frog extends Hostile {
 			
 			switch(m_dir) {
 			case 1 : 
-				if (!collideWallNext(m_x+m_speed, m_y)) m_x += m_speed;
+				if (!collideWallNext(this.m_pos.x+m_speed, this.m_pos.y)) this.m_pos.x += m_speed;
 				break;
 			case 2 :
-				if (!collideWallNext(m_x-m_speed, m_y)) m_x -= m_speed;
+				if (!collideWallNext(this.m_pos.x-m_speed, this.m_pos.y)) this.m_pos.x -= m_speed;
 				break;
 			case 3 :
-				if (!collideWallNext(m_x, m_y+m_speed)) m_y += m_speed;
+				if (!collideWallNext(this.m_pos.x, this.m_pos.y+m_speed)) this.m_pos.y += m_speed;
 				break;
 			case 4 :
-				if (!collideWallNext(m_x, m_y-m_speed)) m_y -= m_speed;
+				if (!collideWallNext(this.m_pos.x, this.m_pos.y-m_speed)) this.m_pos.y -= m_speed;
 				break;
 			default :
 				break;
@@ -74,7 +74,7 @@ public class Frog extends Hostile {
 		}
 		
 		if (m_timer > 150) {
-			new SpeechBubble(m_gp, "Croa",(int) m_x,(int) m_y);
+			new SpeechBubble(m_gp, "Croa",(int) this.m_pos.x,(int) this.m_pos.y);
 			m_dir = r.nextInt(5);
 			m_timer = 0;
 		}
