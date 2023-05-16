@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import entity.Hostile;
 import main.GamePanel;
 import main.Renderer;
+import tile.Tile;
 
 public class Frog extends Hostile {
 
@@ -80,20 +81,24 @@ public class Frog extends Hostile {
 		
 		int posX = (int)x/m_gp.TILE_SIZE; 
 		int posY = (int)y/m_gp.TILE_SIZE;
+		Tile[] m_tile = m_gp.m_tileM.getTile();
+		System.out.println("pos x : " +posX + "| pos y : " + posY + " | -> " + (posX*m_gp.TILE_SIZE) + " | " + (posY*m_gp.TILE_SIZE));
+		System.out.println("x : " +x + "| y : " + y);
+		//System.out.println("pos x-1 : " + (posX-1) + " | pos x+1 : " + (posX+1) + " | pos y -1  : " + (posY-1) + " | pos y+1 : " + (posY+1));
 		
-		if(m_gp.m_tileM.getMapTile(posX, posY) != 0) //on verifie la tile de gauche
+		if(m_tile[m_gp.m_tileM.getMapTile(posX, posY)].m_collision == true) //on verifie la tile de gauche
 		{
 			return true;
 		}
-		else if(m_gp.m_tileM.getMapTile(posX+1, posY) != 0) //on verifie la tile de droite
+		else if(m_tile[m_gp.m_tileM.getMapTile(posX+1, posY)].m_collision == true) //on verifie la tile de droite
 		{
 			return true;
 		}
-		else if(m_gp.m_tileM.getMapTile(posX, posY) != 0) //on verifie la tile du haut
+		else if(m_tile[m_gp.m_tileM.getMapTile(posX, posY)].m_collision == true) //on verifie la tile du haut
 		{
 			return true;
 		}
-		else if(m_gp.m_tileM.getMapTile(posX, posY+1) != 0) //on verifie la tile du bas
+		else if(m_tile[m_gp.m_tileM.getMapTile(posX, posY+1)].m_collision == true) //on verifie la tile du bas
 		{
 			return true;
 		}
