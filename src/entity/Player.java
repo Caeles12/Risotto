@@ -124,7 +124,7 @@ public class Player extends Entity{
 		interact_cooldown++;
 		if (m_keyH.isPressed(69) && interact_cooldown >10) {
 			interact_cooldown = 0;
-			Iterator<Entity> iter = m_gp.m_list_entity[m_gp.dim].iterator();
+			Iterator<Entity> iter = m_gp.m_tab_Map[m_gp.dim].m_list_entity.iterator();
 			while(iter.hasNext()) {
 				Entity tmp = iter.next();
 				if(tmp instanceof Entity_interactive) {

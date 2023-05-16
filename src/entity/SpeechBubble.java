@@ -16,7 +16,7 @@ public class SpeechBubble extends Entity{
 		this.m_y = y;
 		this.m_opacity = 1;
 		
-		m_gp.m_list_entity[m_gp.dim].add(this);
+		m_gp.m_tab_Map[m_gp.dim].m_list_entity.add(this);
 	}
 	
 	@Override
