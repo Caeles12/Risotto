@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
@@ -78,6 +79,7 @@ public class Player extends Entity{
 		if (m_keyH.isPressed(40)) { // BAS
 			m_y += m_speed;
 		}
+
 		if (m_keyH.isPressed(70)) { // FireBall f
 			if (m_ralentisseur <= 0) {
 			m_magie -= 10;
@@ -87,7 +89,19 @@ public class Player extends Entity{
 				m_ralentisseur -= 1;
 			}
 		}
-	
+		
+		if(m_keyH.isPressed(69)) {
+			Iterator<Entity> iter = m_gp.m_list_entity.iterator();
+			while(iter.hasNext()) {
+				Entity tmp = iter.next();
+				if(tmp instanceof Entity_interactive) {
+					if(Math.sqrt(Math.pow(tmp.m_x-this.m_x,2)+Math.pow(tmp.m_y-this.m_y,2)) < 80) {
+						((Entity_interactive) tmp).interaction();
+					}
+				}
+				
+			}
+		}
 	}
 	
 	/**get_lastPressed
