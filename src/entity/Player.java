@@ -53,7 +53,7 @@ public class Player extends Entity{
 	public void getPlayerImage() {
 		//gestion des expections 
 		try {
-			m_idleImage.add(ImageIO.read(getClass().getResource("/Player/superhero.png")));
+			m_idleImage.add(ImageIO.read(getClass().getResource("/player/superhero.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

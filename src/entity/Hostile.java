@@ -57,7 +57,7 @@ abstract public class Hostile extends Entity{
 	 */
 	public void draw(Graphics2D a_g2) {
 		// r�cup�re l'image du joueur
-		BufferedImage l_image = m_idleImage;
+		BufferedImage l_image = m_idleImage.get(0);
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
 		a_g2.drawImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE, null);
 	}
