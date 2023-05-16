@@ -114,7 +114,7 @@ public class Player extends Entity{
 		}
 		
 		if (m_keyH.isPressed(69)) {
-			Iterator<Entity> iter = m_gp.m_list_entity.iterator();
+			Iterator<Entity> iter = m_gp.m_list_entity[m_gp.dim].iterator();
 			while(iter.hasNext()) {
 				Entity tmp = iter.next();
 				if(tmp instanceof Entity_interactive) {

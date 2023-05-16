@@ -47,21 +47,28 @@ public class GamePanel extends JPanel implements Runnable{
 	Renderer m_renderer;
 	Hostile m_frog;
 	
-	public List<Entity> m_list_entity;
+	public List<Entity> m_list_entity2;
+	public List<Entity>[] m_list_entity;
+	public int dim;
 		
 	/**
 	 * Constructeur
 	 */
+	@SuppressWarnings("unchecked")
 	public GamePanel() {
 		m_FPS = 60;				
 		m_keyH = new KeyHandler();
 		m_player = new Player(this, m_keyH);
-		m_tileM = new TileManager(this);
+		
 		m_camera = new Camera(this, m_player.m_x, m_player.m_y, 0.5f, 0.1f);
 		m_renderer = new Renderer(this, m_camera);
 		m_frog = new Frog(this, 200, 100);
 		
-		m_list_entity = new ArrayList<>();
+		m_list_entity2 = new ArrayList<>();
+		
+		m_list_entity = new ArrayList[2];
+		for(int i = 0 ; i < m_list_entity.length ; i++) m_list_entity[i] = new ArrayList<Entity>();
+		
 		init_demo_map(this);
 		
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -72,7 +79,15 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void init_demo_map(GamePanel gp) {
-		m_list_entity.add(new Coffre(6, 1, gp, null));
+		m_tileM = new TileManager(this,"/maps/map3.txt");
+		dim = 0;
+		m_list_entity[0].add(new Coffre(6, 1, gp, null));
+		m_list_entity[0].add(new Door(6, 7, gp, null));
+	}
+	
+	public void init_house(GamePanel gp) {
+		m_tileM = new TileManager(this,"/maps/map.txt");
+		dim = 1;
 	}
 	
 	/**
@@ -126,10 +141,10 @@ public class GamePanel extends JPanel implements Runnable{
 		m_camera.zoom(1);
 		m_frog.update();
 		int i = 0;
-		while(i<m_list_entity.size()) {
-			m_list_entity.get(i).update();
-			if(m_list_entity.get(i).m_status == Entity.Status.DESTROY) {
-				m_list_entity.remove(i);
+		while(i<m_list_entity[dim].size()) {
+			m_list_entity[dim].get(i).update();
+			if(m_list_entity[dim].get(i).m_status == Entity.Status.DESTROY) {
+				m_list_entity[dim].remove(i);
 			}else {
 				i++;
 			}
@@ -146,7 +161,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		m_tileM.draw(m_renderer);
 		m_frog.draw(m_renderer);
-		Iterator<Entity> iter = m_list_entity.iterator();
+		Iterator<Entity> iter = m_list_entity[dim].iterator();
 		
 		while(iter.hasNext()) iter.next().draw(m_renderer);
 		
