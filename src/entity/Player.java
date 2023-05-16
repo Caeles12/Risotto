@@ -42,6 +42,8 @@ public class Player extends Entity{
 	Collider m_collider;
 	int interact_cooldown;
 	
+	String nextText = "";
+	
 	/**
 	 * Constructeur de Player
 	 * @param a_gp GamePanel, pannel principal du jeu
@@ -95,6 +97,10 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
+		if(nextText != "") {
+			new SpeechBubble(m_gp, nextText , (int) this.m_pos.x, (int) this.m_pos.y - 10);
+			nextText = "";
+		}
 		this.m_collider.m_shape.setOrigin(m_pos);
 		
 		if (m_keyH.isPressed(37)) { // GAUCHE
@@ -207,7 +213,7 @@ public class Player extends Entity{
 	 */
 	public int takeItem(int id) {
 		if(m_inventaire.contains(id)) {
-			m_inventaire.remove(id);
+			m_inventaire.remove(m_inventaire.indexOf(id));
 			return id;
 		}
 		return 0;
@@ -229,8 +235,18 @@ public class Player extends Entity{
 		if (!fullInventory()) {
 			m_inventaire.add(i);
 		} else {
-			new SpeechBubble(m_gp, "Poches pleines !", (int) this.m_pos.x, (int) this.m_pos.y - 10);
+			nextText = "Poches pleines !";
+			
 		}
+	}
+	
+	public void regen() {
+		if(m_life < 100 || m_magie < 80) {
+			m_life = 100;
+			m_magie = 80;
+			nextText = "Santee et Magie restoree <3";
+		}
+		else nextText = "Je ne suis pas fatiguee ;~;";
 	}
 	
 }

@@ -31,4 +31,21 @@ public class Object {
 			break;
 		}
 	}
+	
+	public static String getNom(int id) {
+		switch(id) {
+		case 1:
+			return "Riz";
+		case 2:
+			return "seau vide";
+		case 3:
+			return "seau plein";
+		case 4:
+			return "Champignon";
+		case 5:
+			return "Rizotto au Champignons";
+		default:
+			return "Air";
+		}
+	}
 }

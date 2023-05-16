@@ -22,6 +22,8 @@ public class SpeechBubble extends Entity{
 		this.m_wobbleSpeed = 0;
 		this.m_wobbleFrequency = 0;
 		
+		this.m_pos = new Vector2D(0,0);
+		
 		m_gp.m_tab_Map[m_gp.dim].m_list_entity.add(this);
 	}
 	
@@ -33,6 +35,7 @@ public class SpeechBubble extends Entity{
 		this.m_wobbleAmplitude = wobbleAmplitude;
 		this.m_wobbleSpeed = wobbleSpeed;
 		this.m_wobbleFrequency = wobbleFrequency;
+		
 		
 		m_gp.m_tab_Map[m_gp.dim].m_list_entity.add(this);
 	}

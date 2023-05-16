@@ -86,13 +86,13 @@ public class GamePanel extends JPanel implements Runnable{
 		switch(dim) {
 		case 0:
 			this.dim = 0;
-			if(m_tab_Map[dim] == null) init_demo_map(this);
-			m_player.m_pos = new Vector2D( TILE_SIZE*6, TILE_SIZE*8);
+			if(m_tab_Map[dim] == null) init_house(this);
+			m_player.m_pos = new Vector2D( TILE_SIZE*5, TILE_SIZE*1);
 			break;
 		case 1:
 			this.dim = 1;
-			if(m_tab_Map[dim] == null) init_house(this);
-			m_player.m_pos = new Vector2D( TILE_SIZE*5, TILE_SIZE*1);
+			if(m_tab_Map[dim] == null) init_demo_map(this);
+			m_player.m_pos = new Vector2D( TILE_SIZE*6, TILE_SIZE*8);
 			break;
 		}
 		
@@ -102,8 +102,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public void init_demo_map(GamePanel gp) {
 		m_tab_Map[dim] = new Map(gp,"/maps/map3.txt");
 		
-		m_tab_Map[dim].m_list_entity.add(new Coffre(6, 1, gp));
-		m_tab_Map[dim].m_list_entity.add(new Door(6, 7, gp, 1));
+		m_tab_Map[dim].m_list_entity.add(new Coffre(6, 1, gp,2));
+		m_tab_Map[dim].m_list_entity.add(new Door(6, 7, gp, 0));
 		m_tab_Map[dim].m_list_entity.add(new Frog(this, 200, 100));
 	}
 	
@@ -111,7 +111,11 @@ public class GamePanel extends JPanel implements Runnable{
 		m_tab_Map[dim] = new Map(this,"/maps/house.txt");
 		
 		m_tab_Map[dim].m_list_entity.add(new Cauldron(3,1,gp));
-		m_tab_Map[dim].m_list_entity.add(new Door(5,0,gp,0));
+		m_tab_Map[dim].m_list_entity.add(new Door(5,0,gp,1));
+		m_tab_Map[dim].m_list_entity.add(new Coffre(5,3,gp,1));
+		
+		m_tab_Map[dim].m_list_entity.add(new Couch(1,1,gp,1));
+		m_tab_Map[dim].m_list_entity.add(new Couch(1,2,gp,2));
 		
 	}
 	

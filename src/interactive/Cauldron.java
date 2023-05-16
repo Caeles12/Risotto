@@ -66,7 +66,7 @@ public class Cauldron extends Entity_interactive{
 		talkDelay++;
 		if(!nextText.isEmpty() && talkDelay > 25) {
 			talkDelay = 0;
-			new SpeechBubble(m_gp, nextText.remove(0),(int) m_x,(int) m_y);
+			new SpeechBubble(m_gp, nextText.remove(0), (int) this.m_pos.x+2, (int) this.m_pos.y);
 		}
 	}
 	
