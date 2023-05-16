@@ -8,6 +8,8 @@ import entity.Hostile;
 import entity.SpeechBubble;
 import main.GamePanel;
 import main.Renderer;
+import utils.Vector2D;
+import tile.Tile;
 
 public class Frog extends Hostile {
 
@@ -15,8 +17,7 @@ public class Frog extends Hostile {
 	
 	public Frog(GamePanel a_gp,int x,int y){
 		super( a_gp);
-		this.m_x = x;
-		this.m_y = y;
+		this.m_pos = new Vector2D(x, y);
 	}
 
 	@Override
@@ -24,6 +25,9 @@ public class Frog extends Hostile {
 		m_life = 100;
 		m_damage = 10;
 		m_speed = 8;
+		m_timer = 0;
+		ptr_list_image = 0;
+		m_timerAnimation = 0;
 		
 	}
 
@@ -31,7 +35,7 @@ public class Frog extends Hostile {
 	public void getHostileImage() {
 		//gestion des expections 
 		try {
-			for(int i = 1 ; i < 2 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/hostile/grenouille_"+i+".png")));
+			for(int i = 1 ; i < 6 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/hostile/grenouille_"+i+".png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -39,23 +43,29 @@ public class Frog extends Hostile {
 	}
 
 	protected void move() {
+		
+		if(m_timerAnimation >= 15) {
+			ptr_list_image++;
+			m_timerAnimation = 0;
+		}
+		
 		if (m_timer > 120) {
 			
-
+			
 			
 			
 			switch(m_dir) {
 			case 1 : 
-				if (!collideWallNext(m_x+m_speed, m_y)) m_x += m_speed;
+				if (!collideWallNext(this.m_pos.x+m_speed, this.m_pos.y)) this.m_pos.x += m_speed;
 				break;
 			case 2 :
-				if (!collideWallNext(m_x-m_speed, m_y)) m_x -= m_speed;
+				if (!collideWallNext(this.m_pos.x-m_speed, this.m_pos.y)) this.m_pos.x -= m_speed;
 				break;
 			case 3 :
-				if (!collideWallNext(m_x, m_y+m_speed)) m_y += m_speed;
+				if (!collideWallNext(this.m_pos.x, this.m_pos.y+m_speed)) this.m_pos.y += m_speed;
 				break;
 			case 4 :
-				if (!collideWallNext(m_x, m_y-m_speed)) m_y -= m_speed;
+				if (!collideWallNext(this.m_pos.x, this.m_pos.y-m_speed)) this.m_pos.y -= m_speed;
 				break;
 			default :
 				break;
@@ -64,7 +74,7 @@ public class Frog extends Hostile {
 		}
 		
 		if (m_timer > 150) {
-			new SpeechBubble(m_gp, "Croa",(int) m_x,(int) m_y);
+			new SpeechBubble(m_gp, "Croa",(int) this.m_pos.x,(int) this.m_pos.y, 4, 15, 2);
 			m_dir = r.nextInt(5);
 			m_timer = 0;
 		}
@@ -74,28 +84,30 @@ public class Frog extends Hostile {
 	
 	/*
 	 * Fonction qui verifie si le monstre finit dans le mur apres le prochain movement
-	 * @param x coordonners en x du monstre
-	 * @param y coordonners en x du monstre
+	 * @param x coordonnees en x du monstre
+	 * @param y coordonnees en x du monstre
 	 */
 	boolean collideWallNext(float x, float y) {
 
 		
 		int posX = (int)x/m_gp.TILE_SIZE; 
 		int posY = (int)y/m_gp.TILE_SIZE;
+		Tile[] m_tile = m_gp.m_tileM.getTile();
 		
-		if(m_gp.m_tileM.getMapTile(posX, posY) != 0) //on verifie la tile de gauche
+		
+		if(m_tile[m_gp.m_tileM.getMapTile(posX, posY)].m_collision == true) //on verifie la tile de gauche
 		{
 			return true;
 		}
-		else if(m_gp.m_tileM.getMapTile(posX+1, posY) != 0) //on verifie la tile de droite
+		else if(m_tile[m_gp.m_tileM.getMapTile(posX+1, posY)].m_collision == true) //on verifie la tile de droite
 		{
 			return true;
 		}
-		else if(m_gp.m_tileM.getMapTile(posX, posY) != 0) //on verifie la tile du haut
+		else if(m_tile[m_gp.m_tileM.getMapTile(posX, posY)].m_collision == true) //on verifie la tile du haut
 		{
 			return true;
 		}
-		else if(m_gp.m_tileM.getMapTile(posX, posY+1) != 0) //on verifie la tile du bas
+		else if(m_tile[m_gp.m_tileM.getMapTile(posX, posY+1)].m_collision == true) //on verifie la tile du bas
 		{
 			return true;
 		}

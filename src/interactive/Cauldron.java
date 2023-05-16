@@ -10,6 +10,7 @@ import entity.Entity_interactive;
 import entity.SpeechBubble;
 import main.GamePanel;
 import main.Renderer;
+import utils.Vector2D;
 
 public class Cauldron extends Entity_interactive{
 	List<String> nextText;
@@ -17,6 +18,7 @@ public class Cauldron extends Entity_interactive{
 	
 	public Cauldron(int x, int y, GamePanel m_gp, List<Integer> inventaire) {
 		this.m_gp = m_gp;
+		this.m_pos = new Vector2D(x, y);
 		setPositionTiles(x, y);
 		this.objet_interne = inventaire;
 		this.getCauldronImage();

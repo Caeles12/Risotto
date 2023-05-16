@@ -16,7 +16,9 @@ abstract public class Hostile extends Entity{
 	protected int m_damage;
 	protected int m_life;
 	protected int m_timer;
+	protected int m_timerAnimation;
 	protected Random r = new Random();
+	protected int ptr_list_image = 0;
 	
 	/**
 	 * Constructeur de Hostile
@@ -43,6 +45,7 @@ abstract public class Hostile extends Entity{
 	 */
 	public void update() {
 		m_timer ++;
+		m_timerAnimation ++;
 		move();
 		
 	}
@@ -56,11 +59,18 @@ abstract public class Hostile extends Entity{
 	 * Affichage du l'image du monstre dans la fen�tre du jeu
 	 * @param a_g2 Graphics2D 
 	 */
+	
+	protected void lifeBar() {
+		
+	}
+	
 	public void draw(Renderer a_g2) {
 		// r�cup�re l'image du joueur
-		BufferedImage l_image = m_idleImage.get(0);
+		if(ptr_list_image >= m_idleImage.size()) ptr_list_image =0;
+		
+		BufferedImage l_image = m_idleImage.get(ptr_list_image);
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
-		a_g2.renderImage(l_image, (int) m_x, (int) m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		a_g2.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
 	}
 	
 }

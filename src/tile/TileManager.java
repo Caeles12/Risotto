@@ -147,6 +147,14 @@ public class TileManager {
 		}
 	}
 	
+	public int getNbCol(){
+		return nbCol;
+	}
+	
+	public int getNbRow() {
+		return nbRow;
+	}
+	
 	public int[][] getMapTileNum() {
 		return m_mapTileNum;
 	}
