@@ -91,9 +91,16 @@ public class Player extends Entity{
 			m_direction[1] += 1;
 		}
 		
-		double norme = Math.sqrt(m_direction[0] * m_direction[0] + m_direction[1] * m_direction[1]);
-		m_x += (int) (m_speed * m_direction[0] / norme);
-		m_y += (int) (m_speed * m_direction[1] / norme);
+		if(m_direction[0] != 0 || m_direction[1] != 0) {
+			float norme = (float) Math.sqrt(m_direction[0] * m_direction[0] + m_direction[1] * m_direction[1]);
+			float vx = (m_speed * m_direction[0]) / norme;
+			float vy = (m_speed * m_direction[1]) / norme;
+			
+			System.out.println(Math.sqrt(vx*vx + vy*vy));
+			m_x += vx;
+			m_y += vy;
+		}
+		
 		m_direction[0] = 0;
 		m_direction[1] = 0;
 		
@@ -129,15 +136,15 @@ public class Player extends Entity{
 		// r�cup�re l'image du joueur
 		BufferedImage l_image = m_idleImage.get(0);
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
-		r.renderImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		r.renderImage(l_image, (int) m_x, (int) m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
 
 	}
 	
-	public int getXCoordonates() {
+	public float getXCoordonates() {
 		return m_x;
 	}
 	
-	public int getYCoordonates() {
+	public float getYCoordonates() {
 		return m_y;
 	}
 	
