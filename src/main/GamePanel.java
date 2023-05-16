@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JPanel;
 
@@ -45,7 +46,7 @@ public class GamePanel extends JPanel implements Runnable{
 	Renderer m_renderer;
 	Hostile m_frog;
 	
-	List<Entity> m_list_entity;
+	public List<Entity> m_list_entity;
 		
 	/**
 	 * Constructeur
@@ -70,7 +71,7 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void init_demo_map(GamePanel gp) {
-		m_list_entity.add(new Coffre(150, 150, gp, null));
+		m_list_entity.add(new Coffre(6, 1, gp, null));
 	}
 	
 	/**
@@ -131,11 +132,14 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		m_renderer.setGraphics(g2);
+
 		m_tileM.draw(m_renderer);
 		m_player.draw(m_renderer);
 		m_frog.draw(m_renderer);
 		Iterator<Entity> iter = m_list_entity.iterator();
 		while(iter.hasNext()) iter.next().draw(m_renderer);
+		m_renderer.renderText("Je suis un coffre", m_list_entity.get(0).m_x, m_list_entity.get(0).m_y);
+
 		g2.dispose();
 	}
 	

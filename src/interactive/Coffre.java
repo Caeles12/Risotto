@@ -12,19 +12,27 @@ import main.GamePanel;
 import main.Renderer;
 
 public class Coffre extends Entity_interactive{
+	boolean looted;
 	
 	public Coffre(int x, int y, GamePanel m_gp, List<Integer> inventaire) {
 		this.m_gp = m_gp;
-		this.m_x = x;
-		this.m_y = y;
+		setPositionTiles(x, y);
 		this.objet_interne = inventaire;
 		this.getCoffreImage();
 		
-		//this.animate = false;
+		this.animate = false;
+		looted = false;
 	}
 	
 	public List<Integer> interaction() {
-		return this.objet_interne;
+		if(!looted) {
+			looted = true;
+			animate = true;
+			tmpAnim = 0;
+			return this.objet_interne;
+		}
+		if(looted) ptr_list_image = 0;
+		return null;
 	}
 	
 	public void getCoffreImage() {
@@ -37,14 +45,7 @@ public class Coffre extends Entity_interactive{
 	}
 	
 	public void draw(Renderer a_g2) {
-		this.tmpAnim++;
-		if(animate && tmpAnim >10) {
-			tmpAnim = 0;
-			ptr_list_image++;
-			if(ptr_list_image > m_idleImage.size()-1) ptr_list_image = 0;
-		}
-		BufferedImage l_image = m_idleImage.get(ptr_list_image);
-		// affiche le personnage avec l'image "image", avec les coordonnées x et y, et de taille tileSize (16x16) sans échelle, et 48x48 avec échelle)
-		a_g2.renderImage(l_image, m_x, m_y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		super.draw(a_g2);
+		if(ptr_list_image == m_idleImage.size()-1) animate = false;
 	}
 }
