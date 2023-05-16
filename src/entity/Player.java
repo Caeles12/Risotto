@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.Math;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -23,8 +24,9 @@ public class Player extends Entity{
 	int[] m_inventaire;
 	int m_life;
 	int m_magie;
-	
 	int m_ralentisseur;
+	int[] m_direction;
+	boolean[] m_tape;
 	
 	/**
 	 * Constructeur de Player
@@ -35,6 +37,8 @@ public class Player extends Entity{
 		this.m_gp = a_gp;
 		this.m_keyH = a_keyH;
 		this.m_inventaire = new int[10];
+		this.m_direction = new int[2];
+		this.m_tape = new boolean[4];
 		this.setDefaultValues();
 		this.getPlayerImage();
 	}
@@ -49,6 +53,9 @@ public class Player extends Entity{
 		m_life = 100;
 		m_magie = 80;
 		m_ralentisseur = 0;
+		for (int i = 0; i < 4; i++) {
+			m_tape[i] = false;
+		}
 	}
 	
 	/**
@@ -67,30 +74,39 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
-		if (m_keyH.isPressed(37)) { // GAUCHE
-			m_x -= m_speed;
+		if (m_keyH.isPressed(37) && m_tape[0] == false) { // GAUCHE
+			m_direction[0] += -1;
+			m_direction[1] += 0;
 		}
-		if (m_keyH.isPressed(38)) { // HAUT
-			m_y -= m_speed;
+		if (m_keyH.isPressed(38) && m_tape[1] == false) { // HAUT
+			m_direction[0] += 0;
+			m_direction[1] += -1;
 		} 
-		if (m_keyH.isPressed(39)) { // DROITE
-			m_x += m_speed;
+		if (m_keyH.isPressed(39) && m_tape[2] == false) { // DROITE
+			m_direction[0] += 1;
+			m_direction[1] += 0;
 		}
-		if (m_keyH.isPressed(40)) { // BAS
-			m_y += m_speed;
+		if (m_keyH.isPressed(40) && m_tape[3] == false) { // BAS
+			m_direction[0] += 0;
+			m_direction[1] += 1;
 		}
-
+		
+		double norme = Math.sqrt(m_direction[0] * m_direction[0] + m_direction[1] * m_direction[1]);
+		m_x += (int) (m_speed * m_direction[0] / norme);
+		m_y += (int) (m_speed * m_direction[1] / norme);
+		m_direction[0] = 0;
+		m_direction[1] = 0;
+		
 		if (m_keyH.isPressed(70)) { // FireBall f
 			if (m_ralentisseur <= 0) {
 			m_magie -= 10;
-			System.out.println("MAGIE");
 			m_ralentisseur = 10;
 			} else {
 				m_ralentisseur -= 1;
 			}
 		}
 		
-		if(m_keyH.isPressed(69)) {
+		if (m_keyH.isPressed(69)) {
 			Iterator<Entity> iter = m_gp.m_list_entity.iterator();
 			while(iter.hasNext()) {
 				Entity tmp = iter.next();
@@ -117,5 +133,16 @@ public class Player extends Entity{
 
 	}
 	
+	public int getXCoordonates() {
+		return m_x;
+	}
+	
+	public int getYCoordonates() {
+		return m_y;
+	}
+	
+	public void setTape(int pos, boolean b) {
+		m_tape[pos] = b;
+	}
 	
 }

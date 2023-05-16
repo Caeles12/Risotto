@@ -11,6 +11,7 @@ import hostile.Frog;
 import entity.Entity;
 import entity.Hostile;
 import interactive.*;
+import tile.Tile;
 import tile.TileManager;
 
 import java.awt.Graphics;
@@ -29,8 +30,8 @@ public class GamePanel extends JPanel implements Runnable{
 	final int ORIGINAL_TILE_SIZE = 16; 							// une tuile de taille 16x16
 	final int SCALE = 3; 										// �chelle utilis�e pour agrandir l'affichage
 	public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; 	// 48x48
-	public final int MAX_SCREEN_COL = 16;
-	public final int MAX_SCREE_ROW = 12; 					 	// ces valeurs donnent une r�solution 4:3
+	public int MAX_SCREEN_COL = 16;
+	public int MAX_SCREE_ROW = 16; 					 	// ces valeurs donnent une r�solution 4:3
 	public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
 	public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREE_ROW;	// 576 pixels
 
@@ -119,6 +120,7 @@ public class GamePanel extends JPanel implements Runnable{
 	 * Mise � jour des donn�es des entit�s
 	 */
 	public void update() {
+		testCollision();
 		m_player.update();
 		m_camera.move(m_player.m_x, m_player.m_y);
 		m_camera.zoom(1);
@@ -132,15 +134,46 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		m_renderer.setGraphics(g2);
-
+		
 		m_tileM.draw(m_renderer);
-		m_player.draw(m_renderer);
 		m_frog.draw(m_renderer);
 		Iterator<Entity> iter = m_list_entity.iterator();
 		while(iter.hasNext()) iter.next().draw(m_renderer);
+		m_player.draw(m_renderer);
+		
+		
 		m_renderer.renderText("Je suis un coffre", m_list_entity.get(0).m_x, m_list_entity.get(0).m_y);
-
+		m_renderer.renderText("Croa", m_frog.m_x, m_frog.m_y, 1, 4, 15, 2);
 		g2.dispose();
+		m_renderer.update();
+	}
+	
+	public void testCollision() {
+		int x = m_player.getXCoordonates() / TILE_SIZE;
+		int y = m_player.getYCoordonates() / TILE_SIZE;
+		int[][] mapTileNum = m_tileM.getMapTileNum();
+		Tile[] tiles = m_tileM.getTile();
+		
+		if (tiles[mapTileNum[x][y]].m_collision) {
+			m_player.setTape(0, true);
+		} else {
+			m_player.setTape(0, false);
+		}
+		if (tiles[mapTileNum[x][y]].m_collision) {
+			m_player.setTape(1, true);
+		} else {
+			m_player.setTape(1, false);
+		}
+		if (tiles[mapTileNum[x+1][y]].m_collision) {
+			m_player.setTape(2, true);
+		} else {
+			m_player.setTape(2, false);
+		}
+		if (tiles[mapTileNum[x][y+1]].m_collision) {
+			m_player.setTape(3, true);
+		} else {
+			m_player.setTape(3, false);
+		}
 	}
 	
 }
