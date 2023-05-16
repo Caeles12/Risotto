@@ -18,8 +18,9 @@ public class Player extends Entity{
 
 	GamePanel m_gp;
 	KeyHandler m_keyH;
-	
+	int[] m_inventaire;
 	int m_life;
+	int m_magie;
 	
 	/**
 	 * Constructeur de Player
@@ -29,6 +30,7 @@ public class Player extends Entity{
 	public Player(GamePanel a_gp, KeyHandler a_keyH) {
 		this.m_gp = a_gp;
 		this.m_keyH = a_keyH;
+		this.m_inventaire = new int[10];
 		this.setDefaultValues();
 		this.getPlayerImage();
 	}
@@ -41,6 +43,7 @@ public class Player extends Entity{
 		m_y = 100;
 		m_speed = 4;
 		m_life = 100;
+		m_magie = 80;
 	}
 	
 	/**
@@ -59,16 +62,16 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
-		if (m_keyH.get_lastPressed() == 37) { // GAUCHE
+		if (m_keyH.isPressed(37)) { // GAUCHE
 			m_x -= m_speed;
 		}
-		if (m_keyH.get_lastPressed() == 38) { // HAUT
+		if (m_keyH.isPressed(38)) { // HAUT
 			m_y -= m_speed;
 		} 
-		if (m_keyH.get_lastPressed() == 39) { // DROITE
+		if (m_keyH.isPressed(39)) { // DROITE
 			m_x += m_speed;
 		}
-		if (m_keyH.get_lastPressed() == 40) { // BAS
+		if (m_keyH.isPressed(40)) { // BAS
 			m_y += m_speed;
 		}
 	}
