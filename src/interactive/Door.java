@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import entity.Entity_interactive;
 import main.GamePanel;
 import main.Renderer;
+import tile.TileManager;
 
 public class Door extends Entity_interactive{
 	
@@ -21,7 +22,8 @@ public class Door extends Entity_interactive{
 	}
 	
 	public List<Integer> interaction() {
-
+		m_gp.Map_actuelle = 1;
+		m_gp.init_house(m_gp);
 		return null;
 	}
 	

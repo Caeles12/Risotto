@@ -46,7 +46,8 @@ public class GamePanel extends JPanel implements Runnable{
 	Renderer m_renderer;
 	Hostile m_frog;
 	
-	public List<Entity> m_list_entity;
+	public Map_entity[] m_list_map;
+	public int Map_actuelle = 0;
 		
 	/**
 	 * Constructeur
@@ -55,12 +56,13 @@ public class GamePanel extends JPanel implements Runnable{
 		m_FPS = 60;				
 		m_keyH = new KeyHandler();
 		m_player = new Player(this, m_keyH);
-		m_tileM = new TileManager(this);
+		
 		m_camera = new Camera(this, m_player.m_x, m_player.m_y, 0.5f, 0.1f);
 		m_renderer = new Renderer(this, m_camera);
 		m_frog = new Frog(this, 200, 100);
+		m_list_map = new Map_entity[2];
+		for(int i = 0 ; i < m_list_map.length ; i++) m_list_map[i] = new Map_entity();
 		
-		m_list_entity = new ArrayList<>();
 		init_demo_map(this);
 		
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -71,7 +73,13 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void init_demo_map(GamePanel gp) {
-		m_list_entity.add(new Coffre(6, 1, gp, null));
+		m_tileM = new TileManager(this,"/maps/map3.txt");
+		m_list_map[0].getEntities().add(new Coffre(6, 1, gp, null));
+		m_list_map[0].getEntities().add(new Door(6, 7, gp, null));
+	}
+	
+	public void init_house(GamePanel gp) {
+		m_tileM = new TileManager(this,"/maps/map.txt");
 	}
 	
 	/**
@@ -135,12 +143,12 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		m_tileM.draw(m_renderer);
 		m_frog.draw(m_renderer);
-		Iterator<Entity> iter = m_list_entity.iterator();
+		Iterator<Entity> iter = m_list_map[Map_actuelle].getEntities().iterator();
 		while(iter.hasNext()) iter.next().draw(m_renderer);
 		m_player.draw(m_renderer);
 		
 		
-		m_renderer.renderText("Je suis un coffre", m_list_entity.get(0).m_x, m_list_entity.get(0).m_y);
+		m_renderer.renderText("Je suis un coffre", m_list_map[Map_actuelle].getEntities().get(0).m_x, m_list_map[Map_actuelle].getEntities().get(0).m_y);
 		m_renderer.renderText("Croa", m_frog.m_x, m_frog.m_y, 1, 4, 15, 2);
 		g2.dispose();
 		m_renderer.update();
