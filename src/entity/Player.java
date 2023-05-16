@@ -30,6 +30,8 @@ public class Player extends Entity{
 	int c;
 	int m_ralentisseur;
 	
+	int interact_cooldown;
+	
 	/**
 	 * Constructeur de Player
 	 * @param a_gp GamePanel, pannel principal du jeu
@@ -43,6 +45,8 @@ public class Player extends Entity{
 		this.m_tape = new boolean[4];
 		this.setDefaultValues();
 		this.getPlayerImageBase();
+		
+		this.interact_cooldown = 0;
 	}
 	
 	/**
@@ -117,9 +121,10 @@ public class Player extends Entity{
 				m_ralentisseur -= 1;
 			}
 		}
-		
-		if (m_keyH.isPressed(69)) {
-			Iterator<Entity> iter = m_gp.m_list_entity[m_gp.dim].iterator();
+		interact_cooldown++;
+		if (m_keyH.isPressed(69) && interact_cooldown >10) {
+			interact_cooldown = 0;
+			Iterator<Entity> iter = m_gp.m_tab_Map[m_gp.dim].m_list_entity.iterator();
 			while(iter.hasNext()) {
 				Entity tmp = iter.next();
 				if(tmp instanceof Entity_interactive) {

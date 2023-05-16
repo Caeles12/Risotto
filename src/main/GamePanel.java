@@ -45,10 +45,17 @@ public class GamePanel extends JPanel implements Runnable{
 	public TileManager m_tileM;
 	Camera m_camera;
 	Renderer m_renderer;
-	Hostile m_frog;
 	
-	public List<Entity> m_list_entity2;
-	public List<Entity>[] m_list_entity;
+	public class Map{
+		public List<Entity> m_list_entity;
+		public TileManager m_Map;
+		public Map(GamePanel gp, String path) {
+			m_list_entity = new ArrayList<Entity>();
+			m_Map = new TileManager(gp,path);
+		};
+	}
+	
+	public Map[] m_tab_Map;
 	public int dim;
 		
 	/**
@@ -62,14 +69,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		m_camera = new Camera(this, m_player.m_x, m_player.m_y, 0.5f, 0.1f);
 		m_renderer = new Renderer(this, m_camera);
-		m_frog = new Frog(this, 200, 100);
-		
-		m_list_entity2 = new ArrayList<>();
-		
-		m_list_entity = new ArrayList[2];
-		for(int i = 0 ; i < m_list_entity.length ; i++) m_list_entity[i] = new ArrayList<Entity>();
-		
-		init_demo_map(this);
+				
+		m_tab_Map = new Map[2];
+		setDim(0);
 		
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.black);
@@ -78,16 +80,39 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setFocusable(true);
 	}
 	
+	public void setDim(int dim) {
+		switch(dim) {
+		case 0:
+			this.dim = 0;
+			if(m_tab_Map[dim] == null) init_demo_map(this);
+			m_player.m_x = TILE_SIZE*6;
+			m_player.m_y = TILE_SIZE*8;
+			break;
+		case 1:
+			this.dim = 1;
+			if(m_tab_Map[dim] == null) init_house(this);
+			m_player.m_x = TILE_SIZE*5;
+			m_player.m_y = TILE_SIZE*1;
+			break;
+		}
+		
+		m_tileM = m_tab_Map[dim].m_Map;
+	}
+	
 	public void init_demo_map(GamePanel gp) {
-		m_tileM = new TileManager(this,"/maps/map3.txt");
-		dim = 0;
-		m_list_entity[0].add(new Coffre(6, 1, gp, null));
-		m_list_entity[0].add(new Door(6, 7, gp, null));
+		m_tab_Map[dim] = new Map(gp,"/maps/map3.txt");
+		
+		m_tab_Map[dim].m_list_entity.add(new Coffre(6, 1, gp, null));
+		m_tab_Map[dim].m_list_entity.add(new Door(6, 7, gp, 1));
+		m_tab_Map[dim].m_list_entity.add(new Frog(this, 200, 100));
 	}
 	
 	public void init_house(GamePanel gp) {
-		m_tileM = new TileManager(this,"/maps/map.txt");
-		dim = 1;
+		m_tab_Map[dim] = new Map(this,"/maps/house.txt");
+		
+		m_tab_Map[dim].m_list_entity.add(new Cauldron(3,1,gp,null));
+		m_tab_Map[dim].m_list_entity.add(new Door(5,0,gp,0));
+		
 	}
 	
 	/**
@@ -139,12 +164,11 @@ public class GamePanel extends JPanel implements Runnable{
 		m_player.update();
 		m_camera.move(m_player.m_x, m_player.m_y);
 		m_camera.zoom(1);
-		m_frog.update();
 		int i = 0;
-		while(i<m_list_entity[dim].size()) {
-			m_list_entity[dim].get(i).update();
-			if(m_list_entity[dim].get(i).m_status == Entity.Status.DESTROY) {
-				m_list_entity[dim].remove(i);
+		while(i<m_tab_Map[dim].m_list_entity.size()) {
+			m_tab_Map[dim].m_list_entity.get(i).update();
+			if(m_tab_Map[dim].m_list_entity.get(i).m_status == Entity.Status.DESTROY) {
+				m_tab_Map[dim].m_list_entity.remove(i);
 			}else {
 				i++;
 			}
@@ -160,9 +184,8 @@ public class GamePanel extends JPanel implements Runnable{
 		m_renderer.setGraphics(g2);
 		
 		m_tileM.draw(m_renderer);
-		m_frog.draw(m_renderer);
-		Iterator<Entity> iter = m_list_entity[dim].iterator();
 		
+		Iterator<Entity> iter = m_tab_Map[dim].m_list_entity.iterator();
 		while(iter.hasNext()) iter.next().draw(m_renderer);
 		
 		m_player.draw(m_renderer);
