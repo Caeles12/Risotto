@@ -21,7 +21,6 @@ public class KeyHandler implements KeyListener{
 		// r�cup�re le code du boutton appuy�
 		int code = e.getKeyCode();
 		System.out.println(code);
-
 		m_lastPressed = code;
 	}
 
