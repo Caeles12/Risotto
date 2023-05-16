@@ -6,7 +6,9 @@ import javax.swing.JPanel;
 
 import entity.Camera;
 import entity.Player;
+import hostile.Frog;
 import entity.Entity;
+import entity.Hostile;
 import interactive.*;
 import tile.TileManager;
 
@@ -41,6 +43,7 @@ public class GamePanel extends JPanel implements Runnable{
 	TileManager m_tileM;
 	Camera m_camera;
 	Renderer m_renderer;
+	Hostile m_frog;
 	
 	List<Entity> m_list_entity;
 		
@@ -54,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable{
 		m_tileM = new TileManager(this);
 		m_camera = new Camera(this, m_player.m_x, m_player.m_y, 0.5f, 0.1f);
 		m_renderer = new Renderer(this, m_camera);
+		m_frog = new Frog(this, 200, 100);
 		
 		m_list_entity = new ArrayList<>();
 		init_demo_map(this);
@@ -117,6 +121,7 @@ public class GamePanel extends JPanel implements Runnable{
 		m_player.update();
 		m_camera.move(m_player.m_x, m_player.m_y);
 		m_camera.zoom(1);
+		m_frog.update();
 	}
 	
 	/**
@@ -128,6 +133,7 @@ public class GamePanel extends JPanel implements Runnable{
 		m_renderer.setGraphics(g2);
 		m_tileM.draw(m_renderer);
 		m_player.draw(m_renderer);
+		m_frog.draw(m_renderer);
 		Iterator<Entity> iter = m_list_entity.iterator();
 		while(iter.hasNext()) iter.next().draw(m_renderer);
 		g2.dispose();
