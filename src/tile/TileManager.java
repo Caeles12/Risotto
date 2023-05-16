@@ -31,14 +31,14 @@ public class TileManager {
 	 * Constructeur
 	 * @param gp
 	 */
-	public TileManager(GamePanel gp) {
+	public TileManager(GamePanel gp,String map) {
 		this.m_gp =  gp;
 		m_tile = new Tile[m_maxTiles];
 		
 		//m_mapTileNum = new int[m_gp.MAX_SCREEN_COL][m_gp.MAX_SCREE_ROW];
 		
 		this.getTileImage();
-		this.loadMap("/maps/map3.txt");
+		this.loadMap(map);
 	}
 	
 	/**
