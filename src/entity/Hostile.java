@@ -3,6 +3,8 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -17,13 +19,15 @@ abstract public class Hostile extends Entity{
 
 	protected GamePanel m_gp;
 	protected int m_damage;
-	protected int m_life;
+	protected int m_life;  //enlever des pv a cette variable si des degats sont pris
+	protected int m_lifeTemp; // sert pour la barre de vie
 	protected int m_timer;
 	protected int m_timerAnimation;
 	protected Random r = new Random();
 	protected int ptr_list_image = 0;
 	protected Collider m_collider;
 	protected int[] m_dir;
+	protected List<BufferedImage> m_lifeBar;
 	
 	/**
 	 * Constructeur de Hostile
@@ -34,6 +38,8 @@ abstract public class Hostile extends Entity{
 		this.setDefaultValues();
 		this.getHostileImage();
 		this.m_collider = new Collider(new Rectangle(m_pos, new Vector2D(a_gp.TILE_SIZE/4, a_gp.TILE_SIZE/4),a_gp.TILE_SIZE/2, a_gp.TILE_SIZE/2), a_gp);
+		this.m_lifeBar = new ArrayList<BufferedImage>();
+		this.setLifeBar();
 	}
 	
 	/**
@@ -55,6 +61,7 @@ abstract public class Hostile extends Entity{
 		m_timerAnimation ++;
 		move();
 		animationRate();
+		updateLifeBar();
 		
 	}
 	
@@ -83,7 +90,41 @@ abstract public class Hostile extends Entity{
 		}
 	}
 	
-	protected void lifeBar() {
+	//sert à l'init, n'update pas (peut servir à l'init si on vide la liste a chaque fois)
+	void setLifeBar() {
+		int nbDemiCoeur = m_life/25; //choper les degat du joueur et les mettres a la place du 25 !!	
+		try {
+				
+			for(int i=0; i<nbDemiCoeur/2; i++) {
+				m_lifeBar.add(ImageIO.read(getClass().getResource("/hostile/coeurPlein.png")));
+			}
+				
+			if(nbDemiCoeur%2 != 0) {
+				m_lifeBar.add(ImageIO.read(getClass().getResource("/hostile/demiCoeur.png")));
+			}
+			
+		}catch (IOException e) { e.printStackTrace(); }
+		
+		
+	}
+	
+	void updateLifeBar() {
+		int damagetake = m_lifeTemp-m_life;
+		
+		if(damagetake >= 25 && m_life >=0) {
+			try {
+				if(m_life/50 <  m_lifeBar.size() && m_life/50.0 == (int) m_life/50) {
+					m_lifeBar.remove(m_lifeBar.size()-1);
+				}
+				else {
+					m_lifeBar.set(m_lifeBar.size()-1, ImageIO.read(getClass().getResource("/hostile/demiCoeur.png")));
+				}
+				
+				damagetake -= 25;
+				m_lifeTemp -= 25;
+			} catch (IOException e) { e.printStackTrace(); }
+		}
+		
 		
 	}
 	
@@ -97,8 +138,16 @@ abstract public class Hostile extends Entity{
 		if(ptr_list_image >= m_idleImage.size()) ptr_list_image =0;
 		
 		BufferedImage l_image = m_idleImage.get(ptr_list_image);
-		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
+		// affiche le monstre avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
 		a_g2.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		
+		//affiche la barre de vie du monstre
+		int nbCoeur = m_lifeBar.size()-1;
+		int tailleCoeur = 24; //la taille d'un coeur en pixel
+		
+		for (int i=0; i<=nbCoeur; i++) {
+			a_g2.renderImage(m_lifeBar.get(i), (int) (this.m_pos.x+i*tailleCoeur-nbCoeur*tailleCoeur/2), (int) this.m_pos.y-30, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		}
 	}
 	
 }

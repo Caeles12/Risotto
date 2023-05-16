@@ -24,7 +24,8 @@ public class Frog extends Hostile {
 
 	@Override
 	protected void setDefaultValues() {
-		m_life = 100;
+		m_life = 200;
+		m_lifeTemp = m_life;
 		m_damage = 10;
 		m_speed = 8;
 		m_timer = 0;
@@ -58,7 +59,6 @@ public class Frog extends Hostile {
 			new SpeechBubble(m_gp, "Croa",(int) this.m_pos.x,(int) this.m_pos.y, 4, 15, 2);
 			m_dir[0] = r.nextInt(3)-1;
 			m_dir[1] = r.nextInt(3)-1;
-			System.out.println("i'm here !");
 			m_timer = 0;
 		}
 	}
@@ -67,6 +67,7 @@ public class Frog extends Hostile {
 		if(m_timerAnimation >= 15) {
 			ptr_list_image++;
 			m_timerAnimation = 0;
+			m_life --;
 		}
 	}
 
