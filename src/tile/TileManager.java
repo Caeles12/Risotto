@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+import entity.Player;
 import main.GamePanel;
 import main.Renderer;
 
@@ -141,5 +142,13 @@ public class TileManager {
 				y += m_gp.TILE_SIZE;
 			}
 		}
+	}
+	
+	public int[][] getMapTileNum() {
+		return m_mapTileNum;
+	}
+	
+	public Tile[] getTile() {
+		return m_tile;
 	}
 }

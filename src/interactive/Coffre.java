@@ -44,6 +44,10 @@ public class Coffre extends Entity_interactive{
 		}
 	}
 	
+	@Override
+	public void update() {}
+	
+	@Override
 	public void draw(Renderer a_g2) {
 		super.draw(a_g2);
 		if(ptr_list_image == m_idleImage.size()-1) animate = false;
