@@ -25,8 +25,10 @@ public class Renderer {
 		
 		float scale = this.m_camera.getScale();
 		
-		int posX = (int) ((x - this.m_camera.m_x)*scale + (this.m_gp.SCREEN_WIDTH/2));
-		int posY = (int) ((y - this.m_camera.m_y)*scale + (this.m_gp.SCREEN_HEIGHT/2));
-		m_g2.drawImage(image, posX, posY, (int) (w*scale), (int) (h*scale), null);
+		int posX = (int) (Math.floor((x - this.m_camera.getX())*scale) + (this.m_gp.SCREEN_WIDTH/2));
+		int posY = (int) (Math.floor((y - this.m_camera.getY())*scale) + (this.m_gp.SCREEN_HEIGHT/2));
+		int scaleW = (int) Math.ceil(w*scale);
+		int scaleH = (int) Math.ceil(h * scale);
+		m_g2.drawImage(image, posX, posY, scaleW, scaleH, null);
 	}
 }
