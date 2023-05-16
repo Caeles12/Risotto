@@ -11,6 +11,7 @@ import hostile.Frog;
 import entity.Entity;
 import entity.Hostile;
 import interactive.*;
+import tile.Tile;
 import tile.TileManager;
 
 import java.awt.Graphics;
@@ -119,6 +120,7 @@ public class GamePanel extends JPanel implements Runnable{
 	 * Mise � jour des donn�es des entit�s
 	 */
 	public void update() {
+		testCollision();
 		m_player.update();
 		m_camera.move(m_player.m_x, m_player.m_y);
 		m_camera.zoom(1);
@@ -144,6 +146,34 @@ public class GamePanel extends JPanel implements Runnable{
 		m_renderer.renderText("Croa", m_frog.m_x, m_frog.m_y, 1, 4, 15, 2);
 		g2.dispose();
 		m_renderer.update();
+	}
+	
+	public void testCollision() {
+		int x = m_player.getXCoordonates() / TILE_SIZE;
+		int y = m_player.getYCoordonates() / TILE_SIZE;
+		int[][] mapTileNum = m_tileM.getMapTileNum();
+		Tile[] tiles = m_tileM.getTile();
+		
+		if (tiles[mapTileNum[x][y]].m_collision) {
+			m_player.setTape(0, true);
+		} else {
+			m_player.setTape(0, false);
+		}
+		if (tiles[mapTileNum[x][y]].m_collision) {
+			m_player.setTape(1, true);
+		} else {
+			m_player.setTape(1, false);
+		}
+		if (tiles[mapTileNum[x+1][y]].m_collision) {
+			m_player.setTape(2, true);
+		} else {
+			m_player.setTape(2, false);
+		}
+		if (tiles[mapTileNum[x][y+1]].m_collision) {
+			m_player.setTape(3, true);
+		} else {
+			m_player.setTape(3, false);
+		}
 	}
 	
 }
