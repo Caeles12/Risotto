@@ -30,8 +30,8 @@ public class GamePanel extends JPanel implements Runnable{
 	final int ORIGINAL_TILE_SIZE = 16; 							// une tuile de taille 16x16
 	final int SCALE = 3; 										// �chelle utilis�e pour agrandir l'affichage
 	public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; 	// 48x48
-	public final int MAX_SCREEN_COL = 16;
-	public final int MAX_SCREE_ROW = 12; 					 	// ces valeurs donnent une r�solution 4:3
+	public int MAX_SCREEN_COL = 16;
+	public int MAX_SCREE_ROW = 16; 					 	// ces valeurs donnent une r�solution 4:3
 	public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
 	public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREE_ROW;	// 576 pixels
 
@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements Runnable{
 	KeyHandler m_keyH;
 	Thread m_gameThread;
 	Player m_player;
-	TileManager m_tileM;
+	public TileManager m_tileM;
 	Camera m_camera;
 	Renderer m_renderer;
 	Hostile m_frog;
@@ -143,8 +143,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		
 		m_renderer.renderText("Je suis un coffre", m_list_entity.get(0).m_x, m_list_entity.get(0).m_y);
-		
+		m_renderer.renderText("Croa", m_frog.m_x, m_frog.m_y, 1, 4, 15, 2);
 		g2.dispose();
+		m_renderer.update();
 	}
 	
 	public void testCollision() {

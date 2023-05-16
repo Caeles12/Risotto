@@ -64,7 +64,14 @@ public class Frog extends Hostile {
 			m_timer = 0;
 		}
 
-		
+		//System.out.println(distWall());
+	}
+	
+	float distWall() {
+		float dist =0;
+			dist = m_gp.m_tileM.getMapTile(m_x/m_gp.TILE_SIZE, m_y/m_gp.TILE_SIZE);
+			
+		return dist;
 	}
 
 
