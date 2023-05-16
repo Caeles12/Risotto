@@ -141,8 +141,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		
 		m_renderer.renderText("Je suis un coffre", m_list_entity.get(0).m_x, m_list_entity.get(0).m_y);
-		
+		m_renderer.renderText("Croa", m_frog.m_x, m_frog.m_y, 1, 4, 15, 2);
 		g2.dispose();
+		m_renderer.update();
 	}
 	
 }
