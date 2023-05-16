@@ -59,6 +59,7 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
+
 		if (m_keyH.get_lastPressed() == 37) { // GAUCHE
 			m_x -= m_speed;
 		} else if (m_keyH.get_lastPressed() == 38) { // HAUT
