@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import entity.Hostile;
+import entity.SpeechBubble;
 import main.GamePanel;
 import main.Renderer;
 
@@ -60,6 +61,7 @@ public class Frog extends Hostile {
 		}
 		
 		if (m_timer > 150) {
+			new SpeechBubble(m_gp, "Croa", m_x, m_y);
 			m_dir = r.nextInt(5);
 			m_timer = 0;
 		}

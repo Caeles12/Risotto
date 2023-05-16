@@ -8,12 +8,19 @@ import java.util.List;
 import main.Renderer;
 
 /**
- * Entité de base du jeu
+ * Entitï¿½ de base du jeu
  *
  */
 public abstract class Entity {
+	public enum Status {
+		  RUNNING, DESTROY
+	};
+	
 	public int m_x, m_y;				//position sur la map
-	public int m_speed;					//Déplacement de l'entité
-	public List<BufferedImage> m_idleImage = new ArrayList<>();	//Une image de l'entité
-	public abstract void draw(Renderer a_g2);
+	public int m_speed;					//Dï¿½placement de l'entitï¿½
+	public List<BufferedImage> m_idleImage = new ArrayList<>();	//Une image de l'entitï¿½
+	public Status m_status = Status.RUNNING;
+	
+	public abstract void draw(Renderer r);
+	public abstract void update();
 }
