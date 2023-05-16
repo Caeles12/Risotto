@@ -30,10 +30,12 @@ public class Player extends Entity{
 	int[] m_inventaire;
 	int m_life;
 	int m_magie;
-	int m_ralentisseur;
 	int[] m_direction;
 	float[] m_collision;
 	boolean[] m_tape;
+	boolean m_spell;
+	int c;
+	int m_ralentisseur;
 	
 	Collider m_collider;
 	
@@ -54,7 +56,7 @@ public class Player extends Entity{
 		this.m_collider = new Collider(new Rectangle(m_pos, a_gp.TILE_SIZE, a_gp.TILE_SIZE), a_gp);
 		
 		this.setDefaultValues();
-		this.getPlayerImage();
+		this.getPlayerImageBase();
 	}
 	
 	/**
@@ -64,19 +66,20 @@ public class Player extends Entity{
 		m_speed = 4;
 		m_life = 100;
 		m_magie = 80;
-		m_ralentisseur = 0;
 		for (int i = 0; i < 4; i++) {
 			m_tape[i] = false;
 		}
+		m_spell = false;
 	}
 	
 	/**
 	 * R�cup�ration de l'image du personnage
 	 */
-	public void getPlayerImage() {
+	public void getPlayerImageBase() {
 		//gestion des expections 
 		try {
 			m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch.png")));
+			m_idleImage.add(ImageIO.read(getClass().getResource("/player/spellwitch.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -125,15 +128,17 @@ public class Player extends Entity{
 		
 		if (m_keyH.isPressed(70)) { // FireBall f
 			if (m_ralentisseur <= 0) {
-			m_magie -= 10;
-			m_ralentisseur = 10;
+				m_magie -= 10;
+				m_spell = true;
+				m_ralentisseur = 10;
+				c = 0;
 			} else {
 				m_ralentisseur -= 1;
 			}
 		}
 		
 		if (m_keyH.isPressed(69)) {
-			Iterator<Entity> iter = m_gp.m_list_entity.iterator();
+			Iterator<Entity> iter = m_gp.m_list_entity[m_gp.dim].iterator();
 			while(iter.hasNext()) {
 				Entity tmp = iter.next();
 				if(tmp instanceof Entity_interactive) {
@@ -144,6 +149,10 @@ public class Player extends Entity{
 				
 			}
 		}
+		if (c > 10) {
+			m_spell = false;
+		}
+		c += 1;
 	}
 	
 	/**get_lastPressed
@@ -153,7 +162,15 @@ public class Player extends Entity{
 	public void draw(Renderer r) {
 
 		// r�cup�re l'image du joueur
-		BufferedImage l_image = m_idleImage.get(0);
+		BufferedImage l_image;
+		if (m_spell) {
+			l_image = m_idleImage.get(1);
+		}
+		else {
+			m_spell = false;
+			l_image = m_idleImage.get(0);
+		}
+		
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
 		r.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
 
