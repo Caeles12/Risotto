@@ -9,28 +9,25 @@ import entity.Entity_interactive;
 import main.GamePanel;
 import main.Renderer;
 
-public class Door extends Entity_interactive{
+public class Cauldron extends Entity_interactive{
 	
-	int m_dim;
-	
-	public Door(int x, int y, GamePanel m_gp, int dim) {
+	public Cauldron(int x, int y, GamePanel m_gp, List<Integer> inventaire) {
 		this.m_gp = m_gp;
-		this.m_dim = dim;
 		setPositionTiles(x, y);
-		this.getDoorImage();
+		this.objet_interne = inventaire;
+		this.getCauldronImage();
 		
-		this.animate = false;
 	}
 	
 	public List<Integer> interaction() {
-		m_gp.setDim(m_dim);
+		
 		return null;
 	}
 	
-	public void getDoorImage() {
+	public void getCauldronImage() {
 		//gestion des expections 
 		try {
-			m_idleImage.add(ImageIO.read(getClass().getResource("/object/DOOR.png")));
+			for(int i = 1 ; i < 6 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/object/Cauldron_"+i+".png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -42,6 +39,5 @@ public class Door extends Entity_interactive{
 	@Override
 	public void draw(Renderer a_g2) {
 		super.draw(a_g2);
-		if(ptr_list_image == m_idleImage.size()-1) animate = false;
 	}
 }

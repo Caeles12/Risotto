@@ -47,7 +47,6 @@ public class GamePanel extends JPanel implements Runnable{
 	Renderer m_renderer;
 	Hostile m_frog;
 	
-	public List<Entity> m_list_entity2;
 	public List<Entity>[] m_list_entity;
 	public int dim;
 		
@@ -63,13 +62,11 @@ public class GamePanel extends JPanel implements Runnable{
 		m_camera = new Camera(this, m_player.m_x, m_player.m_y, 0.5f, 0.1f);
 		m_renderer = new Renderer(this, m_camera);
 		m_frog = new Frog(this, 200, 100);
-		
-		m_list_entity2 = new ArrayList<>();
-		
+				
 		m_list_entity = new ArrayList[2];
 		for(int i = 0 ; i < m_list_entity.length ; i++) m_list_entity[i] = new ArrayList<Entity>();
 		
-		init_demo_map(this);
+		setDim(0);
 		
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.black);
@@ -78,16 +75,34 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setFocusable(true);
 	}
 	
+	public void setDim(int dim) {
+		switch(dim) {
+		case 0:
+			this.dim = 0;
+			init_demo_map(this);
+			break;
+		case 1:
+			this.dim = 1;
+			init_house(this);
+			break;
+		}
+	}
+	
 	public void init_demo_map(GamePanel gp) {
+		m_player.m_x = TILE_SIZE*6;
+		m_player.m_y = TILE_SIZE*8;
 		m_tileM = new TileManager(this,"/maps/map3.txt");
-		dim = 0;
-		m_list_entity[0].add(new Coffre(6, 1, gp, null));
-		m_list_entity[0].add(new Door(6, 7, gp, null));
+		m_list_entity[dim].add(new Coffre(6, 1, gp, null));
+		m_list_entity[dim].add(new Door(6, 7, gp, 1));
 	}
 	
 	public void init_house(GamePanel gp) {
-		m_tileM = new TileManager(this,"/maps/map.txt");
-		dim = 1;
+		m_player.m_x = TILE_SIZE*8;
+		m_player.m_y = TILE_SIZE*1;
+		m_tileM = new TileManager(this,"/maps/house.txt");
+		m_list_entity[dim].add(new Cauldron(3,1,gp,null));
+		m_list_entity[dim].add(new Door(8,0,gp,0));
+		
 	}
 	
 	/**
