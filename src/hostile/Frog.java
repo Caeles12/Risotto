@@ -23,7 +23,7 @@ public class Frog extends Hostile {
 	protected void setDefaultValues() {
 		m_life = 100;
 		m_damage = 10;
-		m_speed = 4;
+		m_speed = 8;
 		
 	}
 
@@ -39,25 +39,28 @@ public class Frog extends Hostile {
 	}
 
 	protected void move() {
-		
 		if (m_timer > 120) {
+			
+
+			
 			
 			switch(m_dir) {
 			case 1 : 
-				m_x += m_speed;
+				if (!collideWallNext(m_x+m_speed, m_y)) m_x += m_speed;
 				break;
 			case 2 :
-				m_x -= m_speed;
+				if (!collideWallNext(m_x-m_speed, m_y)) m_x -= m_speed;
 				break;
 			case 3 :
-				m_y += m_speed;
+				if (!collideWallNext(m_x, m_y+m_speed)) m_y += m_speed;
 				break;
 			case 4 :
-				m_y -= m_speed;
+				if (!collideWallNext(m_x, m_y-m_speed)) m_y -= m_speed;
 				break;
 			default :
 				break;
 			}
+			
 		}
 		
 		if (m_timer > 150) {
@@ -69,11 +72,35 @@ public class Frog extends Hostile {
 		//System.out.println(distWall());
 	}
 	
-	float distWall() {
-		float dist =0;
-			dist = m_gp.m_tileM.getMapTile(m_x/m_gp.TILE_SIZE, m_y/m_gp.TILE_SIZE);
+	/*
+	 * Fonction qui verifie si le monstre finit dans le mur apres le prochain movement
+	 * @param x coordonners en x du monstre
+	 * @param y coordonners en x du monstre
+	 */
+	boolean collideWallNext(float x, float y) {
+
+		
+		int posX = (int)x/m_gp.TILE_SIZE; 
+		int posY = (int)y/m_gp.TILE_SIZE;
+		
+		if(m_gp.m_tileM.getMapTile(posX, posY) != 0) //on verifie la tile de gauche
+		{
+			return true;
+		}
+		else if(m_gp.m_tileM.getMapTile(posX+1, posY) != 0) //on verifie la tile de droite
+		{
+			return true;
+		}
+		else if(m_gp.m_tileM.getMapTile(posX, posY) != 0) //on verifie la tile du haut
+		{
+			return true;
+		}
+		else if(m_gp.m_tileM.getMapTile(posX, posY+1) != 0) //on verifie la tile du bas
+		{
+			return true;
+		}
 			
-		return dist;
+		return false;
 	}
 
 
