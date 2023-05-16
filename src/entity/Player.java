@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.Math;
 
 import javax.imageio.ImageIO;
 
@@ -22,8 +23,8 @@ public class Player extends Entity{
 	int[] m_inventaire;
 	int m_life;
 	int m_magie;
-	
 	int m_ralentisseur;
+	int[] m_direction;
 	
 	/**
 	 * Constructeur de Player
@@ -34,6 +35,7 @@ public class Player extends Entity{
 		this.m_gp = a_gp;
 		this.m_keyH = a_keyH;
 		this.m_inventaire = new int[10];
+		this.m_direction = new int[2];
 		this.setDefaultValues();
 		this.getPlayerImage();
 	}
@@ -48,6 +50,8 @@ public class Player extends Entity{
 		m_life = 100;
 		m_magie = 80;
 		m_ralentisseur = 0;
+		m_direction[0] = 0;
+		m_direction[1] = 0;
 	}
 	
 	/**
@@ -67,17 +71,29 @@ public class Player extends Entity{
 	 */
 	public void update() {
 		if (m_keyH.isPressed(37)) { // GAUCHE
-			m_x -= m_speed;
+			m_direction[0] += -1;
+			m_direction[1] += 0;
 		}
 		if (m_keyH.isPressed(38)) { // HAUT
-			m_y -= m_speed;
+			m_direction[0] += 0;
+			m_direction[1] += -1;
 		} 
 		if (m_keyH.isPressed(39)) { // DROITE
-			m_x += m_speed;
+			m_direction[0] += 1;
+			m_direction[1] += 0;
 		}
 		if (m_keyH.isPressed(40)) { // BAS
-			m_y += m_speed;
+			m_direction[0] += 0;
+			m_direction[1] += 1;
 		}
+		double norme = Math.sqrt(m_direction[0] * m_direction[0] + m_direction[1] * m_direction[1]);
+		System.out.println(norme);
+		m_x += (int) (m_speed * m_direction[0] / norme);
+		m_y += (int) (m_speed * m_direction[1] / norme);
+		m_direction[0] = 0;
+		m_direction[1] = 0;
+
+		
 		if (m_keyH.isPressed(70)) { // FireBall f
 			if (m_ralentisseur <= 0) {
 			m_magie -= 10;
