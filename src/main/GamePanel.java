@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable{
 	KeyHandler m_keyH;
 	Thread m_gameThread;
 	Player m_player;
-	TileManager m_tileM;
+	public TileManager m_tileM;
 	Camera m_camera;
 	Renderer m_renderer;
 	Hostile m_frog;
