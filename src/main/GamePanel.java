@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable{
 	// Cr�ation des diff�rentes instances (Player, KeyHandler, TileManager, GameThread ...)
 	KeyHandler m_keyH;
 	Thread m_gameThread;
-	Player m_player;
+	public Player m_player;
 	public TileManager m_tileM;
 	Camera m_camera;
 	Renderer m_renderer;
@@ -102,7 +102,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void init_demo_map(GamePanel gp) {
 		m_tab_Map[dim] = new Map(gp,"/maps/map3.txt");
 		
-		m_tab_Map[dim].m_list_entity.add(new Coffre(6, 1, gp, null));
+		m_tab_Map[dim].m_list_entity.add(new Coffre(6, 1, gp));
 		m_tab_Map[dim].m_list_entity.add(new Door(6, 7, gp, 1));
 		m_tab_Map[dim].m_list_entity.add(new Frog(this, 200, 100));
 	}
@@ -110,7 +110,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void init_house(GamePanel gp) {
 		m_tab_Map[dim] = new Map(this,"/maps/house.txt");
 		
-		m_tab_Map[dim].m_list_entity.add(new Cauldron(3,1,gp,null));
+		m_tab_Map[dim].m_list_entity.add(new Cauldron(3,1,gp));
 		m_tab_Map[dim].m_list_entity.add(new Door(5,0,gp,0));
 		
 	}

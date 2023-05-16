@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.Math;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -124,15 +125,12 @@ public class Player extends Entity{
 		interact_cooldown++;
 		if (m_keyH.isPressed(69) && interact_cooldown >10) {
 			interact_cooldown = 0;
-			Iterator<Entity> iter = m_gp.m_tab_Map[m_gp.dim].m_list_entity.iterator();
-			while(iter.hasNext()) {
-				Entity tmp = iter.next();
-				if(tmp instanceof Entity_interactive) {
-					if(Math.sqrt(Math.pow(tmp.m_x-this.m_x,2)+Math.pow(tmp.m_y-this.m_y,2)) < 80) {
-						((Entity_interactive) tmp).interaction();
+			for(Entity e : m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
+				if(e instanceof Entity_interactive) {
+					if(Math.sqrt(Math.pow(e.m_x-this.m_x,2)+Math.pow(e.m_y-this.m_y,2)) < 80) {
+						addItem(((Entity_interactive) e).interaction());
 					}
 				}
-				
 			}
 		}
 		if (c > 10) {
@@ -172,6 +170,36 @@ public class Player extends Entity{
 	
 	public void setTape(int pos, boolean b) {
 		m_tape[pos] = b;
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return l'id de l'item si trouver, sinon 0
+	 * 
+	 * cherche et enleve un item de l'inventaire
+	 */
+	public int takeItem(int id) {
+		for(int i = 0 ; i < m_inventaire.length; i++){
+			if(m_inventaire[i]==id) {
+				m_inventaire[i]=0;
+				return id;
+			}
+		}
+		return 0;
+	}
+	
+	public boolean addItem(List<Integer> li) {
+		if(li == null) return false;
+		for(int e : li) {
+			for(int i = 0 ; i < m_inventaire.length ;i++) {
+				if(m_inventaire[i] == 0) {
+					m_inventaire[i] = e;
+					break;
+				}
+			}
+		}
+		return true;
 	}
 	
 }

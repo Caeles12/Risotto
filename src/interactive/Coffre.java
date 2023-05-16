@@ -3,6 +3,7 @@ package interactive;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -18,6 +19,16 @@ public class Coffre extends Entity_interactive{
 		this.m_gp = m_gp;
 		setPositionTiles(x, y);
 		this.objet_interne = inventaire;
+		this.getCoffreImage();
+		
+		this.animate = false;
+		looted = false;
+	}
+	
+	public Coffre(int x, int y, GamePanel m_gp) {
+		this.m_gp = m_gp;
+		setPositionTiles(x, y);
+		this.objet_interne = new ArrayList<>();
 		this.getCoffreImage();
 		
 		this.animate = false;
