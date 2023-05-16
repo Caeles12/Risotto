@@ -19,6 +19,7 @@ public class KeyHandler implements KeyListener{
 		// récupère le code du boutton appuyé
 		int code = e.getKeyCode();
 		System.out.println(code);
+		
 	}
 
 	@Override
