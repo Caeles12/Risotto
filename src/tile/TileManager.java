@@ -98,6 +98,10 @@ public class TileManager {
 		}
 	}
 	
+	public int getMapTile(int x, int y) {
+		return m_mapTileNum[x][y];
+	}
+	
 	/**
 	 * Affichage de la carte avec les diff�rentes tuiles
 	 * @param g2
