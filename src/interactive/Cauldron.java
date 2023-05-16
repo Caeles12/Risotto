@@ -42,6 +42,10 @@ public class Cauldron extends Entity_interactive{
 		List<Integer> l = new ArrayList<>();
 		if(tryRecipe(1)) {
 			l.add(5);
+			objet_interne.remove(objet_interne.indexOf(1));
+			objet_interne.remove(objet_interne.indexOf(3));
+			objet_interne.remove(objet_interne.indexOf(4));
+			nextText.add("Vous obtenez : Rizotto de Champignon");
 			return l ;
 		}
 		else {

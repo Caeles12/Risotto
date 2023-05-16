@@ -22,7 +22,7 @@ public class SpeechBubble extends Entity{
 		this.m_wobbleSpeed = 0;
 		this.m_wobbleFrequency = 0;
 		
-		this.m_pos = new Vector2D(0,0);
+		this.m_pos = new Vector2D(x,y);
 		
 		m_gp.m_tab_Map[m_gp.dim].m_list_entity.add(this);
 	}

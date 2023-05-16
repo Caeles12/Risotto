@@ -127,7 +127,7 @@ public class Player extends Entity{
 			float vy = (m_direction[1] / norme);
 			
 			this.m_pos.x += vx*m_speed;
-			System.out.println(this.m_collider.m_shape.getOrigin().x);
+			//System.out.println(this.m_collider.m_shape.getOrigin().x);
 			if(this.m_collider.collidingTileMap(this.m_gp.m_tileM)) {
 				this.m_pos.x -= vx*m_speed;
 			}
@@ -163,6 +163,21 @@ public class Player extends Entity{
 
 					}
 				}
+			}
+			
+			if(m_inventaire.contains(2)) { //recherche d'eau pour remplir seau
+				int x = (int)(m_pos.x/m_gp.TILE_SIZE);
+				int y = (int)(m_pos.y/m_gp.TILE_SIZE);
+				for(int i = 0 ;  i < 3 ; i++) {
+					for(int j = 0 ; j < 3 ; j++) {
+						if(m_gp.m_tab_Map[m_gp.dim].m_Map.getMapTile(x-1+i, y-1+j) == 2) {
+							takeItem(2);
+							addToInventory(3);
+							nextText = "Seau remplis d'eau";
+						}
+					}
+				}
+				
 			}
 		}
 		if (c > 17) {
