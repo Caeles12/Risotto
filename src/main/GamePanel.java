@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public List<Entity> m_list_entity2;
 	public List<Entity>[] m_list_entity;
 	public int dim;
-		
+	
 	/**
 	 * Constructeur
 	 */

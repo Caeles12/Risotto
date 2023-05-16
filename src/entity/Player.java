@@ -112,7 +112,8 @@ public class Player extends Entity{
 				m_magie -= 10;
 				m_spell = true;
 				m_ralentisseur = 10;
-				new Fireball(m_gp, (int) m_x + 1, (int) m_y);
+				Fireball f = new Fireball(m_gp, m_keyH, (int) m_x + 1, (int) m_y);
+				f.setDirection(m_direction[0], m_direction[1]);
 				c = 0;
 			} else {
 				m_ralentisseur -= 1;
@@ -131,7 +132,7 @@ public class Player extends Entity{
 				
 			}
 		}
-		if (c > 21) {
+		if (c > 6) {
 			m_spell = false;
 		}
 		c += 1;
