@@ -21,7 +21,7 @@ public class Door extends Entity_interactive{
 	}
 	
 	public List<Integer> interaction() {
-
+		m_gp.init_house(m_gp);
 		return null;
 	}
 	
