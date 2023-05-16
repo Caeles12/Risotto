@@ -134,14 +134,16 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		m_renderer.setGraphics(g2);
-
+		
 		m_tileM.draw(m_renderer);
-		m_player.draw(m_renderer);
 		m_frog.draw(m_renderer);
 		Iterator<Entity> iter = m_list_entity.iterator();
 		while(iter.hasNext()) iter.next().draw(m_renderer);
+		m_player.draw(m_renderer);
+		
+		
 		m_renderer.renderText("Je suis un coffre", m_list_entity.get(0).m_x, m_list_entity.get(0).m_y);
-
+		
 		g2.dispose();
 	}
 	
