@@ -83,9 +83,12 @@ public class Player extends Entity{
 			Iterator<Entity> iter = m_gp.m_list_entity.iterator();
 			while(iter.hasNext()) {
 				Entity tmp = iter.next();
-				if(Math.sqrt((tmp.m_x-this.m_x)^2+(tmp.m_y-this.m_y)^2) < 10) {
-					
+				if(tmp instanceof Entity_interactive) {
+					if(Math.sqrt(Math.pow(tmp.m_x-this.m_x,2)+Math.pow(tmp.m_y-this.m_y,2)) < 80) {
+						((Entity_interactive) tmp).interaction();
+					}
 				}
+				
 			}
 		}
 	}

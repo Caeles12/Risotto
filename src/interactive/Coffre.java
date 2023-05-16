@@ -12,6 +12,7 @@ import main.GamePanel;
 import main.Renderer;
 
 public class Coffre extends Entity_interactive{
+	boolean looted;
 	
 	public Coffre(int x, int y, GamePanel m_gp, List<Integer> inventaire) {
 		this.m_gp = m_gp;
@@ -20,11 +21,18 @@ public class Coffre extends Entity_interactive{
 		this.objet_interne = inventaire;
 		this.getCoffreImage();
 		
-		//this.animate = false;
+		this.animate = false;
+		looted = false;
 	}
 	
 	public List<Integer> interaction() {
-		return this.objet_interne;
+		if(!looted) {
+			looted = true;
+			animate = true;
+			return this.objet_interne;
+		}
+		if(looted) ptr_list_image = 0;
+		return null;
 	}
 	
 	public void getCoffreImage() {
@@ -36,5 +44,8 @@ public class Coffre extends Entity_interactive{
 		}
 	}
 	
-	
+	public void draw(Renderer a_g2) {
+		super.draw(a_g2);
+		if(ptr_list_image == m_idleImage.size()-1) animate = false;
+	}
 }
