@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -28,7 +29,7 @@ public class Player extends Entity{
 
 	GamePanel m_gp;
 	KeyHandler m_keyH;
-	ArrayList<Item> m_inventaire;
+	ArrayList<Integer> m_inventaire;
 	int m_life;
 	int m_magie;
 	int[] m_direction;
@@ -41,6 +42,8 @@ public class Player extends Entity{
 	Collider m_collider;
 	int interact_cooldown;
 	
+	String nextText = "";
+	
 	/**
 	 * Constructeur de Player
 	 * @param a_gp GamePanel, pannel principal du jeu
@@ -49,7 +52,7 @@ public class Player extends Entity{
 	public Player(GamePanel a_gp, KeyHandler a_keyH) {
 		this.m_gp = a_gp;
 		this.m_keyH = a_keyH;
-		this.m_inventaire = new ArrayList<Item>();
+		this.m_inventaire = new ArrayList<Integer>();
 		this.m_direction = new int[2];
 		this.m_tape = new boolean[4];
 		this.m_collision = new float[2];
@@ -94,6 +97,10 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
+		if(nextText != "") {
+			new SpeechBubble(m_gp, nextText , (int) this.m_pos.x, (int) this.m_pos.y - 10);
+			nextText = "";
+		}
 		this.m_collider.m_shape.setOrigin(m_pos);
 		
 		if (m_keyH.isPressed(37)) { // GAUCHE
@@ -120,7 +127,7 @@ public class Player extends Entity{
 			float vy = (m_direction[1] / norme);
 			
 			this.m_pos.x += vx*m_speed;
-			System.out.println(this.m_collider.m_shape.getOrigin().x);
+			//System.out.println(this.m_collider.m_shape.getOrigin().x);
 			if(this.m_collider.collidingTileMap(this.m_gp.m_tileM)) {
 				this.m_pos.x -= vx*m_speed;
 			}
@@ -149,12 +156,25 @@ public class Player extends Entity{
 		interact_cooldown++;
 		if (m_keyH.isPressed(69) && interact_cooldown >10) {
 			interact_cooldown = 0;
-			Iterator<Entity> iter = m_gp.m_tab_Map[m_gp.dim].m_list_entity.iterator();
-			while(iter.hasNext()) {
-				Entity tmp = iter.next();
-				if(tmp instanceof Entity_interactive) {
-					if(this.m_pos.distanceTo(tmp.m_pos) < 80) {
-						((Entity_interactive) tmp).interaction();
+			for(Entity e : m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
+				if(e instanceof Entity_interactive) {
+					if(this.m_pos.distanceTo(e.m_pos) < 80) {
+						addItem(((Entity_interactive) e).interaction());
+
+					}
+				}
+			}
+			
+			if(m_inventaire.contains(2)) { //recherche d'eau pour remplir seau
+				int x = (int)(m_pos.x/m_gp.TILE_SIZE);
+				int y = (int)(m_pos.y/m_gp.TILE_SIZE);
+				for(int i = 0 ;  i < 3 ; i++) {
+					for(int j = 0 ; j < 3 ; j++) {
+						if(m_gp.m_tab_Map[m_gp.dim].m_Map.getMapTile(x-1+i, y-1+j) == 2) {
+							takeItem(2);
+							addToInventory(3);
+							nextText = "Seau remplis d'eau";
+						}
 					}
 				}
 				
@@ -199,16 +219,49 @@ public class Player extends Entity{
 		m_tape[pos] = b;
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return l'id de l'item si trouver, sinon 0
+	 * 
+	 * cherche et enleve un item de l'inventaire
+	 */
+	public int takeItem(int id) {
+		if(m_inventaire.contains(id)) {
+			m_inventaire.remove(m_inventaire.indexOf(id));
+			return id;
+		}
+		return 0;
+	}
+	
+	public boolean addItem(List<Integer> li) {
+		if(li == null) return false;
+		for(int e : li) {
+			addToInventory(e);
+		}
+		return true;
+	}
+	
 	public boolean fullInventory() {
 		return m_inventaire.size() == 10;
 	}
 
-	public void addToInventory(Item i) {
+	public void addToInventory(int i) {
 		if (!fullInventory()) {
 			m_inventaire.add(i);
 		} else {
-			new SpeechBubble(m_gp, "Poches pleines !", (int) this.m_pos.x, (int) this.m_pos.y - 10);
+			nextText = "Poches pleines !";
+			
 		}
+	}
+	
+	public void regen() {
+		if(m_life < 100 || m_magie < 80) {
+			m_life = 100;
+			m_magie = 80;
+			nextText = "Santee et Magie restoree <3";
+		}
+		else nextText = "Je ne suis pas fatiguee ;~;";
 	}
 	
 }
