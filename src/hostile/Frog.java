@@ -39,7 +39,7 @@ public class Frog extends Hostile {
 	public void getHostileImage() {
 		//gestion des expections 
 		try {
-			for(int i = 1 ; i < 6 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/hostile/grenouille_"+i+".png")));
+			for(int i = 1 ; i < 8 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/hostile/grenouille_"+i+".png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -67,7 +67,6 @@ public class Frog extends Hostile {
 		if(m_timerAnimation >= 15) {
 			ptr_list_image++;
 			m_timerAnimation = 0;
-			m_life --;
 		}
 	}
 

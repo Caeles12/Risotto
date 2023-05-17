@@ -57,11 +57,14 @@ abstract public class Hostile extends Entity{
 	 * Mise � jour des donn�es du monstre
 	 */
 	public void update() {
-		m_timer ++;
+		if(m_life>=0) {
+			m_timer ++;
+			move();
+			animationRate();
+			updateLifeBar();
+		}
 		m_timerAnimation ++;
-		move();
-		animationRate();
-		updateLifeBar();
+
 		
 	}
 	
@@ -135,7 +138,8 @@ abstract public class Hostile extends Entity{
 	
 	public void draw(Renderer a_g2) {
 		// r�cup�re l'image du joueur
-		if(ptr_list_image >= m_idleImage.size()) ptr_list_image =0;
+		if(ptr_list_image >= m_idleImage.size()-3 && m_life > 0) ptr_list_image =0;
+		else if(ptr_list_image >= m_idleImage.size())  ptr_list_image =0;
 		
 		BufferedImage l_image = m_idleImage.get(ptr_list_image);
 		// affiche le monstre avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
