@@ -116,7 +116,7 @@ public class Player extends Entity{
 			m_magie -= 1;
 			m_spell = true;
 			m_ralentisseur = 16;
-			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + 1, (int) this.m_pos.y);
+			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + m_gp.TILE_SIZE/2, (int) this.m_pos.y + m_gp.TILE_SIZE/2);
 			f.setDirection(x, y);
 			c = 0;
 		} else {
@@ -201,6 +201,7 @@ public class Player extends Entity{
 			interact_cooldown = 0;
 			for(Entity e : m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
 				if(e instanceof Entity_interactive) {
+					System.out.println(e.getClass().getName());
 					if(this.m_pos.distanceTo(e.m_pos) < 50) {
 						addItem(((Entity_interactive) e).interaction());
 

@@ -35,7 +35,8 @@ public abstract class Entity {
 			return true;
 		}
 		
-		for(Entity entity: m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
+		for(int i=0; i<m_gp.m_tab_Map[m_gp.dim].m_list_entity.size(); i++) {
+			Entity entity = m_gp.m_tab_Map[m_gp.dim].m_list_entity.get(i);
 			if(entity != this && entity.m_collider != null) {
 				try {
 					if(entity.solid && this.m_collider.colliding(entity.m_collider)) {
