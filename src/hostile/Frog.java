@@ -9,7 +9,8 @@ import entity.SpeechBubble;
 
 import main.GamePanel;
 import main.Renderer;
-
+import utils.Collider;
+import utils.Rectangle;
 import utils.Vector2D;
 
 import tile.Tile;
@@ -20,6 +21,7 @@ public class Frog extends Hostile {
 	public Frog(GamePanel a_gp,int x,int y){
 		super( a_gp);
 		this.m_pos = new Vector2D(x, y);
+		this.m_collider = new Collider(new Rectangle(m_pos, new Vector2D(a_gp.TILE_SIZE/4, a_gp.TILE_SIZE/4),a_gp.TILE_SIZE/2, a_gp.TILE_SIZE/2), a_gp);
 	}
 
 	@Override

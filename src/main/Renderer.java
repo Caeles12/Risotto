@@ -46,6 +46,10 @@ public class Renderer {
 		m_g2.setFont(m_font);
 	}
 	
+	public void setFontSize(int size) {
+		this.m_font = m_font_base.deriveFont(Font.PLAIN, size);
+	}
+	
 	public void renderImage(BufferedImage image, int x, int y, int w, int h) {
 		assert(this.m_g2 != null);
 		
@@ -56,6 +60,12 @@ public class Renderer {
 		int scaleW = (int) Math.ceil(w*scale);
 		int scaleH = (int) Math.ceil(h * scale);
 		m_g2.drawImage(image, posX, posY, scaleW, scaleH, null);
+	}
+	
+	public void renderUIImage(BufferedImage image, int x, int y, int w, int h) {
+		assert(this.m_g2 != null);
+		
+		m_g2.drawImage(image, x, y, w, h, null);
 	}
 	
 	public void renderCircle(int x, int y, int r) {
@@ -88,7 +98,15 @@ public class Renderer {
 		renderText(text, x, y, 1, 0, 0, 0);
 	}
 	
+	public void renderCenteredText(String text, int x, int y) {
+		renderText(text, x, y, 1, 0, 0, 0);
+	}
+	
 	public void renderText(String text, int x, int y, float opacity) {
+		renderText(text, x, y, opacity, 0, 0, 0);
+	}
+	
+	public void renderCenteredText(String text, int x, int y, float opacity) {
 		renderText(text, x, y, opacity, 0, 0, 0);
 	}
 	
@@ -101,15 +119,39 @@ public class Renderer {
 		this.renderTextToScreen(text, posX, posY, opacity, wobbleAmplitude, wobbleSpeed, wobbleFrequency);
 	}
 	
+	public void renderCenteredText(String text, int x, int y, float opacity,  float wobbleAmplitude, float wobbleSpeed, float wobbleFrequency) {
+		float scale = this.m_camera.getScale();
+		
+		int posX = (int) (Math.floor((x - this.m_camera.getX())*scale) + (this.m_gp.SCREEN_WIDTH/2));
+		int posY = (int) (Math.floor((y - this.m_camera.getY())*scale) + (this.m_gp.SCREEN_HEIGHT/2));
+		
+		this.renderCenteredTextToScreen(text, posX, posY, opacity, wobbleAmplitude, wobbleSpeed, wobbleFrequency);
+	}
+	
 	public void renderTextToScreen(String text, int x, int y) {
 		renderTextToScreen(text, x, y, 1, 0, 0, 0);
+	}
+	
+	public void renderCenteredTextToScreen(String text, int x, int y) {
+		renderCenteredTextToScreen(text, x, y, 1, 0, 0, 0);
 	}
 	
 	public void renderTextToScreen(String text, int x, int y, float opacity) {
 		renderTextToScreen(text, x, y, opacity, 0, 0, 0);
 	}
 	
-	public void renderTextToScreen(String text, int x, int y, float opacity, float wobbleAmplitude, float wobbleSpeed, float wobbleFrequency ) {
+	public void renderCenteredTextToScreen(String text, int x, int y, float opacity) {
+		renderCenteredTextToScreen(text, x, y, opacity, 0, 0, 0);
+	}
+	
+	public void renderCenteredTextToScreen(String text, int x, int y, float opacity, float wobbleAmplitude, float wobbleSpeed, float wobbleFrequency) {
+		int n_x = (int) (x-(m_font.getStringBounds(text, m_g2.getFontRenderContext()).getWidth()/2));
+		renderTextToScreen(text, n_x, y, opacity, wobbleAmplitude, wobbleSpeed, wobbleFrequency);
+	}
+	
+	public void renderTextToScreen(String text, int x, int y, float opacity, float wobbleAmplitude, float wobbleSpeed, float wobbleFrequency) {
+		
+		
 		float amplitude = wobbleAmplitude;
 		float speed = wobbleSpeed;
 		float frequency = wobbleFrequency;

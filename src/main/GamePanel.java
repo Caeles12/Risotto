@@ -194,6 +194,8 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		m_player.draw(m_renderer);
 		
+		UI.text(this, "Hello!", 0, SCREEN_WIDTH, 48);
+		
 		g2.dispose();
 		m_renderer.update();
 	}
