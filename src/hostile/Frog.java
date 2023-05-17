@@ -9,10 +9,10 @@ import entity.SpeechBubble;
 
 import main.GamePanel;
 import main.Renderer;
+
+import utils.Vector2D;
 import utils.Collider;
 import utils.Rectangle;
-import utils.Vector2D;
-
 import tile.Tile;
 
 public class Frog extends Hostile {
@@ -73,5 +73,6 @@ public class Frog extends Hostile {
 		if(ptr_list_image >= m_idleImage.size()-3 && m_life > 0) ptr_list_image =0;
 		else if(ptr_list_image >= m_idleImage.size())  ptr_list_image =0;
 	}
+	
 
 }
