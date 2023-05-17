@@ -168,6 +168,7 @@ abstract public class Hostile extends Entity{
 		m_life -= damage;
 		if(m_life <=0) {
 			new Item((int) m_pos.x,(int) m_pos.y, m_gp, 6);
+			new SpeechBubble(m_gp, "Couic",(int) this.m_pos.x,(int) this.m_pos.y, 5, 10, 1);
 			m_status = Status.DESTROY;
 			m_life = 0;
 		}
