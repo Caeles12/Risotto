@@ -1,25 +1,20 @@
 package entity;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.Math;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import hostile.Demon;
 import main.GamePanel;
 import main.GamePanel.Map;
 import main.KeyHandler;
 import main.Renderer;
 import main.UI;
-import tile.TileManager;
 import utils.Collider;
-import utils.Shape;
 import utils.Vector2D;
 import utils.Rectangle;
 
@@ -141,7 +136,14 @@ public class Player extends Entity{
 	}
 	
 	public void LanceFireball(float x, float y) {
-		if(!m_can_cast) return;
+		m_ralentisseur -= 1;
+		if(!m_can_cast) {
+			if(m_ralentisseur <= 0) {
+				nextText.add("Sans nourriture pas de magie ;-;");
+				m_ralentisseur = 30;
+			}
+			return;
+		}
 		if (m_ralentisseur <= 0) {
 			m_magie -= 1;
 			m_spell = true;
@@ -149,8 +151,6 @@ public class Player extends Entity{
 			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + m_gp.TILE_SIZE/2, (int) this.m_pos.y + m_gp.TILE_SIZE/2);
 			f.setDirection(x, y);
 			c = 0;
-		} else {
-			m_ralentisseur -= 1;
 		}
 	}
 	
@@ -179,6 +179,7 @@ public class Player extends Entity{
 			m_gp.setDim(2);
 			regen();
 			m_inventaire = new ArrayList<>();
+			m_has_broom = false;
 		}
 		
 		if(m_has_broom) {
@@ -361,18 +362,18 @@ public class Player extends Entity{
 			}
 		}
 		else {
-			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5);
+			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5,Color.black,Color.magenta);
 			if(menuNb == 0) {
 				UI.text(m_gp, "z q s d -> Magie", 300, 240,20);
 				UI.text(m_gp, "fleches directionnelles -> deplacement", 180, 260,20);
 				UI.text(m_gp, "e -> Interagir", 300, 280,20);
 			}
 			if(menuNb == 1) {
-				UI.text(m_gp, "VICTOIRE", 300, 260, 35,8,12,5);
+				UI.text(m_gp, "VICTOIRE", 300, 260, 35,8,12,5,Color.black,Color.yellow);
 				UI.text(m_gp, "Vous etes incroyable :D", 280, 320,20);
 			}
 			if(menuNb == 2) {
-				UI.text(m_gp, "GAME OVER", 300, 260, 35,8,12,5);
+				UI.text(m_gp, "GAME OVER", 300, 260, 35,8,12,5,Color.black,Color.red);
 				UI.text(m_gp, "Vous pouvez y retourner, bon courage", 180, 320,20);
 			}
 		}
@@ -415,6 +416,7 @@ public class Player extends Entity{
 		for(int e : li) {
 			if(e==5) {
 				m_can_cast = true;
+				nextText.add("Allez tuer les monstres dans le jardin!");
 			}else if(e==7) {
 				m_has_broom = true;
 			}

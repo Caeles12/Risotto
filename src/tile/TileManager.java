@@ -1,15 +1,12 @@
 package tile;
 
-import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 
-import entity.Player;
 import main.GamePanel;
 import main.Renderer;
 
@@ -54,14 +51,14 @@ public class TileManager {
 			m_tile[1].m_collision = true;
 			
 			m_tile[2] = new Tile();
-			m_tile[2].m_image = ImageIO.read(getClass().getResource("/tiles/WATER.png"));
+			m_tile[2].m_image = ImageIO.read(getClass().getResource("/tiles/WATER+.png"));
 			m_tile[2].m_collision = true;
 			
 			m_tile[3] = new Tile();
 			m_tile[3].m_image = ImageIO.read(getClass().getResource("/tiles/LAVA.png"));
 			
 			m_tile[4] = new Tile();
-			m_tile[4].m_image = ImageIO.read(getClass().getResource("/tiles/SAND.png"));
+			m_tile[4].m_image = ImageIO.read(getClass().getResource("/tiles/SAND+.png"));
 			
 			m_tile[5] = new Tile();
 			m_tile[5].m_image = ImageIO.read(getClass().getResource("/tiles/SNOW.png"));

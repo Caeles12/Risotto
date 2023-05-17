@@ -1,6 +1,5 @@
 package entity;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,9 +11,6 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.Renderer;
 import interactive.Item;
-import utils.Collider;
-import utils.Rectangle;
-import utils.Vector2D;
 
 abstract public class Hostile extends Entity{
 

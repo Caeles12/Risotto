@@ -8,12 +8,10 @@ import entity.Hostile;
 import entity.SpeechBubble;
 
 import main.GamePanel;
-import main.Renderer;
 
 import utils.Vector2D;
 import utils.Collider;
 import utils.Rectangle;
-import tile.Tile;
 
 public class Frog extends Hostile {
 
