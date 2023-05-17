@@ -36,7 +36,7 @@ public class Coffre extends Entity_interactive{
 		
 		this.animate = false;
 		looted = false;
-		talk = "trouver : "+Object.getNom(inventaire);
+		talk = "Trouve : "+Object.getNom(inventaire);
 	}
 	
 	public Coffre(int x, int y, GamePanel m_gp) {
@@ -58,7 +58,7 @@ public class Coffre extends Entity_interactive{
 		}
 		if(looted) {
 			ptr_list_image = 0;
-			talk = "ce coffre est vide";
+			talk = "Ce coffre est vide";
 		}
 		return null;
 	}
