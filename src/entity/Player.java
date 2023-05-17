@@ -62,7 +62,6 @@ public class Player extends Entity{
 		this.m_tape = new boolean[4];
 		this.m_collision = new float[2];
 		this.m_pos = new Vector2D(100, 100);
-		
 		this.m_collider = new Collider(new Rectangle(m_pos, new Vector2D(a_gp.TILE_SIZE/4, a_gp.TILE_SIZE/4),a_gp.TILE_SIZE/2, a_gp.TILE_SIZE/2), a_gp);
 		
 		this.setDefaultValues();
@@ -104,6 +103,19 @@ public class Player extends Entity{
 			halfH = ImageIO.read(getClass().getResource("/hostile/demiCoeur.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void LanceFireball(float x, float y) {
+		if (m_ralentisseur <= 0) {
+			m_magie -= 1;
+			m_spell = true;
+			m_ralentisseur = 16;
+			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + 1, (int) this.m_pos.y);
+			f.setDirection(x, y);
+			c = 0;
+		} else {
+			m_ralentisseur -= 1;
 		}
 	}
 	
@@ -155,19 +167,30 @@ public class Player extends Entity{
 		m_direction[0] = 0;
 		m_direction[1] = 0;
 		
-		if (m_keyH.isPressed(70) && m_magie >= 10) { // FireBall f
-			if (m_ralentisseur <= 0) {
-				m_magie -= 10;
-				m_spell = true;
-
-				m_ralentisseur = 16;
-				Fireball f = new Fireball(m_gp, m_keyH, (int) this.m_pos.x + 1, (int) this.m_pos.y);
-				f.setDirection(m_direction[0], m_direction[1]);
-				c = 0;
-			} else {
-				m_ralentisseur -= 1;
-			}
+	
+		int[] fb_dir = {0, 0};
+		
+		if (m_keyH.isPressed(81) && getMagie() >= 1) { // FireBall q Gauche 
+			fb_dir[0] += -1;
+			fb_dir[1] += 0;
+		} if (m_keyH.isPressed(90) && getMagie() >= 1) { // FireBall z Haut
+			fb_dir[0] += 0;
+			fb_dir[1] += -1;
+		} if (m_keyH.isPressed(68) && getMagie() >= 1) { // FireBall d Droit 
+			fb_dir[0] += 1;
+			fb_dir[1] += 0;
+		} if (m_keyH.isPressed(83) && getMagie() >= 1) { // FireBall s Bas
+			fb_dir[0] += 0;
+			fb_dir[1] += 1;
+		} if (fb_dir[0] != 0 || fb_dir[1] != 0) {
+			float norme = (float) Math.sqrt(fb_dir[0] * fb_dir[0] + fb_dir[1] * fb_dir[1]);
+			
+			float vx = (fb_dir[0] / norme);
+			float vy = (fb_dir[1] / norme);
+			
+			LanceFireball(vx, vy);
 		}
+		
 		interact_cooldown++;
 		if (m_keyH.isPressed(69) && interact_cooldown >10) {
 			take_damage();
@@ -201,10 +224,12 @@ public class Player extends Entity{
 				
 			}
 		}
+		
 		if (c > 17) {
 			m_spell = false;
 		}
 		c += 1;
+		
 	}
 	
 	/**get_lastPressed
@@ -219,7 +244,9 @@ public class Player extends Entity{
 			l_image = m_idleImage.get(1);
 		}
 		else {
-			m_spell = false;
+			for (int i = 0; i < 4; i++) {
+				m_spell = false;
+			}
 			l_image = m_idleImage.get(0);
 		}
 		
@@ -248,6 +275,11 @@ public class Player extends Entity{
 		m_tape[pos] = b;
 	}
 	
+
+	public int getMagie() {
+		return m_magie;
+	}
+	
 	/**
 	 * 
 	 * @param id
@@ -269,6 +301,7 @@ public class Player extends Entity{
 			addToInventory(e);
 		}
 		return true;
+
 	}
 	
 	public boolean fullInventory() {
