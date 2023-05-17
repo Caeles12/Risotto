@@ -47,7 +47,7 @@ public class TileManager {
 	public void getTileImage() {
 		try {
 			m_tile[0] = new Tile();
-			m_tile[0].m_image = ImageIO.read(getClass().getResource("/tiles/GRASS.png"));
+			m_tile[0].m_image = ImageIO.read(getClass().getResource("/tiles/GRASS+.png"));
 			
 			m_tile[1] = new Tile();
 			m_tile[1].m_image = ImageIO.read(getClass().getResource("/tiles/BRICK2.png"));
@@ -67,7 +67,7 @@ public class TileManager {
 			m_tile[5].m_image = ImageIO.read(getClass().getResource("/tiles/SNOW.png"));
 			
 			m_tile[6] = new Tile();
-			m_tile[6].m_image = ImageIO.read(getClass().getResource("/tiles/FENCE.png"));
+			m_tile[6].m_image = ImageIO.read(getClass().getResource("/tiles/FENCE+.png"));
 			m_tile[6].m_collision = true;
 			
 			m_tile[7] = new Tile();

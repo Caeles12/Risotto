@@ -57,6 +57,7 @@ public class Player extends Entity{
 	int m_magie;
 	int m_magie_cap;
 	int[] m_direction;
+	int[] m_lastdir;
 	float[] m_collision;
 	boolean[] m_tape;
 	boolean m_spell;
@@ -90,6 +91,7 @@ public class Player extends Entity{
 		this.m_keyH = a_keyH;
 		this.m_inventaire = new ArrayList<Integer>();
 		this.m_direction = new int[2];
+		this.m_lastdir = new int[2];
 		this.m_tape = new boolean[4];
 		this.m_collision = new float[2];
 		this.m_pos = new Vector2D(100, 100);
@@ -184,24 +186,40 @@ public class Player extends Entity{
 		}
 		this.m_collider.m_shape.setOrigin(m_pos);
 		
+
+		boolean keyPressed = false;
+		m_direction[0] = 0;
+		m_direction[1] = 0;
+		
 		if (m_keyH.isPressed(37)) { // GAUCHE
 			m_direction[0] += -1;
 			m_direction[1] += 0;
+			keyPressed = true;
 		}
 		if (m_keyH.isPressed(38)) { // HAUT
 			m_direction[0] += 0;
 			m_direction[1] += -1;
+			keyPressed = true;
 		} 
 		if (m_keyH.isPressed(39)) { // DROITE
 			m_direction[0] += 1;
 			m_direction[1] += 0;
+			keyPressed = true;
 		}
 		if (m_keyH.isPressed(40)) { // BAS
 			m_direction[0] += 0;
 			m_direction[1] += 1;
+			keyPressed = true;
 		}
 		
-		if(m_direction[0] != 0 || m_direction[1] != 0) {
+		if(keyPressed) {
+			m_lastdir[0] = m_direction[0];
+			m_lastdir[1] = m_direction[1];
+		}
+		
+		
+		
+		if((m_direction[0] != 0 || m_direction[1] != 0)) {
 			float norme = (float) Math.sqrt(m_direction[0] * m_direction[0] + m_direction[1] * m_direction[1]);
 			
 			float vx = (m_direction[0] / norme);
@@ -217,9 +235,6 @@ public class Player extends Entity{
 				this.m_pos.y -= vy*m_speed;
 			}
 		}
-		
-		m_direction[0] = 0;
-		m_direction[1] = 0;
 		
 	
 		int[] fb_dir = {0, 0};
@@ -317,7 +332,10 @@ public class Player extends Entity{
 		
 		
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
-		r.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		
+		int imgDir = (this.m_lastdir[0]<0 ? -1 : 1);
+		int imgOffset = (this.m_lastdir[0]<0 ? m_gp.TILE_SIZE : 0);
+		r.renderImage(l_image, (int) this.m_pos.x + imgOffset, (int) this.m_pos.y, m_gp.TILE_SIZE*imgDir, m_gp.TILE_SIZE);
 		if(!m_gp.menu) {
 			//affiche la barre de vie du monstre
 			int nbCoeur = m_lifeBar.size()-1;
