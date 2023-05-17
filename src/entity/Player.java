@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandler;
 import main.Renderer;
-
+import main.UI;
 import tile.TileManager;
 import utils.Collider;
 import utils.Shape;
@@ -39,6 +39,7 @@ public class Player extends Entity{
 	float[] m_collision;
 	boolean[] m_tape;
 	boolean m_spell;
+	boolean m_can_cast;
 	int c;
 	int m_ralentisseur;
 	
@@ -113,11 +114,12 @@ public class Player extends Entity{
 	}
 	
 	public void LanceFireball(float x, float y) {
+		if(!m_can_cast) return;
 		if (m_ralentisseur <= 0) {
 			m_magie -= 1;
 			m_spell = true;
 			m_ralentisseur = 16;
-			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + 1, (int) this.m_pos.y);
+			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + m_gp.TILE_SIZE/2, (int) this.m_pos.y + m_gp.TILE_SIZE/2);
 			f.setDirection(x, y);
 			c = 0;
 		} else {
@@ -202,6 +204,7 @@ public class Player extends Entity{
 			interact_cooldown = 0;
 			for(Entity e : m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
 				if(e instanceof Entity_interactive) {
+					System.out.println(e.getClass().getName());
 					if(this.m_pos.distanceTo(e.m_pos) < 50) {
 						addItem(((Entity_interactive) e).interaction());
 
@@ -276,6 +279,10 @@ public class Player extends Entity{
 		}
 		r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
 		r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
+		UI.text(m_gp, "inventaire :", 20, 90, 15);
+		for(int i = 0 ; i < m_inventaire.size() ; i++) {
+			UI.text(m_gp, Object.getNom(m_inventaire.get(i)), 30, 110+i*20, 15);
+		}
 	}
 	
 	public float getXCoordinates() {
@@ -313,6 +320,9 @@ public class Player extends Entity{
 	public boolean addItem(List<Integer> li) {
 		if(li == null) return false;
 		for(int e : li) {
+			if(e==5) {
+				m_can_cast = true;
+			}
 			addToInventory(e);
 		}
 		return true;

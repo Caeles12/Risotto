@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.Renderer;
+import interactive.Item;
 import utils.Collider;
 import utils.Rectangle;
 import utils.Vector2D;
@@ -21,6 +22,7 @@ abstract public class Hostile extends Entity{
 	protected int m_life;  //enlever des pv a cette variable si des degats sont pris
 	protected int m_lifeTemp; // sert pour la barre de vie
 	protected int m_timer;
+	protected int m_timerInvincible;
 	protected int m_timerAnimation;
 	protected Random r = new Random();
 	protected int ptr_list_image = 0;
@@ -56,13 +58,25 @@ abstract public class Hostile extends Entity{
 	public void update() {
 		if(m_life>=0) {
 			m_timer ++;
+			m_timerInvincible ++;
 			move();
 			animationRate();
 			updateLifeBar();
+			attack();
 		}
 		m_timerAnimation ++;
 
 		
+	}
+	
+	public void attack() {
+		if(m_timerInvincible > 40) {
+			if(m_collider.colliding(m_gp.m_player.m_collider)) {
+				m_gp.m_player.take_damage();
+				m_timerInvincible = 0;
+			}
+		}
+
 	}
 	
 	/**
@@ -133,8 +147,7 @@ abstract public class Hostile extends Entity{
 	
 	public void draw(Renderer a_g2) {
 		// r�cup�re l'image du joueur
-		if(ptr_list_image >= m_idleImage.size()-3 && m_life > 0) ptr_list_image =0;
-		else if(ptr_list_image >= m_idleImage.size())  ptr_list_image =0;
+
 		
 		BufferedImage l_image = m_idleImage.get(ptr_list_image);
 		// affiche le monstre avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
@@ -152,6 +165,7 @@ abstract public class Hostile extends Entity{
 	public void takeDamage(int damage) {
 		m_life -= damage;
 		if(m_life <=0) {
+			new Item((int) m_pos.x,(int) m_pos.y, m_gp, 6);
 			m_status = Status.DESTROY;
 			m_life = 0;
 		}
