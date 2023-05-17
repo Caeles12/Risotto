@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandler;
 import main.Renderer;
-
+import main.UI;
 import tile.TileManager;
 import utils.Collider;
 import utils.Shape;
@@ -29,6 +29,7 @@ public class Player extends Entity{
 
 	KeyHandler m_keyH;
 	ArrayList<Integer> m_inventaire;
+	BufferedImage m_spellImg;
 	int m_life;
 	int m_life_cap;
 	int m_magie;
@@ -41,6 +42,10 @@ public class Player extends Entity{
 	int m_ralentisseur;
 	
 	int interact_cooldown;
+	
+	protected int tmpAnim = 0;
+	protected int ptr_list_image = 0;
+	protected boolean animate = true;
 	
 	List<String> nextText;
 	int talkdelay = 0;
@@ -95,9 +100,9 @@ public class Player extends Entity{
 	public void getPlayerImageBase() {
 		//gestion des expections 
 		try {
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch.png")));
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/spellwitch.png")));
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/potitbalais.png")));
+			for(int i = 1 ; i < 5 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch_"+i+".png")));
+			m_spellImg = ImageIO.read(getClass().getResource("/player/special/spellwitch.png"));
+			
 			
 			fullH = ImageIO.read(getClass().getResource("/hostile/coeurPlein.png"));
 			halfH = ImageIO.read(getClass().getResource("/hostile/demiCoeur.png"));
@@ -243,13 +248,19 @@ public class Player extends Entity{
 		// r�cup�re l'image du joueur
 		BufferedImage l_image;
 		if (m_spell) {
-			l_image = m_idleImage.get(1);
+			l_image = m_spellImg;
 		}
 		else {
 			for (int i = 0; i < 4; i++) {
 				m_spell = false;
 			}
-			l_image = m_idleImage.get(0);
+			this.tmpAnim++;
+			if(animate && tmpAnim >10) {
+				tmpAnim = 0;
+				ptr_list_image++;
+				if(ptr_list_image > m_idleImage.size()-1) ptr_list_image = 0;
+			}
+			l_image = m_idleImage.get(ptr_list_image);
 		}
 		
 		
@@ -265,6 +276,10 @@ public class Player extends Entity{
 		}
 		r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
 		r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
+		UI.text(m_gp, "inventaire :", 20, 90, 15);
+		for(int i = 0 ; i < m_inventaire.size() ; i++) {
+			UI.text(m_gp, Object.getNom(m_inventaire.get(i)), 30, 110+i*20, 15);
+		}
 	}
 	
 	public float getXCoordinates() {

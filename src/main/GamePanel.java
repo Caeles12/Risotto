@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import entity.Camera;
 import entity.Player;
+import hostile.Demon;
 import hostile.Frog;
 import entity.Entity;
 import entity.Hostile;
@@ -108,6 +109,11 @@ public class GamePanel extends JPanel implements Runnable{
 		m_tab_Map[dim].m_list_entity.add(new Coffre(23, 15, gp,4));
 		m_tab_Map[dim].m_list_entity.add(new Door(6, 7, gp, 0));
 		m_tab_Map[dim].m_list_entity.add(new Frog(this, 200, 100));
+		m_tab_Map[dim].m_list_entity.add(new Frog(this, 800, 750));
+		m_tab_Map[dim].m_list_entity.add(new Frog(this, 500, 500));
+		m_tab_Map[dim].m_list_entity.add(new Frog(this, 1100, 100));
+		m_tab_Map[dim].m_list_entity.add(new Demon(this, 1100, 600));
+		m_tab_Map[dim].m_list_entity.add(new Demon(this, 300, 700));
 	}
 	
 	public void init_house(GamePanel gp) {
@@ -196,7 +202,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		m_player.draw(m_renderer);
 		
-		UI.text(this, "Hello!", 0, SCREEN_WIDTH+50, 48);
+		
 		
 		g2.dispose();
 		m_renderer.update();
