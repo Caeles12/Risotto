@@ -170,7 +170,6 @@ public class Player extends Entity{
 		}
 		interact_cooldown++;
 		if (m_keyH.isPressed(69) && interact_cooldown >10) {
-			take_damage();
 			interact_cooldown = 0;
 			for(Entity e : m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
 				if(e instanceof Entity_interactive) {
@@ -193,10 +192,12 @@ public class Player extends Entity{
 								takeItem(2);
 								addToInventory(3);
 								nextText.add("Seau remplis d'eau");
-							}
+								break;								
+							}							
 						}
-						
+						if(m_inventaire.contains(3)) break;
 					}
+					if(m_inventaire.contains(3)) break;
 				}
 				
 			}
@@ -232,8 +233,10 @@ public class Player extends Entity{
 		int tailleCoeur = 24; //la taille d'un coeur en pixel
 				
 		for (int i=0; i<=nbCoeur; i++) {
-			r.renderImage(m_lifeBar.get(i), (int) (50+i*tailleCoeur-nbCoeur*tailleCoeur/2), -50, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+			r.renderUIImage(m_lifeBar.get(i), (int) (i*tailleCoeur), 10, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
 		}
+		r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
+		r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
 	}
 	
 	public float getXCoordinates() {

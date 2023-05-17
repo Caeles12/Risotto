@@ -9,10 +9,10 @@ import entity.SpeechBubble;
 
 import main.GamePanel;
 import main.Renderer;
+
+import utils.Vector2D;
 import utils.Collider;
 import utils.Rectangle;
-import utils.Vector2D;
-
 import tile.Tile;
 
 public class Frog extends Hostile {
@@ -71,5 +71,6 @@ public class Frog extends Hostile {
 			m_timerAnimation = 0;
 		}
 	}
+	
 
 }
