@@ -9,6 +9,8 @@ import main.GamePanel;
 import main.KeyHandler;
 import main.Renderer;
 import utils.Vector2D;
+import utils.Collider;
+import utils.Circle;
 
 public class Fireball extends Entity {
 	
@@ -19,11 +21,12 @@ public class Fireball extends Entity {
 	
 	public Fireball(GamePanel a_gp, Player p, KeyHandler keyH, int x, int y) {
 		this.m_gp = a_gp;
-		this.m_pos = new Vector2D(x, y);
+		this.m_pos = new Vector2D(x, y+25);
 		this.m_dureevie = 300;
 		this.m_speed = 9;
 		this.m_keyH = keyH;
 		m_gp.m_tab_Map[m_gp.dim].m_list_entity.add(this);
+		this.m_collider = new Collider(new Circle(m_pos,new Vector2D(3, 3),7), m_gp);
 		this.m_direction = new float[2];
 		this.m_player = p;
 		this.getFireBallImage();
@@ -32,14 +35,20 @@ public class Fireball extends Entity {
 	@Override
 	public void draw(Renderer r) {
 		BufferedImage l_image = m_idleImage.get(0);
-		r.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y + 25, 15, 15);
+		r.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y, 15, 15);
 	}
 
 	@Override
 	public void update() {	
 		
+		this.m_collider.m_shape.setOrigin(m_pos);
+		
 		this.m_pos.x += (int) m_speed * m_direction[0];
 		this.m_pos.y += (int) m_speed * m_direction[1];
+		
+		if(this.m_collider.collidingTileMap(m_gp.m_tileM)) {
+			m_status = Entity.Status.DESTROY;
+		}
 
 		m_dureevie -= 1;
 		if (m_dureevie <= 0) {
