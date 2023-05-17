@@ -73,6 +73,13 @@ public class TileManager {
 			m_tile[7] = new Tile();
 			m_tile[7].m_image = ImageIO.read(getClass().getResource("/tiles/FLOOR.png"));
 			
+			m_tile[8] = new Tile();
+			m_tile[8].m_image = ImageIO.read(getClass().getResource("/tiles/MENU.png"));
+			
+			m_tile[9] = new Tile();
+			m_tile[9].m_image = ImageIO.read(getClass().getResource("/tiles/MENU.png"));
+			m_tile[9].m_collision = true;
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -49,6 +49,8 @@ public class GamePanel extends JPanel implements Runnable{
 	Camera m_camera;
 	Renderer m_renderer;
 	
+	public boolean menu = true;
+	
 	public class Map{
 		public List<Entity> m_list_entity;
 		public TileManager m_Map;
@@ -73,8 +75,8 @@ public class GamePanel extends JPanel implements Runnable{
 		m_camera = new Camera(this, m_player.m_pos, 0.5f, 0.1f);
 		m_renderer = new Renderer(this, m_camera);
 				
-		m_tab_Map = new Map[2];
-		setDim(0);
+		m_tab_Map = new Map[3];
+		setDim(2);
 		
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.black);
@@ -86,6 +88,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public void setDim(int dim) {
 		switch(dim) {
 		case 0:
+			if(menu) this.m_player.m_can_cast = false;
+			this.menu = false;
 			this.dim = 0;
 			if(m_tab_Map[dim] == null) init_house(this);
 			m_player.m_pos = new Vector2D( TILE_SIZE*5, TILE_SIZE*1);
@@ -95,15 +99,30 @@ public class GamePanel extends JPanel implements Runnable{
 			if(m_tab_Map[dim] == null) init_demo_map(this);
 			m_player.m_pos = new Vector2D( TILE_SIZE*6, TILE_SIZE*8);
 			break;
+		case 2:
+			this.dim = 2;
+			m_player.m_pos = new Vector2D( TILE_SIZE*8, TILE_SIZE*8);
+			if(m_tab_Map[dim] == null) init_menu(this);
+			this.m_player.m_can_cast = true;
+			break;
+			
+			default:
+				this.menu = true;
+				this.dim = -1;
+				break;
 		}
 		
-		m_tileM = m_tab_Map[dim].m_Map;
+		if(this.dim >= 0) m_tileM = m_tab_Map[dim].m_Map;
+		else m_tileM = null;
 	}
 	
 	public void init_demo_map(GamePanel gp) {
 		m_tab_Map[dim] = new Map(gp,"/maps/map3.txt");
 		
-		m_tab_Map[dim].m_list_entity.add(new Coffre(2, 1, gp,2));
+		Item sceau = new Item(2, 1, gp, 2);
+		sceau.setPositionTiles((int)sceau.m_pos.x, (int)sceau.m_pos.y);
+		Item balais = new Item(24, 1, gp, 7);
+		balais.setPositionTiles((int)balais.m_pos.x, (int)balais.m_pos.y);
 		m_tab_Map[dim].m_list_entity.add(new Coffre(23, 15, gp,4));
 		m_tab_Map[dim].m_list_entity.add(new Door(6, 7, gp, 0));
 		m_tab_Map[dim].m_list_entity.add(new House(4,2, gp,0));
@@ -126,6 +145,13 @@ public class GamePanel extends JPanel implements Runnable{
 		m_tab_Map[dim].m_list_entity.add(new Couch(1,1,gp,1));
 		m_tab_Map[dim].m_list_entity.add(new Couch(1,2,gp,2));
 		
+	}
+	
+	public void init_menu(GamePanel gp) {
+		m_tab_Map[dim] = new Map(gp,"/maps/menu.txt");
+		m_camera.setPos(m_player.m_pos);
+		
+		m_tab_Map[dim].m_list_entity.add(new Door(7,14,gp,0));
 	}
 	
 	/**
@@ -174,7 +200,7 @@ public class GamePanel extends JPanel implements Runnable{
 	 */
 	public void update() {
 		m_player.update();
-		m_camera.move(m_player.m_pos);
+		if(!menu)m_camera.move(m_player.m_pos);
 		m_camera.zoom(1);
 		int i = 0;
 		while(i<m_tab_Map[dim].m_list_entity.size()) {
@@ -202,7 +228,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		m_player.draw(m_renderer);
 		
-		UI.text(this, "Hello!", 0, SCREEN_WIDTH+50, 48);
+		
 		
 		g2.dispose();
 		m_renderer.update();

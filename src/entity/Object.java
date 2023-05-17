@@ -44,8 +44,33 @@ public class Object {
 			return "Champignon";
 		case 5:
 			return "Rizotto au Champignons";
+		case 6:
+			return "Os";
+		case 7:
+			return "Balais";
 		default:
 			return "Air";
+		}
+	}
+	
+	public static String getImage(int id) {
+		switch(id) {
+		case 1:
+			return "star";
+		case 2:
+			return "cup_01a";
+		case 3:
+			return "cup_01b";
+		case 4:
+			return "star";
+		case 5:
+			return "star";
+		case 6:
+			return "bone01a";
+		case 7:
+			return "balais";
+		default:
+			return "star";
 		}
 	}
 }

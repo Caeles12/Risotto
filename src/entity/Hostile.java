@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.Renderer;
+import interactive.Item;
 import utils.Collider;
 import utils.Rectangle;
 import utils.Vector2D;
@@ -164,6 +165,7 @@ abstract public class Hostile extends Entity{
 	public void takeDamage(int damage) {
 		m_life -= damage;
 		if(m_life <=0) {
+			new Item((int) m_pos.x,(int) m_pos.y, m_gp, 6);
 			m_status = Status.DESTROY;
 			m_life = 0;
 		}

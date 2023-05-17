@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandler;
 import main.Renderer;
-
+import main.UI;
 import tile.TileManager;
 import utils.Collider;
 import utils.Shape;
@@ -26,9 +26,30 @@ import utils.Rectangle;
  *
  */
 public class Player extends Entity{
+	
+	/*
+	 * 0 - start menu
+	 * 1 - win menu
+	 * 2 - loose menu
+	 */
+	int menuNb = 0; 
 
-	KeyHandler m_keyH;
+	KeyHandler m_keyH;	public void getPlayerImageBalais() {
+		//gestion des expections 
+		try {
+			for(int i = 1 ; i < 5 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch_"+i+".png")));
+			m_spellImg = ImageIO.read(getClass().getResource("/player/special/spellwitch.png"));
+			
+			
+			fullH = ImageIO.read(getClass().getResource("/hostile/coeurPlein.png"));
+			halfH = ImageIO.read(getClass().getResource("/hostile/demiCoeur.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	ArrayList<Integer> m_inventaire;
+	BufferedImage m_spellImg;
+	List<BufferedImage> m_balaisImage = new ArrayList<>();
 	int m_life;
 	int m_life_cap;
 	int m_magie;
@@ -37,10 +58,18 @@ public class Player extends Entity{
 	float[] m_collision;
 	boolean[] m_tape;
 	boolean m_spell;
+
+	public boolean m_can_cast;
+	boolean m_has_broom;
+
 	int c;
 	int m_ralentisseur;
 	
 	int interact_cooldown;
+	
+	protected int tmpAnim = 0;
+	protected int ptr_list_image = 0;
+	protected boolean animate = true;
 	
 	List<String> nextText;
 	int talkdelay = 0;
@@ -87,6 +116,7 @@ public class Player extends Entity{
 			m_tape[i] = false;
 		}
 		m_spell = false;
+		m_has_broom = false;
 	}
 	
 	/**
@@ -95,9 +125,9 @@ public class Player extends Entity{
 	public void getPlayerImageBase() {
 		//gestion des expections 
 		try {
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch.png")));
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/spellwitch.png")));
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/potitbalais.png")));
+			for(int i = 1 ; i < 5 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch_"+i+".png")));
+			m_spellImg = ImageIO.read(getClass().getResource("/player/special/spellwitch.png"));
+			for(int i = 1 ; i < 5 ; i++) m_balaisImage.add(ImageIO.read(getClass().getResource("/player/special/balais/potitbalais_"+i+".png")));
 			
 			fullH = ImageIO.read(getClass().getResource("/hostile/coeurPlein.png"));
 			halfH = ImageIO.read(getClass().getResource("/hostile/demiCoeur.png"));
@@ -107,11 +137,12 @@ public class Player extends Entity{
 	}
 	
 	public void LanceFireball(float x, float y) {
+		if(!m_can_cast) return;
 		if (m_ralentisseur <= 0) {
 			m_magie -= 1;
 			m_spell = true;
 			m_ralentisseur = 16;
-			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + 1, (int) this.m_pos.y);
+			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + m_gp.TILE_SIZE/2, (int) this.m_pos.y + m_gp.TILE_SIZE/2);
 			f.setDirection(x, y);
 			c = 0;
 		} else {
@@ -123,6 +154,11 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
+		if(m_life<=0 && !m_gp.menu) {
+			m_gp.menu = true;
+			menuNb = 2;
+			m_gp.setDim(2);
+		}
 		talkdelay++;
 		if(!nextText.isEmpty() && talkdelay >15) {
 			new SpeechBubble(m_gp, nextText.remove(0) , (int) this.m_pos.x, (int) this.m_pos.y - 10);
@@ -242,28 +278,55 @@ public class Player extends Entity{
 		// r�cup�re l'image du joueur
 		BufferedImage l_image;
 		if (m_spell) {
-			l_image = m_idleImage.get(1);
+			l_image = m_spellImg;
 		}
 		else {
+			List<BufferedImage> imgs = m_idleImage;
+			if(m_has_broom) {
+				imgs = m_balaisImage;
+			}
 			for (int i = 0; i < 4; i++) {
 				m_spell = false;
 			}
-			l_image = m_idleImage.get(0);
+			this.tmpAnim++;
+			if(animate && tmpAnim >10) {
+				tmpAnim = 0;
+				ptr_list_image++;
+				if(ptr_list_image > imgs.size()-1) ptr_list_image = 0;
+			}
+			l_image = imgs.get(ptr_list_image);
 		}
 		
 		
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
 		r.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
-
-		//affiche la barre de vie du monstre
-		int nbCoeur = m_lifeBar.size()-1;
-		int tailleCoeur = 24; //la taille d'un coeur en pixel
-				
-		for (int i=0; i<=nbCoeur; i++) {
-			r.renderUIImage(m_lifeBar.get(i), (int) (i*tailleCoeur), 10, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		if(!m_gp.menu) {
+			//affiche la barre de vie du monstre
+			int nbCoeur = m_lifeBar.size()-1;
+			int tailleCoeur = 24; //la taille d'un coeur en pixel
+			for (int i=0; i<=nbCoeur; i++) {
+				r.renderUIImage(m_lifeBar.get(i), (int) (i*tailleCoeur), 10, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+			}
+			
+			if(m_can_cast) {
+				r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
+				r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
+			}
+			UI.text(m_gp, "inventaire :", 20, 90, 15);
+			for(int i = 0 ; i < m_inventaire.size() ; i++) {
+				UI.text(m_gp, Object.getNom(m_inventaire.get(i)), 30, 110+i*20, 15);
+			}
 		}
-		r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
-		r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
+		else {
+			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5);
+			UI.text(m_gp, "z q s d -> Magie", 300, 240,20);
+			UI.text(m_gp, "fleches directionnelles -> deplacement", 180, 260,20);
+			UI.text(m_gp, "e -> interagir", 300, 280,20);
+			
+			if(menuNb == 2) {
+				UI.text(m_gp, "Vous pouvez y retourner, bon courage", 180, 320,20);
+			}
+		}
 	}
 	
 	public float getXCoordinates() {
@@ -301,6 +364,11 @@ public class Player extends Entity{
 	public boolean addItem(List<Integer> li) {
 		if(li == null) return false;
 		for(int e : li) {
+			if(e==5) {
+				m_can_cast = true;
+			}else if(e==7) {
+				m_has_broom = true;
+			}
 			addToInventory(e);
 		}
 		return true;
