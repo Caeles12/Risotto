@@ -17,10 +17,10 @@ public class Object {
 			System.out.println("a utiliser proche de l'eau");
 			break;
 		case 3:
-			System.out.println("je n'ai pas soif");
+			System.out.println("Je n'ai pas soif");
 			break;
 		case 4:
-			System.out.println("sans le cuir je ne grandirais pas :/");
+			System.out.println("Sans le cuir je ne grandirais pas :/");
 			break;
 		case 5:
 			System.out.println("miam miam crounch FIREBALL press F");
@@ -37,13 +37,13 @@ public class Object {
 		case 1:
 			return "Riz";
 		case 2:
-			return "seau vide";
+			return "Seau vide";
 		case 3:
-			return "seau plein";
+			return "Seau plein";
 		case 4:
 			return "Champignon";
 		case 5:
-			return "Rizotto au Champignons";
+			return "Risotto aux Champignons";
 		case 6:
 			return "Os";
 		case 7:

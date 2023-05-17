@@ -48,14 +48,14 @@ public class Cauldron extends Entity_interactive{
 				objet_interne.remove(objet_interne.indexOf(1));
 				objet_interne.remove(objet_interne.indexOf(3));
 				objet_interne.remove(objet_interne.indexOf(4));
-				nextText.add("Vous obtenez : Rizotto de Champignon");
+				nextText.add("Vous obtenez : Risotto aux Champignons");
 				recipe++;
 			return l ;
 			}
 			else {
-				if(!objet_interne.contains(1)) nextText.add("besoin : Riz");
-				if(!objet_interne.contains(3)) nextText.add("besoin : Eau");
-				if(!objet_interne.contains(4)) nextText.add("besoin : Champignon");
+				if(!objet_interne.contains(1)) nextText.add("Besoin : Riz");
+				if(!objet_interne.contains(3)) nextText.add("Besoin : Eau");
+				if(!objet_interne.contains(4)) nextText.add("Besoin : Champignon");
 			}
 			return null;
 		

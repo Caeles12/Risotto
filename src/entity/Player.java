@@ -250,7 +250,7 @@ public class Player extends Entity{
 							if(m_gp.m_tab_Map[m_gp.dim].m_Map.getMapTile(ni, nj) == 2) {
 								takeItem(2);
 								addToInventory(3);
-								nextText.add("Seau remplis d'eau");
+								nextText.add("Seau rempli d'eau");
 								break;								
 							}							
 						}
@@ -262,7 +262,7 @@ public class Player extends Entity{
 			}
 		}
 		
-		if (c > 17) {
+		if (c > 17) { // Changement d'outfit pour la potite sorcière
 			m_spell = false;
 		}
 		c += 1;
@@ -312,7 +312,7 @@ public class Player extends Entity{
 				r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
 				r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
 			}
-			UI.text(m_gp, "inventaire :", 20, 90, 15);
+			UI.text(m_gp, "Inventaire :", 20, 90, 15);
 			for(int i = 0 ; i < m_inventaire.size() ; i++) {
 				UI.text(m_gp, Object.getNom(m_inventaire.get(i)), 30, 110+i*20, 15);
 			}
@@ -320,11 +320,11 @@ public class Player extends Entity{
 		else {
 			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5);
 			UI.text(m_gp, "z q s d -> Magie", 300, 240,20);
-			UI.text(m_gp, "fleches directionnelles -> deplacement", 180, 260,20);
-			UI.text(m_gp, "e -> interagir", 300, 280,20);
+			UI.text(m_gp, "Fleches directionnelles -> Deplacement", 180, 260,20);
+			UI.text(m_gp, "e -> Interagir", 300, 280,20);
 			
 			if(menuNb == 2) {
-				UI.text(m_gp, "Vous pouvez y retourner, bon courage", 180, 320,20);
+				UI.text(m_gp, "Vous pouvez y retourner, bon courage ...", 180, 320,20);
 			}
 		}
 	}
