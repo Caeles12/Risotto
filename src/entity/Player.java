@@ -416,6 +416,7 @@ public class Player extends Entity{
 		for(int e : li) {
 			if(e==5) {
 				m_can_cast = true;
+				nextText.add("Allez tuer les monstres dans le jardin!");
 			}else if(e==7) {
 				m_has_broom = true;
 			}
