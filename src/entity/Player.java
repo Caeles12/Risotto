@@ -38,6 +38,7 @@ public class Player extends Entity{
 	float[] m_collision;
 	boolean[] m_tape;
 	boolean m_spell;
+	boolean m_can_cast;
 	int c;
 	int m_ralentisseur;
 	
@@ -112,6 +113,7 @@ public class Player extends Entity{
 	}
 	
 	public void LanceFireball(float x, float y) {
+		if(!m_can_cast) return;
 		if (m_ralentisseur <= 0) {
 			m_magie -= 1;
 			m_spell = true;
@@ -317,6 +319,9 @@ public class Player extends Entity{
 	public boolean addItem(List<Integer> li) {
 		if(li == null) return false;
 		for(int e : li) {
+			if(e==5) {
+				m_can_cast = true;
+			}
 			addToInventory(e);
 		}
 		return true;
