@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JPanel;
 
@@ -10,11 +9,8 @@ import entity.Player;
 import hostile.Demon;
 import hostile.Frog;
 import entity.Entity;
-import entity.Hostile;
 import interactive.*;
-import tile.Tile;
 import tile.TileManager;
-import utils.MathUtils;
 import utils.Vector2D;
 
 import java.awt.Graphics;
@@ -66,7 +62,6 @@ public class GamePanel extends JPanel implements Runnable{
 	/**
 	 * Constructeur
 	 */
-	@SuppressWarnings("unchecked")
 	public GamePanel() {
 		m_FPS = 60;				
 		m_keyH = new KeyHandler();

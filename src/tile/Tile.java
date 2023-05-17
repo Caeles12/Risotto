@@ -2,8 +2,6 @@ package tile;
 
 import java.awt.image.BufferedImage;
 
-import entity.Player;
-
 /**
  * 
  * Element graphique de la carte

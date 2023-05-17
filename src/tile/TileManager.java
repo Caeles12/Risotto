@@ -1,15 +1,12 @@
 package tile;
 
-import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 
-import entity.Player;
 import main.GamePanel;
 import main.Renderer;
 

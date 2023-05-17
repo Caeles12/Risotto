@@ -1,7 +1,6 @@
 package entity;
 
 import main.GamePanel;
-import main.Renderer;
 import utils.Vector2D;
 
 
