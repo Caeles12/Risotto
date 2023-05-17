@@ -27,7 +27,6 @@ import utils.Rectangle;
  */
 public class Player extends Entity{
 
-	GamePanel m_gp;
 	KeyHandler m_keyH;
 	ArrayList<Integer> m_inventaire;
 	int m_life;
@@ -41,7 +40,6 @@ public class Player extends Entity{
 	int c;
 	int m_ralentisseur;
 	
-	Collider m_collider;
 	int interact_cooldown;
 	
 	List<String> nextText;
@@ -145,11 +143,11 @@ public class Player extends Entity{
 			
 			this.m_pos.x += vx*m_speed;
 			//System.out.println(this.m_collider.m_shape.getOrigin().x);
-			if(this.m_collider.collidingTileMap(this.m_gp.m_tileM)) {
+			if(checkCollisions()) {
 				this.m_pos.x -= vx*m_speed;
 			}
 			this.m_pos.y += vy*m_speed;
-			if(this.m_collider.collidingTileMap(this.m_gp.m_tileM)) {
+			if(checkCollisions()) {
 				this.m_pos.y -= vy*m_speed;
 			}
 		}
