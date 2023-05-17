@@ -17,7 +17,6 @@ import utils.Vector2D;
 
 abstract public class Hostile extends Entity{
 
-	protected GamePanel m_gp;
 	protected int m_damage;
 	protected int m_life;  //enlever des pv a cette variable si des degats sont pris
 	protected int m_lifeTemp; // sert pour la barre de vie
@@ -25,7 +24,6 @@ abstract public class Hostile extends Entity{
 	protected int m_timerAnimation;
 	protected Random r = new Random();
 	protected int ptr_list_image = 0;
-	protected Collider m_collider;
 	protected int[] m_dir;
 	protected List<BufferedImage> m_lifeBar;
 	
@@ -84,11 +82,11 @@ abstract public class Hostile extends Entity{
 		float vy = (m_dir[1] / norme);
 		
 		this.m_pos.x += vx*m_speed;
-		if(this.m_collider.collidingTileMap(this.m_gp.m_tileM)) {
+		if(checkCollisions()) {
 			this.m_pos.x -= vx*m_speed;
 		}
 		this.m_pos.y += vy*m_speed;
-		if(this.m_collider.collidingTileMap(this.m_gp.m_tileM)) {
+		if(checkCollisions()) {
 			this.m_pos.y -= vy*m_speed;
 		}
 	}
@@ -127,8 +125,6 @@ abstract public class Hostile extends Entity{
 				m_lifeTemp -= 25;
 			} catch (IOException e) { e.printStackTrace(); }
 		}
-		
-		
 	}
 	
 	/**
@@ -151,6 +147,14 @@ abstract public class Hostile extends Entity{
 		
 		for (int i=0; i<=nbCoeur; i++) {
 			a_g2.renderImage(m_lifeBar.get(i), (int) (this.m_pos.x+i*tailleCoeur-nbCoeur*tailleCoeur/2), (int) this.m_pos.y-30, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		}
+	}
+	
+	public void takeDamage(int damage) {
+		m_life -= damage;
+		if(m_life <=0) {
+			m_status = Status.DESTROY;
+			m_life = 0;
 		}
 	}
 	

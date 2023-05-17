@@ -12,7 +12,6 @@ import utils.Vector2D;
 
 public class Fireball extends Entity {
 	
-	GamePanel m_gp;
 	KeyHandler m_keyH;
 	Player m_player;
 	int m_dureevie;
