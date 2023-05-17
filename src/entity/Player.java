@@ -359,18 +359,18 @@ public class Player extends Entity{
 			}
 		}
 		else {
-			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5);
+			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5,Color.black,Color.magenta);
 			if(menuNb == 0) {
 				UI.text(m_gp, "z q s d -> Magie", 300, 240,20);
 				UI.text(m_gp, "fleches directionnelles -> deplacement", 180, 260,20);
 				UI.text(m_gp, "e -> interagir", 300, 280,20);
 			}
 			if(menuNb == 1) {
-				UI.text(m_gp, "VICTOIRE", 300, 260, 35,8,12,5);
+				UI.text(m_gp, "VICTOIRE", 300, 260, 35,8,12,5,Color.black,Color.yellow);
 				UI.text(m_gp, "Vous etes incroyable :D", 280, 320,20);
 			}
 			if(menuNb == 2) {
-				UI.text(m_gp, "GAME OVER", 300, 260, 35,8,12,5);
+				UI.text(m_gp, "GAME OVER", 300, 260, 35,8,12,5,Color.black,Color.red);
 				UI.text(m_gp, "Vous pouvez y retourner, bon courage", 180, 320,20);
 			}
 		}
