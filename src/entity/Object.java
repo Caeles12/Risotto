@@ -46,6 +46,8 @@ public class Object {
 			return "Rizotto au Champignons";
 		case 6:
 			return "Os";
+		case 7:
+			return "Balais";
 		default:
 			return "Air";
 		}
@@ -65,6 +67,8 @@ public class Object {
 			return "star";
 		case 6:
 			return "bone01a";
+		case 7:
+			return "balais";
 		default:
 			return "star";
 		}
