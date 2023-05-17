@@ -68,6 +68,8 @@ public class Frog extends Hostile {
 			ptr_list_image++;
 			m_timerAnimation = 0;
 		}
+		if(ptr_list_image >= m_idleImage.size()-3 && m_life > 0) ptr_list_image =0;
+		else if(ptr_list_image >= m_idleImage.size())  ptr_list_image =0;
 	}
 
 }
