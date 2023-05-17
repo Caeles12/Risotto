@@ -88,6 +88,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void setDim(int dim) {
 		switch(dim) {
 		case 0:
+			if(menu) this.m_player.m_can_cast = false;
 			this.menu = false;
 			this.dim = 0;
 			if(m_tab_Map[dim] == null) init_house(this);
@@ -102,7 +103,7 @@ public class GamePanel extends JPanel implements Runnable{
 			this.dim = 2;
 			m_player.m_pos = new Vector2D( TILE_SIZE*8, TILE_SIZE*8);
 			if(m_tab_Map[dim] == null) init_menu(this);
-			
+			this.m_player.m_can_cast = true;
 			break;
 			
 			default:
