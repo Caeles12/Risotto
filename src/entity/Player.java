@@ -30,6 +30,7 @@ public class Player extends Entity{
 	KeyHandler m_keyH;
 	ArrayList<Integer> m_inventaire;
 	BufferedImage m_spellImg;
+	List<BufferedImage> m_balaisImage = new ArrayList<>();
 	int m_life;
 	int m_life_cap;
 	int m_magie;
@@ -102,7 +103,7 @@ public class Player extends Entity{
 		try {
 			for(int i = 1 ; i < 5 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch_"+i+".png")));
 			m_spellImg = ImageIO.read(getClass().getResource("/player/special/spellwitch.png"));
-			
+			for(int i = 1 ; i < 5 ; i++) m_balaisImage.add(ImageIO.read(getClass().getResource("/player/special/balais/potitbalais_"+i+".png")));
 			
 			fullH = ImageIO.read(getClass().getResource("/hostile/coeurPlein.png"));
 			halfH = ImageIO.read(getClass().getResource("/hostile/demiCoeur.png"));
