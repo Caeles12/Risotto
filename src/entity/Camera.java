@@ -23,6 +23,13 @@ public class Camera{
 		this.m_pos.y = this.m_pos.y + (target.y - this.m_pos.y) * m_lerp;
 	}
 	
+	public void setPos(Vector2D target) {
+		
+		
+		this.m_pos.x = target.x;
+		this.m_pos.y = target.y;
+	}
+	
 	public void zoom(float scale) {		
 		this.m_scale = m_scale + (scale - m_scale) * m_lerp;
 	}

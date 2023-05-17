@@ -286,19 +286,25 @@ public class Player extends Entity{
 		
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
 		r.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
-
-		//affiche la barre de vie du monstre
-		int nbCoeur = m_lifeBar.size()-1;
-		int tailleCoeur = 24; //la taille d'un coeur en pixel
-				
-		for (int i=0; i<=nbCoeur; i++) {
-			r.renderUIImage(m_lifeBar.get(i), (int) (i*tailleCoeur), 10, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		if(!m_gp.menu) {
+			//affiche la barre de vie du monstre
+			int nbCoeur = m_lifeBar.size()-1;
+			int tailleCoeur = 24; //la taille d'un coeur en pixel
+			for (int i=0; i<=nbCoeur; i++) {
+				r.renderUIImage(m_lifeBar.get(i), (int) (i*tailleCoeur), 10, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+			}
+			r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
+			r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
+			UI.text(m_gp, "inventaire :", 20, 90, 15);
+			for(int i = 0 ; i < m_inventaire.size() ; i++) {
+				UI.text(m_gp, Object.getNom(m_inventaire.get(i)), 30, 110+i*20, 15);
+			}
 		}
-		r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
-		r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
-		UI.text(m_gp, "inventaire :", 20, 90, 15);
-		for(int i = 0 ; i < m_inventaire.size() ; i++) {
-			UI.text(m_gp, Object.getNom(m_inventaire.get(i)), 30, 110+i*20, 15);
+		else {
+			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5);
+			UI.text(m_gp, "z q s d -> Magie", 300, 240,20);
+			UI.text(m_gp, "fleches directionnelles -> deplacement", 180, 260,20);
+			UI.text(m_gp, "e -> interagir", 300, 280,20);
 		}
 	}
 	
