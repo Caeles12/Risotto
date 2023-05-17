@@ -49,10 +49,23 @@ public class Fireball extends Entity {
 		if(this.m_collider.collidingTileMap(m_gp.m_tileM)) {
 			m_status = Entity.Status.DESTROY;
 		}
+		
+		for(Entity entity: m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
+			if(entity != this && entity.m_collider != null) {
+				try {
+					if(entity instanceof Hostile && this.m_collider.colliding(entity.m_collider)) {
+						((Hostile) entity).takeDamage(25);
+						m_status = Entity.Status.DESTROY;
+					}
+				} catch(Exception e) {
+					System.out.println(entity.getClass().getName());
+				}
+			}
+		}
 
 		m_dureevie -= 1;
 		if (m_dureevie <= 0) {
-			m_status = Status.DESTROY;
+			m_status = Entity.Status.DESTROY;
 		}
 	}
 	
