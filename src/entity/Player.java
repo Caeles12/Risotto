@@ -161,6 +161,12 @@ public class Player extends Entity{
 			menuNb = 2;
 			m_gp.setDim(2);
 		}
+		
+		if(m_has_broom) {
+			this.m_speed = 6;
+		}else {
+			this.m_speed = 4;
+		}
 		talkdelay++;
 		if(!nextText.isEmpty() && talkdelay >15) {
 			new SpeechBubble(m_gp, nextText.remove(0) , (int) this.m_pos.x, (int) this.m_pos.y - 10);
