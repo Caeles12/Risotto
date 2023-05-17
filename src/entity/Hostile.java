@@ -35,7 +35,6 @@ abstract public class Hostile extends Entity{
 		this.m_gp = a_gp;
 		this.setDefaultValues();
 		this.getHostileImage();
-		this.m_collider = new Collider(new Rectangle(m_pos, new Vector2D(a_gp.TILE_SIZE/4, a_gp.TILE_SIZE/4),a_gp.TILE_SIZE/2, a_gp.TILE_SIZE/2), a_gp);
 		this.m_lifeBar = new ArrayList<BufferedImage>();
 		this.setLifeBar();
 	}
