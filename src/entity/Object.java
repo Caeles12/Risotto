@@ -5,9 +5,9 @@ public class Object {
 		/**
 		 * 1- riz
 		 * 2- seau vide
-		 * 3- seau remplit d'eau
+		 * 3- seau rempli d'eau
 		 * 4- champignon
-		 * 5- risoto au champignon
+		 * 5- risotto aux champignons
 		 */
 		switch(id) {
 		case 1:
