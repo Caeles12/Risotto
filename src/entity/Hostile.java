@@ -125,8 +125,6 @@ abstract public class Hostile extends Entity{
 				m_lifeTemp -= 25;
 			} catch (IOException e) { e.printStackTrace(); }
 		}
-		
-		
 	}
 	
 	/**
@@ -149,6 +147,14 @@ abstract public class Hostile extends Entity{
 		
 		for (int i=0; i<=nbCoeur; i++) {
 			a_g2.renderImage(m_lifeBar.get(i), (int) (this.m_pos.x+i*tailleCoeur-nbCoeur*tailleCoeur/2), (int) this.m_pos.y-30, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		}
+	}
+	
+	public void takeDamage(int damage) {
+		m_life -= damage;
+		if(m_life <=0) {
+			m_status = Status.DESTROY;
+			m_life = 0;
 		}
 	}
 	

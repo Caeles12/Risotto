@@ -55,7 +55,10 @@ public class Coffre extends Entity_interactive{
 			tmpAnim = 0;
 			return this.objet_interne;
 		}
-		if(looted) ptr_list_image = 0;
+		if(looted) {
+			ptr_list_image = 0;
+			talk = "ce coffre est vide";
+		}
 		return null;
 	}
 	

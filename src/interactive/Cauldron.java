@@ -15,6 +15,7 @@ import utils.Vector2D;
 public class Cauldron extends Entity_interactive{
 	List<String> nextText;
 	int talkDelay = 0;
+	int recipe = 1;
 	
 	public Cauldron(int x, int y, GamePanel m_gp, List<Integer> inventaire) {
 		this.m_gp = m_gp;
@@ -40,20 +41,27 @@ public class Cauldron extends Entity_interactive{
 	
 	public List<Integer> interaction() {
 		List<Integer> l = new ArrayList<>();
-		if(tryRecipe(1)) {
-			l.add(5);
-			objet_interne.remove(objet_interne.indexOf(1));
-			objet_interne.remove(objet_interne.indexOf(3));
-			objet_interne.remove(objet_interne.indexOf(4));
-			nextText.add("Vous obtenez : Rizotto de Champignon");
+		switch(recipe) {
+		case 1:
+			if(tryRecipe(1)) {
+				l.add(5);
+				objet_interne.remove(objet_interne.indexOf(1));
+				objet_interne.remove(objet_interne.indexOf(3));
+				objet_interne.remove(objet_interne.indexOf(4));
+				nextText.add("Vous obtenez : Rizotto de Champignon");
+				recipe++;
 			return l ;
+			}
+			else {
+				if(!objet_interne.contains(1)) nextText.add("besoin : Riz");
+				if(!objet_interne.contains(3)) nextText.add("besoin : Eau");
+				if(!objet_interne.contains(4)) nextText.add("besoin : Champignon");
+			}
+			return null;
+		
+		default:
+			return null;
 		}
-		else {
-			if(!objet_interne.contains(1)) nextText.add("besoin : Riz");
-			if(!objet_interne.contains(3)) nextText.add("besoin : Eau");
-			if(!objet_interne.contains(4)) nextText.add("besoin : Champignon");
-		}
-		return null;
 	}
 	
 	public void getCauldronImage() {
