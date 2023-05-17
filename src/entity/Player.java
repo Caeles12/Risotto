@@ -141,7 +141,14 @@ public class Player extends Entity{
 	}
 	
 	public void LanceFireball(float x, float y) {
-		if(!m_can_cast) return;
+		m_ralentisseur -= 1;
+		if(!m_can_cast) {
+			if(m_ralentisseur <= 0) {
+				nextText.add("Sans nourriture pas de magie ;-;");
+				m_ralentisseur = 30;
+			}
+			return;
+		}
 		if (m_ralentisseur <= 0) {
 			m_magie -= 1;
 			m_spell = true;
@@ -149,8 +156,6 @@ public class Player extends Entity{
 			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + m_gp.TILE_SIZE/2, (int) this.m_pos.y + m_gp.TILE_SIZE/2);
 			f.setDirection(x, y);
 			c = 0;
-		} else {
-			m_ralentisseur -= 1;
 		}
 	}
 	
