@@ -32,6 +32,7 @@ public class Coffre extends Entity_interactive{
 		this.getCoffreImage();
 		
 		this.m_collider = new Collider(new Rectangle(m_pos, m_gp.TILE_SIZE, m_gp.TILE_SIZE), m_gp);
+		this.solid = true;
 		
 		this.animate = false;
 		looted = false;
