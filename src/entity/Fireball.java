@@ -72,7 +72,7 @@ public class Fireball extends Entity {
 	public void getFireBallImage() {
 		//gestion des expections 
 		try {
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/fireball.png")));
+			m_idleImage.add(ImageIO.read(getClass().getResource("/player/special/fireball.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
