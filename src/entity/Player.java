@@ -170,12 +170,16 @@ public class Player extends Entity{
 				int y = (int)(m_pos.y/m_gp.TILE_SIZE)+1;
 				for(int i = 0 ;  i < 3 ; i++) {
 					for(int j = 0 ; j < 3 ; j++) {
-						System.out.println(x + " " + y);
-						if(m_gp.m_tab_Map[m_gp.dim].m_Map.getMapTile(x-1+i, y-1+j) == 2) {
-							takeItem(2);
-							addToInventory(3);
-							nextText = "Seau remplis d'eau";
+						int ni = x-1+i;
+						int nj = y-1+j;
+						if(ni>-1 && ni<m_gp.m_tab_Map[m_gp.dim].m_Map.getNbCol() && nj>-1 && nj<m_gp.m_tab_Map[m_gp.dim].m_Map.getNbRow()) {
+							if(m_gp.m_tab_Map[m_gp.dim].m_Map.getMapTile(ni, nj) == 2) {
+								takeItem(2);
+								addToInventory(3);
+								nextText = "Seau remplis d'eau";
+							}
 						}
+						
 					}
 				}
 				
