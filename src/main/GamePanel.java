@@ -125,7 +125,7 @@ public class GamePanel extends JPanel implements Runnable{
 		balais.setPositionTiles((int)balais.m_pos.x, (int)balais.m_pos.y);
 		m_tab_Map[dim].m_list_entity.add(new Coffre(23, 15, gp,4));
 		m_tab_Map[dim].m_list_entity.add(new Door(6, 7, gp, 0));
-		m_tab_Map[dim].m_list_entity.add(new House(4,2, gp,0));
+		m_tab_Map[dim].m_list_entity.add(new House(4,3, gp,0));
 		
 		m_tab_Map[dim].m_list_entity.add(new Frog(this, 200, 100));
 		m_tab_Map[dim].m_list_entity.add(new Frog(this, 800, 750));
