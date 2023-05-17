@@ -127,8 +127,6 @@ abstract public class Hostile extends Entity{
 				m_lifeTemp -= 25;
 			} catch (IOException e) { e.printStackTrace(); }
 		}
-		
-		
 	}
 	
 	/**
