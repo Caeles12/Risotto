@@ -29,6 +29,7 @@ public class Player extends Entity{
 
 	KeyHandler m_keyH;
 	ArrayList<Integer> m_inventaire;
+	BufferedImage m_spellImg;
 	int m_life;
 	int m_life_cap;
 	int m_magie;
@@ -37,10 +38,15 @@ public class Player extends Entity{
 	float[] m_collision;
 	boolean[] m_tape;
 	boolean m_spell;
+	boolean m_can_cast;
 	int c;
 	int m_ralentisseur;
 	
 	int interact_cooldown;
+	
+	protected int tmpAnim = 0;
+	protected int ptr_list_image = 0;
+	protected boolean animate = true;
 	
 	List<String> nextText;
 	int talkdelay = 0;
@@ -95,9 +101,9 @@ public class Player extends Entity{
 	public void getPlayerImageBase() {
 		//gestion des expections 
 		try {
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch.png")));
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/spellwitch.png")));
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/potitbalais.png")));
+			for(int i = 1 ; i < 5 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch_"+i+".png")));
+			m_spellImg = ImageIO.read(getClass().getResource("/player/special/spellwitch.png"));
+			
 			
 			fullH = ImageIO.read(getClass().getResource("/hostile/coeurPlein.png"));
 			halfH = ImageIO.read(getClass().getResource("/hostile/demiCoeur.png"));
@@ -107,11 +113,12 @@ public class Player extends Entity{
 	}
 	
 	public void LanceFireball(float x, float y) {
+		if(!m_can_cast) return;
 		if (m_ralentisseur <= 0) {
 			m_magie -= 1;
 			m_spell = true;
 			m_ralentisseur = 16;
-			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + 1, (int) this.m_pos.y);
+			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + m_gp.TILE_SIZE/2, (int) this.m_pos.y + m_gp.TILE_SIZE/2);
 			f.setDirection(x, y);
 			c = 0;
 		} else {
@@ -196,6 +203,7 @@ public class Player extends Entity{
 			interact_cooldown = 0;
 			for(Entity e : m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
 				if(e instanceof Entity_interactive) {
+					System.out.println(e.getClass().getName());
 					if(this.m_pos.distanceTo(e.m_pos) < 50) {
 						addItem(((Entity_interactive) e).interaction());
 
@@ -242,13 +250,19 @@ public class Player extends Entity{
 		// r�cup�re l'image du joueur
 		BufferedImage l_image;
 		if (m_spell) {
-			l_image = m_idleImage.get(1);
+			l_image = m_spellImg;
 		}
 		else {
 			for (int i = 0; i < 4; i++) {
 				m_spell = false;
 			}
-			l_image = m_idleImage.get(0);
+			this.tmpAnim++;
+			if(animate && tmpAnim >10) {
+				tmpAnim = 0;
+				ptr_list_image++;
+				if(ptr_list_image > m_idleImage.size()-1) ptr_list_image = 0;
+			}
+			l_image = m_idleImage.get(ptr_list_image);
 		}
 		
 		
@@ -311,6 +325,9 @@ public class Player extends Entity{
 	public boolean addItem(List<Integer> li) {
 		if(li == null) return false;
 		for(int e : li) {
+			if(e==5) {
+				m_can_cast = true;
+			}
 			addToInventory(e);
 		}
 		return true;

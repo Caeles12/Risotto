@@ -21,7 +21,7 @@ public class Fireball extends Entity {
 	
 	public Fireball(GamePanel a_gp, Player p, KeyHandler keyH, int x, int y) {
 		this.m_gp = a_gp;
-		this.m_pos = new Vector2D(x, y+25);
+		this.m_pos = new Vector2D(x-7, y-7);
 		this.m_dureevie = 300;
 		this.m_speed = 9;
 		this.m_keyH = keyH;
@@ -50,7 +50,8 @@ public class Fireball extends Entity {
 			m_status = Entity.Status.DESTROY;
 		}
 		
-		for(Entity entity: m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
+		for(int i=0; i<m_gp.m_tab_Map[m_gp.dim].m_list_entity.size(); i++) {
+			Entity entity = m_gp.m_tab_Map[m_gp.dim].m_list_entity.get(i);
 			if(entity != this && entity.m_collider != null) {
 				try {
 					if(entity instanceof Hostile && this.m_collider.colliding(entity.m_collider)) {
@@ -72,7 +73,7 @@ public class Fireball extends Entity {
 	public void getFireBallImage() {
 		//gestion des expections 
 		try {
-			m_idleImage.add(ImageIO.read(getClass().getResource("/player/fireball.png")));
+			m_idleImage.add(ImageIO.read(getClass().getResource("/player/special/fireball.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
