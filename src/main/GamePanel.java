@@ -220,7 +220,6 @@ public class GamePanel extends JPanel implements Runnable{
 		m_renderer.setGraphics(g2);
 		
 		m_tileM.draw(m_renderer);
-		
 		Iterator<Entity> iter = m_tab_Map[dim].m_list_entity.iterator();
 		while(iter.hasNext()) iter.next().draw(m_renderer);
 		
