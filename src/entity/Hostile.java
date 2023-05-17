@@ -21,6 +21,7 @@ abstract public class Hostile extends Entity{
 	protected int m_life;  //enlever des pv a cette variable si des degats sont pris
 	protected int m_lifeTemp; // sert pour la barre de vie
 	protected int m_timer;
+	protected int m_timerInvincible;
 	protected int m_timerAnimation;
 	protected Random r = new Random();
 	protected int ptr_list_image = 0;
@@ -56,13 +57,25 @@ abstract public class Hostile extends Entity{
 	public void update() {
 		if(m_life>=0) {
 			m_timer ++;
+			m_timerInvincible ++;
 			move();
 			animationRate();
 			updateLifeBar();
+			attack();
 		}
 		m_timerAnimation ++;
 
 		
+	}
+	
+	public void attack() {
+		if(m_timerInvincible > 40) {
+			if(m_collider.colliding(m_gp.m_player.m_collider)) {
+				m_gp.m_player.take_damage();
+				m_timerInvincible = 0;
+			}
+		}
+
 	}
 	
 	/**

@@ -34,6 +34,7 @@ public class Frog extends Hostile {
 		ptr_list_image = 0;
 		m_timerAnimation = 0;
 		m_dir = new int[2];
+		m_timerInvincible = 0;
 		
 	}
 

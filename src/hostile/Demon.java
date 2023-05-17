@@ -31,6 +31,7 @@ public class Demon extends Hostile{
 		m_timerAnimation = 0;
 		m_dir = new int[2];
 		detect = false;
+		m_timerInvincible = 0;
 		
 	}
 
