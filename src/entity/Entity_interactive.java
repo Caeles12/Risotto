@@ -10,7 +10,6 @@ import utils.Vector2D;
 
 public abstract class Entity_interactive extends Entity{
 	protected List<Integer> objet_interne = new ArrayList<>();
-	protected GamePanel m_gp;
 	protected boolean animate = true;
 	protected int tmpAnim = 0;
 	protected int ptr_list_image = 0;

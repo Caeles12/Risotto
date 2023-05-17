@@ -12,6 +12,8 @@ import entity.Entity_interactive;
 import entity.SpeechBubble;
 import main.GamePanel;
 import main.Renderer;
+import utils.Collider;
+import utils.Rectangle;
 import utils.Vector2D;
 
 import entity.Object;
@@ -28,6 +30,8 @@ public class Coffre extends Entity_interactive{
 		this.objet_interne = new ArrayList<>();
 		objet_interne.add(inventaire);
 		this.getCoffreImage();
+		
+		this.m_collider = new Collider(new Rectangle(m_pos, m_gp.TILE_SIZE, m_gp.TILE_SIZE), m_gp);
 		
 		this.animate = false;
 		looted = false;
