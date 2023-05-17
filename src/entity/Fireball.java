@@ -13,17 +13,19 @@ import utils.Vector2D;
 public class Fireball extends Entity {
 	
 	KeyHandler m_keyH;
+	Player m_player;
 	int m_dureevie;
-	int[] m_direction;
+	float[] m_direction;
 	
-	public Fireball(GamePanel a_gp, KeyHandler keyH, int x, int y) {
+	public Fireball(GamePanel a_gp, Player p, KeyHandler keyH, int x, int y) {
 		this.m_gp = a_gp;
 		this.m_pos = new Vector2D(x, y);
 		this.m_dureevie = 300;
-		this.m_speed = 5;
+		this.m_speed = 9;
 		this.m_keyH = keyH;
 		m_gp.m_tab_Map[m_gp.dim].m_list_entity.add(this);
-		this.m_direction = new int[2];
+		this.m_direction = new float[2];
+		this.m_player = p;
 		this.getFireBallImage();
 	}
 
@@ -34,30 +36,10 @@ public class Fireball extends Entity {
 	}
 
 	@Override
-	public void update() {
-		if (m_keyH.isPressed(37)) { // GAUCHE
-			m_direction[0] += -1;
-			m_direction[1] += 0;
-		}
-		if (m_keyH.isPressed(38)) { // HAUT
-			m_direction[0] += 0;
-			m_direction[1] += -1;
-		} 
-		if (m_keyH.isPressed(39)) { // DROITE
-			m_direction[0] += 1;
-			m_direction[1] += 0;
-		}
-		if (m_keyH.isPressed(40)) { // BAS
-			m_direction[0] += 0;
-			m_direction[1] += 1;
-		}
+	public void update() {	
 		
-		if (m_direction[0] == 0 && m_direction[1] == 0) {
-			m_direction[0] += 1;
-			m_direction[1] += 0;
-		}
-		this.m_pos.x += m_speed * m_direction[0];
-		this.m_pos.y += m_speed * m_direction[1];
+		this.m_pos.x += (int) m_speed * m_direction[0];
+		this.m_pos.y += (int) m_speed * m_direction[1];
 
 		m_dureevie -= 1;
 		if (m_dureevie <= 0) {
@@ -74,7 +56,7 @@ public class Fireball extends Entity {
 		}
 	}
 	
-	public void setDirection(int x, int y) {
+	public void setDirection(float x, float y) {
 		m_direction[0] = x;
 		m_direction[1] = y;
 	}
