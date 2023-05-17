@@ -165,6 +165,7 @@ public class Player extends Entity{
 			m_gp.setDim(2);
 			regen();
 			m_inventaire = new ArrayList<>();
+			m_has_broom = false;
 		}
 		int count = 0; //victoire
 		for(int e : m_inventaire) {
