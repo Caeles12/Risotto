@@ -166,10 +166,11 @@ public class Player extends Entity{
 			}
 			
 			if(m_inventaire.contains(2)) { //recherche d'eau pour remplir seau
-				int x = (int)(m_pos.x/m_gp.TILE_SIZE);
-				int y = (int)(m_pos.y/m_gp.TILE_SIZE);
+				int x = (int)(m_pos.x/m_gp.TILE_SIZE)+1;
+				int y = (int)(m_pos.y/m_gp.TILE_SIZE)+1;
 				for(int i = 0 ;  i < 3 ; i++) {
 					for(int j = 0 ; j < 3 ; j++) {
+						System.out.println(x + " " + y);
 						if(m_gp.m_tab_Map[m_gp.dim].m_Map.getMapTile(x-1+i, y-1+j) == 2) {
 							takeItem(2);
 							addToInventory(3);
