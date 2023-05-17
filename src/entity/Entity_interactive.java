@@ -6,10 +6,10 @@ import java.util.List;
 
 import main.GamePanel;
 import main.Renderer;
+import utils.Vector2D;
 
 public abstract class Entity_interactive extends Entity{
 	protected List<Integer> objet_interne = new ArrayList<>();
-	protected GamePanel m_gp;
 	protected boolean animate = true;
 	protected int tmpAnim = 0;
 	protected int ptr_list_image = 0;
@@ -17,6 +17,7 @@ public abstract class Entity_interactive extends Entity{
 	
 	//convertie la position d'une tiles en position r�elle
 	public void setPositionTiles(int x, int y) {
+		this.m_pos = new Vector2D(0,0);
 		this.m_pos.x = x*m_gp.TILE_SIZE;
 		this.m_pos.y = y*m_gp.TILE_SIZE;
 	}

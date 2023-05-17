@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -26,11 +27,12 @@ import utils.Rectangle;
  */
 public class Player extends Entity{
 
-	GamePanel m_gp;
 	KeyHandler m_keyH;
-	ArrayList<Item> m_inventaire;
+	ArrayList<Integer> m_inventaire;
 	int m_life;
+	int m_life_cap;
 	int m_magie;
+	int m_magie_cap;
 	int[] m_direction;
 	float[] m_collision;
 	boolean[] m_tape;
@@ -38,8 +40,14 @@ public class Player extends Entity{
 	int c;
 	int m_ralentisseur;
 	
-	Collider m_collider;
 	int interact_cooldown;
+	
+	List<String> nextText;
+	int talkdelay = 0;
+	
+	protected List<BufferedImage> m_lifeBar;
+	BufferedImage fullH;
+	BufferedImage halfH;
 	
 	/**
 	 * Constructeur de Player
@@ -49,7 +57,7 @@ public class Player extends Entity{
 	public Player(GamePanel a_gp, KeyHandler a_keyH) {
 		this.m_gp = a_gp;
 		this.m_keyH = a_keyH;
-		this.m_inventaire = new ArrayList<Item>();
+		this.m_inventaire = new ArrayList<Integer>();
 		this.m_direction = new int[2];
 		this.m_tape = new boolean[4];
 		this.m_collision = new float[2];
@@ -61,6 +69,10 @@ public class Player extends Entity{
 		this.getPlayerImageBase();
 		
 		this.interact_cooldown = 0;
+		nextText = new ArrayList<>();
+		
+		this.m_lifeBar = new ArrayList<BufferedImage>();
+		this.setLifeBar();
 	}
 	
 	/**
@@ -68,8 +80,10 @@ public class Player extends Entity{
 	 */
 	protected void setDefaultValues() {
 		m_speed = 4;
-		m_life = 100;
-		m_magie = 80;
+		m_life_cap = 10;
+		m_life = m_life_cap;
+		m_magie_cap = 80;
+		m_magie = m_magie_cap;
 		for (int i = 0; i < 4; i++) {
 			m_tape[i] = false;
 		}
@@ -85,6 +99,9 @@ public class Player extends Entity{
 			m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch.png")));
 			m_idleImage.add(ImageIO.read(getClass().getResource("/player/spellwitch.png")));
 			m_idleImage.add(ImageIO.read(getClass().getResource("/player/potitbalais.png")));
+			
+			fullH = ImageIO.read(getClass().getResource("/hostile/coeurPlein.png"));
+			halfH = ImageIO.read(getClass().getResource("/hostile/demiCoeur.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -94,6 +111,11 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
+		talkdelay++;
+		if(!nextText.isEmpty() && talkdelay >15) {
+			new SpeechBubble(m_gp, nextText.remove(0) , (int) this.m_pos.x, (int) this.m_pos.y - 10);
+			talkdelay = 0;
+		}
 		this.m_collider.m_shape.setOrigin(m_pos);
 		
 		if (m_keyH.isPressed(37)) { // GAUCHE
@@ -120,12 +142,12 @@ public class Player extends Entity{
 			float vy = (m_direction[1] / norme);
 			
 			this.m_pos.x += vx*m_speed;
-			System.out.println(this.m_collider.m_shape.getOrigin().x);
-			if(this.m_collider.collidingTileMap(this.m_gp.m_tileM)) {
+			//System.out.println(this.m_collider.m_shape.getOrigin().x);
+			if(checkCollisions()) {
 				this.m_pos.x -= vx*m_speed;
 			}
 			this.m_pos.y += vy*m_speed;
-			if(this.m_collider.collidingTileMap(this.m_gp.m_tileM)) {
+			if(checkCollisions()) {
 				this.m_pos.y -= vy*m_speed;
 			}
 		}
@@ -148,13 +170,32 @@ public class Player extends Entity{
 		}
 		interact_cooldown++;
 		if (m_keyH.isPressed(69) && interact_cooldown >10) {
+			take_damage();
 			interact_cooldown = 0;
-			Iterator<Entity> iter = m_gp.m_tab_Map[m_gp.dim].m_list_entity.iterator();
-			while(iter.hasNext()) {
-				Entity tmp = iter.next();
-				if(tmp instanceof Entity_interactive) {
-					if(this.m_pos.distanceTo(tmp.m_pos) < 80) {
-						((Entity_interactive) tmp).interaction();
+			for(Entity e : m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
+				if(e instanceof Entity_interactive) {
+					if(this.m_pos.distanceTo(e.m_pos) < 50) {
+						addItem(((Entity_interactive) e).interaction());
+
+					}
+				}
+			}
+			
+			if(m_inventaire.contains(2)) { //recherche d'eau pour remplir seau
+				int x = (int)(m_pos.x/m_gp.TILE_SIZE)+1;
+				int y = (int)(m_pos.y/m_gp.TILE_SIZE)+1;
+				for(int i = 0 ;  i < 3 ; i++) {
+					for(int j = 0 ; j < 3 ; j++) {
+						int ni = x-1+i;
+						int nj = y-1+j;
+						if(ni>-1 && ni<m_gp.m_tab_Map[m_gp.dim].m_Map.getNbCol() && nj>-1 && nj<m_gp.m_tab_Map[m_gp.dim].m_Map.getNbRow()) {
+							if(m_gp.m_tab_Map[m_gp.dim].m_Map.getMapTile(ni, nj) == 2) {
+								takeItem(2);
+								addToInventory(3);
+								nextText.add("Seau remplis d'eau");
+							}
+						}
+						
 					}
 				}
 				
@@ -182,9 +223,17 @@ public class Player extends Entity{
 			l_image = m_idleImage.get(0);
 		}
 		
+		
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
 		r.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
 
+		//affiche la barre de vie du monstre
+		int nbCoeur = m_lifeBar.size()-1;
+		int tailleCoeur = 24; //la taille d'un coeur en pixel
+				
+		for (int i=0; i<=nbCoeur; i++) {
+			r.renderImage(m_lifeBar.get(i), (int) (50+i*tailleCoeur-nbCoeur*tailleCoeur/2), -50, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		}
 	}
 	
 	public float getXCoordinates() {
@@ -199,16 +248,73 @@ public class Player extends Entity{
 		m_tape[pos] = b;
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return l'id de l'item si trouver, sinon 0
+	 * 
+	 * cherche et enleve un item de l'inventaire
+	 */
+	public int takeItem(int id) {
+		if(m_inventaire.contains(id)) {
+			m_inventaire.remove(m_inventaire.indexOf(id));
+			return id;
+		}
+		return 0;
+	}
+	
+	public boolean addItem(List<Integer> li) {
+		if(li == null) return false;
+		for(int e : li) {
+			addToInventory(e);
+		}
+		return true;
+	}
+	
 	public boolean fullInventory() {
 		return m_inventaire.size() == 10;
 	}
 
-	public void addToInventory(Item i) {
+	public void addToInventory(int i) {
 		if (!fullInventory()) {
 			m_inventaire.add(i);
 		} else {
-			new SpeechBubble(m_gp, "Poches pleines !", (int) this.m_pos.x, (int) this.m_pos.y - 10);
+			nextText.add("Poches pleines !");
+			
 		}
 	}
+	
+	public void regen() {
+		if(m_life < m_life_cap || m_magie < m_magie_cap) {
+			m_life = m_life_cap;
+			m_magie = m_magie_cap;
+			nextText.add("Santee et Magie restoree <3");
+			m_lifeBar.clear();
+			setLifeBar();
+		}
+		else nextText.add("Je ne suis pas fatiguee ;~;");
+	}
+	
+	//sert à l'init, n'update pas (peut servir à l'init si on vide la liste a chaque fois)
+		void setLifeBar() {
+			int nbDemiCoeur = m_life; //choper les degat du joueur et les mettres a la place du 25 !!					
+			for(int i=0; i<nbDemiCoeur/2; i++) {
+				m_lifeBar.add(fullH);
+			}	
+			if(nbDemiCoeur%2 != 0) {
+				m_lifeBar.add(halfH);
+			}
+		}
+
+		void take_damage() {
+			if(m_life >0) {
+				m_life--;
+				nextText.add("Aie >~<");
+				if(m_life < 0) m_life = m_life_cap;
+				if(m_lifeBar.get(m_lifeBar.size()-1) == fullH) m_lifeBar.set(m_lifeBar.size()-1, halfH);
+				else m_lifeBar.remove(m_lifeBar.size()-1);
+			}
+			
+		}
 	
 }
