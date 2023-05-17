@@ -151,7 +151,9 @@ abstract public class Hostile extends Entity{
 		
 		BufferedImage l_image = m_idleImage.get(ptr_list_image);
 		// affiche le monstre avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
-		a_g2.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		int imgDir = (this.m_dir[0]<0 ? -1 : 1);
+		int imgOffset = (this.m_dir[0]<0 ? m_gp.TILE_SIZE : 0);
+		a_g2.renderImage(l_image, (int) this.m_pos.x+imgOffset, (int) this.m_pos.y, m_gp.TILE_SIZE*imgDir, m_gp.TILE_SIZE);
 		
 		//affiche la barre de vie du monstre
 		int nbCoeur = m_lifeBar.size()-1;
@@ -166,6 +168,7 @@ abstract public class Hostile extends Entity{
 		m_life -= damage;
 		if(m_life <=0) {
 			new Item((int) m_pos.x,(int) m_pos.y, m_gp, 6);
+			new SpeechBubble(m_gp, "Couic",(int) this.m_pos.x,(int) this.m_pos.y, 5, 10, 1);
 			m_status = Status.DESTROY;
 			m_life = 0;
 		}
