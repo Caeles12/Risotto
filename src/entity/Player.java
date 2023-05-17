@@ -11,7 +11,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import hostile.Demon;
 import main.GamePanel;
+import main.GamePanel.Map;
 import main.KeyHandler;
 import main.Renderer;
 import main.UI;
@@ -156,10 +158,26 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
-		if(m_life<=0 && !m_gp.menu) {
+		if(m_life<=0 && !m_gp.menu) { //defaite
 			m_gp.menu = true;
 			menuNb = 2;
+			m_gp.m_tab_Map = new Map[3];
 			m_gp.setDim(2);
+			regen();
+			m_inventaire = new ArrayList<>();
+		}
+		int count = 0; //victoire
+		for(int e : m_inventaire) {
+			
+			if(e == 6 ) count++;
+		}
+		if(count > 3 && !m_gp.menu) {
+			m_gp.menu = true;
+			menuNb = 1;
+			m_gp.m_tab_Map = new Map[3];
+			m_gp.setDim(2);
+			regen();
+			m_inventaire = new ArrayList<>();
 		}
 		
 		if(m_has_broom) {
@@ -343,12 +361,18 @@ public class Player extends Entity{
 		}
 		else {
 			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5);
-			UI.text(m_gp, "z q s d -> Magie", 300, 240,20);
-			UI.text(m_gp, "Fleches directionnelles -> Deplacement", 180, 260,20);
-			UI.text(m_gp, "e -> Interagir", 300, 280,20);
-			
+			if(menuNb == 0) {
+				UI.text(m_gp, "z q s d -> Magie", 300, 240,20);
+				UI.text(m_gp, "fleches directionnelles -> deplacement", 180, 260,20);
+				UI.text(m_gp, "e -> Interagir", 300, 280,20);
+			}
+			if(menuNb == 1) {
+				UI.text(m_gp, "VICTOIRE", 300, 260, 35,8,12,5);
+				UI.text(m_gp, "Vous etes incroyable :D", 280, 320,20);
+			}
 			if(menuNb == 2) {
-				UI.text(m_gp, "Vous pouvez y retourner, bon courage ...", 180, 320,20);
+				UI.text(m_gp, "GAME OVER", 300, 260, 35,8,12,5);
+				UI.text(m_gp, "Vous pouvez y retourner, bon courage", 180, 320,20);
 			}
 		}
 	}
