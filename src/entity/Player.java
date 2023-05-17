@@ -26,6 +26,13 @@ import utils.Rectangle;
  *
  */
 public class Player extends Entity{
+	
+	/*
+	 * 0 - start menu
+	 * 1 - win menu
+	 * 2 - loose menu
+	 */
+	int menuNb = 0; 
 
 	KeyHandler m_keyH;	public void getPlayerImageBalais() {
 		//gestion des expections 
@@ -51,8 +58,10 @@ public class Player extends Entity{
 	float[] m_collision;
 	boolean[] m_tape;
 	boolean m_spell;
-	boolean m_can_cast;
+
+	public boolean m_can_cast;
 	boolean m_has_broom;
+
 	int c;
 	int m_ralentisseur;
 	
@@ -145,6 +154,11 @@ public class Player extends Entity{
 	 * Mise � jour des donn�es du joueur
 	 */
 	public void update() {
+		if(m_life<=0 && !m_gp.menu) {
+			m_gp.menu = true;
+			menuNb = 2;
+			m_gp.setDim(2);
+		}
 		talkdelay++;
 		if(!nextText.isEmpty() && talkdelay >15) {
 			new SpeechBubble(m_gp, nextText.remove(0) , (int) this.m_pos.x, (int) this.m_pos.y - 10);
@@ -286,19 +300,32 @@ public class Player extends Entity{
 		
 		// affiche le personnage avec l'image "image", avec les coordonn�es x et y, et de taille tileSize (16x16) sans �chelle, et 48x48 avec �chelle)
 		r.renderImage(l_image, (int) this.m_pos.x, (int) this.m_pos.y, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
-
-		//affiche la barre de vie du monstre
-		int nbCoeur = m_lifeBar.size()-1;
-		int tailleCoeur = 24; //la taille d'un coeur en pixel
-				
-		for (int i=0; i<=nbCoeur; i++) {
-			r.renderUIImage(m_lifeBar.get(i), (int) (i*tailleCoeur), 10, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+		if(!m_gp.menu) {
+			//affiche la barre de vie du monstre
+			int nbCoeur = m_lifeBar.size()-1;
+			int tailleCoeur = 24; //la taille d'un coeur en pixel
+			for (int i=0; i<=nbCoeur; i++) {
+				r.renderUIImage(m_lifeBar.get(i), (int) (i*tailleCoeur), 10, m_gp.TILE_SIZE, m_gp.TILE_SIZE);
+			}
+			
+			if(m_can_cast) {
+				r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
+				r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
+			}
+			UI.text(m_gp, "inventaire :", 20, 90, 15);
+			for(int i = 0 ; i < m_inventaire.size() ; i++) {
+				UI.text(m_gp, Object.getNom(m_inventaire.get(i)), 30, 110+i*20, 15);
+			}
 		}
-		r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
-		r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
-		UI.text(m_gp, "inventaire :", 20, 90, 15);
-		for(int i = 0 ; i < m_inventaire.size() ; i++) {
-			UI.text(m_gp, Object.getNom(m_inventaire.get(i)), 30, 110+i*20, 15);
+		else {
+			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5);
+			UI.text(m_gp, "z q s d -> Magie", 300, 240,20);
+			UI.text(m_gp, "fleches directionnelles -> deplacement", 180, 260,20);
+			UI.text(m_gp, "e -> interagir", 300, 280,20);
+			
+			if(menuNb == 2) {
+				UI.text(m_gp, "Vous pouvez y retourner, bon courage", 180, 320,20);
+			}
 		}
 	}
 	
