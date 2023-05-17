@@ -94,6 +94,26 @@ public class Renderer {
 		m_g2.drawRect(posX, posY, scaleW, scaleH);
 	}
 	
+	public void renderRect(int x, int y, int w, int h, Color color) {
+		assert(this.m_g2 != null);
+		
+		float scale = this.m_camera.getScale();
+		
+		int posX = (int) (Math.floor((x - this.m_camera.getX())*scale) + (this.m_gp.SCREEN_WIDTH/2));
+		int posY = (int) (Math.floor((y - this.m_camera.getY())*scale) + (this.m_gp.SCREEN_HEIGHT/2));
+		int scaleW = (int) Math.ceil(w*scale);
+		int scaleH = (int) Math.ceil(h * scale);
+		m_g2.setColor(color);
+		m_g2.fillRect(posX, posY, scaleW, scaleH);
+	}
+	
+	public void renderUIRect(int x, int y, int w, int h, Color color) {
+		assert(this.m_g2 != null);
+				
+		m_g2.setColor(color);
+		m_g2.fillRect(x, y, w, h);
+	}
+	
 	public void renderText(String text, int x, int y) {
 		renderText(text, x, y, 1, 0, 0, 0);
 	}
