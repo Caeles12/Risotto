@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandler;
 import main.Renderer;
-
+import main.UI;
 import tile.TileManager;
 import utils.Collider;
 import utils.Shape;
@@ -264,6 +264,10 @@ public class Player extends Entity{
 		}
 		r.renderUIRect(20, 50, 78, 18, new Color(200,200,200));
 		r.renderUIRect(24, 54, m_magie*70/m_magie_cap, 10, new Color(0,0,200));
+		UI.text(m_gp, "inventaire :", 20, 90, 15);
+		for(int i = 0 ; i < m_inventaire.size() ; i++) {
+			UI.text(m_gp, Object.getNom(m_inventaire.get(i)), 30, 110+i*20, 15);
+		}
 	}
 	
 	public float getXCoordinates() {
