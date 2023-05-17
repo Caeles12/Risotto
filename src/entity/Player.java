@@ -27,9 +27,22 @@ import utils.Rectangle;
  */
 public class Player extends Entity{
 
-	KeyHandler m_keyH;
+	KeyHandler m_keyH;	public void getPlayerImageBalais() {
+		//gestion des expections 
+		try {
+			for(int i = 1 ; i < 5 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch_"+i+".png")));
+			m_spellImg = ImageIO.read(getClass().getResource("/player/special/spellwitch.png"));
+			
+			
+			fullH = ImageIO.read(getClass().getResource("/hostile/coeurPlein.png"));
+			halfH = ImageIO.read(getClass().getResource("/hostile/demiCoeur.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	ArrayList<Integer> m_inventaire;
 	BufferedImage m_spellImg;
+	List<BufferedImage> m_balaisImage = new ArrayList<>();
 	int m_life;
 	int m_life_cap;
 	int m_magie;
@@ -39,6 +52,7 @@ public class Player extends Entity{
 	boolean[] m_tape;
 	boolean m_spell;
 	boolean m_can_cast;
+	boolean m_has_broom;
 	int c;
 	int m_ralentisseur;
 	
@@ -93,6 +107,7 @@ public class Player extends Entity{
 			m_tape[i] = false;
 		}
 		m_spell = false;
+		m_has_broom = false;
 	}
 	
 	/**
@@ -103,7 +118,7 @@ public class Player extends Entity{
 		try {
 			for(int i = 1 ; i < 5 ; i++) m_idleImage.add(ImageIO.read(getClass().getResource("/player/witch_"+i+".png")));
 			m_spellImg = ImageIO.read(getClass().getResource("/player/special/spellwitch.png"));
-			
+			for(int i = 1 ; i < 5 ; i++) m_balaisImage.add(ImageIO.read(getClass().getResource("/player/special/balais/potitbalais_"+i+".png")));
 			
 			fullH = ImageIO.read(getClass().getResource("/hostile/coeurPlein.png"));
 			halfH = ImageIO.read(getClass().getResource("/hostile/demiCoeur.png"));
@@ -203,7 +218,6 @@ public class Player extends Entity{
 			interact_cooldown = 0;
 			for(Entity e : m_gp.m_tab_Map[m_gp.dim].m_list_entity) {
 				if(e instanceof Entity_interactive) {
-					System.out.println(e.getClass().getName());
 					if(this.m_pos.distanceTo(e.m_pos) < 50) {
 						addItem(((Entity_interactive) e).interaction());
 
@@ -253,6 +267,10 @@ public class Player extends Entity{
 			l_image = m_spellImg;
 		}
 		else {
+			List<BufferedImage> imgs = m_idleImage;
+			if(m_has_broom) {
+				imgs = m_balaisImage;
+			}
 			for (int i = 0; i < 4; i++) {
 				m_spell = false;
 			}
@@ -260,9 +278,9 @@ public class Player extends Entity{
 			if(animate && tmpAnim >10) {
 				tmpAnim = 0;
 				ptr_list_image++;
-				if(ptr_list_image > m_idleImage.size()-1) ptr_list_image = 0;
+				if(ptr_list_image > imgs.size()-1) ptr_list_image = 0;
 			}
-			l_image = m_idleImage.get(ptr_list_image);
+			l_image = imgs.get(ptr_list_image);
 		}
 		
 		
@@ -321,6 +339,8 @@ public class Player extends Entity{
 		for(int e : li) {
 			if(e==5) {
 				m_can_cast = true;
+			}else if(e==7) {
+				m_has_broom = true;
 			}
 			addToInventory(e);
 		}
