@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.GamePanel;
 import main.Renderer;
 import utils.Vector2D;
 

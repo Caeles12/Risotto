@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JPanel;
 
@@ -10,11 +9,8 @@ import entity.Player;
 import hostile.Demon;
 import hostile.Frog;
 import entity.Entity;
-import entity.Hostile;
 import interactive.*;
-import tile.Tile;
 import tile.TileManager;
-import utils.MathUtils;
 import utils.Vector2D;
 
 import java.awt.Graphics;
@@ -66,7 +62,6 @@ public class GamePanel extends JPanel implements Runnable{
 	/**
 	 * Constructeur
 	 */
-	@SuppressWarnings("unchecked")
 	public GamePanel() {
 		m_FPS = 60;				
 		m_keyH = new KeyHandler();
@@ -97,7 +92,7 @@ public class GamePanel extends JPanel implements Runnable{
 		case 1:
 			this.dim = 1;
 			if(m_tab_Map[dim] == null) init_demo_map(this);
-			m_player.m_pos = new Vector2D( TILE_SIZE*6, TILE_SIZE*8);
+			m_player.m_pos = new Vector2D( TILE_SIZE*6, TILE_SIZE*9);
 			break;
 		case 2:
 			this.dim = 2;
@@ -124,7 +119,7 @@ public class GamePanel extends JPanel implements Runnable{
 		Item balais = new Item(24, 1, gp, 7);
 		balais.setPositionTiles((int)balais.m_pos.x, (int)balais.m_pos.y);
 		m_tab_Map[dim].m_list_entity.add(new Coffre(23, 15, gp,4));
-		m_tab_Map[dim].m_list_entity.add(new Door(6, 7, gp, 0));
+		m_tab_Map[dim].m_list_entity.add(new Door(6, 8, gp, 0));
 		m_tab_Map[dim].m_list_entity.add(new House(4,3, gp,0));
 		
 		m_tab_Map[dim].m_list_entity.add(new Frog(this, 200, 100));

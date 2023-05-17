@@ -1,25 +1,20 @@
 package entity;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.Math;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import hostile.Demon;
 import main.GamePanel;
 import main.GamePanel.Map;
 import main.KeyHandler;
 import main.Renderer;
 import main.UI;
-import tile.TileManager;
 import utils.Collider;
-import utils.Shape;
 import utils.Vector2D;
 import utils.Rectangle;
 
@@ -184,6 +179,7 @@ public class Player extends Entity{
 			m_gp.setDim(2);
 			regen();
 			m_inventaire = new ArrayList<>();
+			m_has_broom = false;
 		}
 		
 		if(m_has_broom) {
@@ -420,6 +416,7 @@ public class Player extends Entity{
 		for(int e : li) {
 			if(e==5) {
 				m_can_cast = true;
+				nextText.add("Allez tuer les monstres dans le jardin!");
 			}else if(e==7) {
 				m_has_broom = true;
 			}
