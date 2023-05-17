@@ -162,12 +162,17 @@ public class Renderer {
 		renderCenteredTextToScreen(text, x, y, opacity, 0, 0, 0);
 	}
 	
+	
 	public void renderCenteredTextToScreen(String text, int x, int y, float opacity, float wobbleAmplitude, float wobbleSpeed, float wobbleFrequency) {
 		int n_x = (int) (x-(m_font.getStringBounds(text, m_g2.getFontRenderContext()).getWidth()/2));
 		renderTextToScreen(text, n_x, y, opacity, wobbleAmplitude, wobbleSpeed, wobbleFrequency);
 	}
 	
 	public void renderTextToScreen(String text, int x, int y, float opacity, float wobbleAmplitude, float wobbleSpeed, float wobbleFrequency) {
+		renderTextToScreen(text, x, y, opacity, wobbleAmplitude, wobbleSpeed, wobbleFrequency,Color.black,Color.white);
+	}
+	
+public void renderTextToScreen(String text, int x, int y, float opacity, float wobbleAmplitude, float wobbleSpeed, float wobbleFrequency, Color c1, Color c2) {
 		
 		
 		float amplitude = wobbleAmplitude;
@@ -190,9 +195,9 @@ public class Renderer {
 			Shape shape = tl.getOutline(null);
 			m_g2.translate(char_x, char_y);
 			m_g2.setStroke(new BasicStroke(5f));
-			m_g2.setColor(Color.black);
+			m_g2.setColor(c1);
 			m_g2.draw(shape);
-			m_g2.setColor(Color.white);
+			m_g2.setColor(c2);
 			m_g2.fill(shape);
 			m_g2.translate(-char_x, -char_y);
 			char_x += (int) m_font.getStringBounds(text.charAt(i)+"", m_g2.getFontRenderContext()).getWidth();

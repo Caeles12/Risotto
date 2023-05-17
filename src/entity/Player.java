@@ -136,7 +136,14 @@ public class Player extends Entity{
 	}
 	
 	public void LanceFireball(float x, float y) {
-		if(!m_can_cast) return;
+		m_ralentisseur -= 1;
+		if(!m_can_cast) {
+			if(m_ralentisseur <= 0) {
+				nextText.add("Sans nourriture pas de magie ;-;");
+				m_ralentisseur = 30;
+			}
+			return;
+		}
 		if (m_ralentisseur <= 0) {
 			m_magie -= 1;
 			m_spell = true;
@@ -144,8 +151,6 @@ public class Player extends Entity{
 			Fireball f = new Fireball(m_gp, this, m_keyH, (int) this.m_pos.x + m_gp.TILE_SIZE/2, (int) this.m_pos.y + m_gp.TILE_SIZE/2);
 			f.setDirection(x, y);
 			c = 0;
-		} else {
-			m_ralentisseur -= 1;
 		}
 	}
 	
@@ -357,18 +362,18 @@ public class Player extends Entity{
 			}
 		}
 		else {
-			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5);
+			UI.text(m_gp, "Chaudron & Champignons", 90, 150, 48,4,12,5,Color.black,Color.magenta);
 			if(menuNb == 0) {
 				UI.text(m_gp, "z q s d -> Magie", 300, 240,20);
 				UI.text(m_gp, "fleches directionnelles -> deplacement", 180, 260,20);
 				UI.text(m_gp, "e -> Interagir", 300, 280,20);
 			}
 			if(menuNb == 1) {
-				UI.text(m_gp, "VICTOIRE", 300, 260, 35,8,12,5);
+				UI.text(m_gp, "VICTOIRE", 300, 260, 35,8,12,5,Color.black,Color.yellow);
 				UI.text(m_gp, "Vous etes incroyable :D", 280, 320,20);
 			}
 			if(menuNb == 2) {
-				UI.text(m_gp, "GAME OVER", 300, 260, 35,8,12,5);
+				UI.text(m_gp, "GAME OVER", 300, 260, 35,8,12,5,Color.black,Color.red);
 				UI.text(m_gp, "Vous pouvez y retourner, bon courage", 180, 320,20);
 			}
 		}
